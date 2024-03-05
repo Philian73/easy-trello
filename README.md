@@ -10,4 +10,5 @@
 - [x] Prettier
 - [x] clsx
 - [x] tailwindcss / postcss / autoprefixer
+- [x] react-router-dom
 ---
