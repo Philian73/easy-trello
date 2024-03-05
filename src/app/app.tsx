@@ -1,3 +1,10 @@
+import { AppLoader } from './app-loader'
+import { Router } from './providers'
+
 export const App = () => {
-  return <div>App</div>
+  return (
+    <AppLoader>
+      <Router />
+    </AppLoader>
+  )
 }
