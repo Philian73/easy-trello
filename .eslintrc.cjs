@@ -52,7 +52,7 @@ module.exports = {
     'no-duplicate-imports': 'error',
     'no-empty-pattern': 'off',
     'no-nested-ternary': 'error',
-    'no-undef': 'warn',
+    'no-undef': 'off',
     'no-unused-vars': 'off',
     'no-var': 'error',
     'padding-line-between-statements': [
