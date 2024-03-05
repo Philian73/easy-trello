@@ -1,8 +1,9 @@
 import type { User } from './types'
 
-import { usersRepository } from '@/entities/user/model/users-repository'
 import { nanoid } from 'nanoid'
 import { create } from 'zustand'
+
+import { usersRepository } from './users-repository'
 
 type UsersStore = {
   createUser: (data: { avatarId: string; name: string }) => Promise<void>

@@ -2,8 +2,8 @@ import type { User } from '../../model/types'
 
 import type { FC, ReactNode } from 'react'
 
-import { getAvatarUrl } from '../../model/get-avatar-url'
 import { useUsers } from '../../model/users-store'
+import { getAvatarUrl } from '../get-avatar-url/get-avatar-url'
 
 type UsersListProps = {
   userActions?: (user: User) => ReactNode
