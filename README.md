@@ -13,4 +13,5 @@
 - [x] react-router-dom
 - [x] localforage
 - [x] zustand
+- [x] nanoid
 ---
