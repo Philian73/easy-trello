@@ -19,7 +19,7 @@ type SessionStore = {
 }
 
 export const useSession = create<SessionStore>(set => ({
-  createSession: async data => {
+  async createSession(data) {
     const newSession = { ...data, id: nanoid() }
 
     await sessionRepository.saveSession(newSession)
@@ -27,12 +27,12 @@ export const useSession = create<SessionStore>(set => ({
     set({ currentSession: newSession })
   },
   currentSession: undefined,
-  loadSession: async () => {
+  async loadSession() {
     const session = await sessionRepository.getSession()
 
     set({ currentSession: session })
   },
-  removeSession: async () => {
+  async removeSession() {
     await sessionRepository.clearSession()
 
     set({ currentSession: undefined })
