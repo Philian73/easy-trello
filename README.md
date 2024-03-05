@@ -9,4 +9,5 @@
 - [x] EsLint
 - [x] Prettier
 - [x] clsx
+- [x] tailwindcss / postcss / autoprefixer
 ---
