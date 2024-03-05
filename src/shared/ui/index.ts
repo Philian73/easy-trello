@@ -1,4 +1,5 @@
 export { Button } from './button/button'
+export { Header } from './header/header'
 export { ImageSelect } from './image-select/image-select'
 export { Logo } from './logo/logo'
 export { PageSpinner } from './page-spinner/page-spinner'
