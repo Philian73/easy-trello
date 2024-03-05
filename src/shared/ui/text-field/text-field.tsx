@@ -41,3 +41,11 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
     )
   }
 )
+
+// ==============================================================================
+
+if (import.meta.env.DEV) {
+  TextField.displayName = 'TextField'
+}
+
+// ==============================================================================
