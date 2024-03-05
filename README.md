@@ -14,4 +14,5 @@
 - [x] localforage
 - [x] zustand
 - [x] nanoid
+- [x] react-hook-form / @hookform/devtools
 ---
