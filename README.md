@@ -12,4 +12,5 @@
 - [x] tailwindcss / postcss / autoprefixer
 - [x] react-router-dom
 - [x] localforage
+- [x] zustand
 ---
