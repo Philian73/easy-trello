@@ -1,6 +1,7 @@
 import { type User, UsersList } from '@/entities/user'
 import { SignInButton, SignOutButton, useCheckSignIn } from '@/features/auth'
-import { CreateUserForm, RemoveUserButton } from '@/features/user'
+import { CreateUserForm } from '@/features/user/create-user'
+import { RemoveUserButton } from '@/features/user/remove-user'
 import { CenterContentLayout } from '@/shared/ui/layouts'
 
 export const UsersPage = () => {
