@@ -15,4 +15,5 @@
 - [x] zustand
 - [x] nanoid
 - [x] react-hook-form / @hookform/devtools
+- [x] @headlessui/react (primitives)
 ---
