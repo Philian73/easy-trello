@@ -13,7 +13,8 @@ export type CreateUserFormData = {
 type CreateUserFormProps = Omit<ComponentPropsWithoutRef<'form'>, 'onSubmit'>
 
 export const CreateUserForm: FC<CreateUserFormProps> = ({ className, ...rest }) => {
-  const { createUser } = useUsers()
+  const createUser = useUsers(state => state.createUser)
+
   const {
     control,
     formState: { errors },
