@@ -15,3 +15,11 @@ export const SignOutButton = forwardRef<HTMLButtonElement, SignOutButtonProps>((
     </Button>
   )
 })
+
+// ==============================================================================
+
+if (import.meta.env.DEV) {
+  SignOutButton.displayName = 'SignOutButton'
+}
+
+// ==============================================================================
