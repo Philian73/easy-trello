@@ -14,9 +14,15 @@ type CreateUserFormProps = Omit<ComponentPropsWithoutRef<'form'>, 'onSubmit'>
 
 export const CreateUserForm: FC<CreateUserFormProps> = ({ className, ...rest }) => {
   const { createUser } = useUsers()
-  const { control, handleSubmit, reset } = useForm<CreateUserFormData>({
+  const {
+    control,
+    formState: { errors },
+    handleSubmit,
+    register,
+    reset,
+  } = useForm<CreateUserFormData>({
     defaultValues: {
-      name: '',
+      avatarId: '',
     },
   })
 
@@ -31,29 +37,23 @@ export const CreateUserForm: FC<CreateUserFormProps> = ({ className, ...rest }) 
         reset()
       })}
     >
-      <Controller
-        control={control}
-        name={'name'}
-        render={({ field, fieldState }) => (
-          <TextField
-            errorMessage={fieldState.error?.message}
-            label={'Имя нового пользователя'}
-            {...field}
-          />
-        )}
-        rules={{ required: 'Имя пользователя - обязательное поле' }}
+      <TextField
+        {...register('name', { required: 'Имя пользователя - обязательное поле.' })}
+        errorMessage={errors.name?.message}
+        label={'Имя нового пользователя'}
       />
 
       <Controller
         control={control}
         name={'avatarId'}
-        render={({ field, fieldState }) => (
+        render={({ field: { onChange, value } }) => (
           <ImageSelect
-            errorMessage={fieldState.error?.message}
+            errorMessage={errors.avatarId?.message}
             getSrc={getAvatarUrl}
             images={Array.from({ length: 8 }, (_, i) => i + 1)}
             label={'Выберите аватар пользователя'}
-            {...field}
+            onChange={onChange}
+            value={value}
           />
         )}
         rules={{ required: 'Аватар - обязательное поле' }}
