@@ -11,7 +11,7 @@
 - [x] clsx
 - [x] tailwindcss / postcss / autoprefixer
 - [x] react-router-dom
-- [x] localforage
+- [x] localforage (IndexedDB)
 - [x] zustand
 - [x] nanoid
 - [x] react-hook-form / @hookform/devtools
