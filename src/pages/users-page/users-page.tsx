@@ -1,5 +1,7 @@
 import { type User, UsersList } from '@/entities/user'
-import { SignInButton, SignOutButton, useCheckSignIn } from '@/features/auth'
+import { useCheckSignIn } from '@/features/auth/check-sign-in'
+import { SignInButton } from '@/features/auth/sign-in'
+import { SignOutButton } from '@/features/auth/sign-out'
 import { CreateUserForm } from '@/features/user/create-user'
 import { RemoveUserButton } from '@/features/user/remove-user'
 import { CenterContentLayout } from '@/shared/ui/layouts'
