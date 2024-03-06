@@ -5,6 +5,23 @@ import { withMemoizedForwardRef } from '@/shared/lib/HOC'
 const svgWrapper = withMemoizedForwardRef<SVGSVGElement, SVGProps<SVGSVGElement>>
 
 export const Icons = {
+  ChevronUpDown: svgWrapper((props, ref) => (
+    <svg
+      fill={'currentColor'}
+      height={'1em'}
+      ref={ref}
+      viewBox={'0 0 24 24'}
+      width={'1em'}
+      xmlns={'http://www.w3.org/2000/svg'}
+      {...props}
+    >
+      <path
+        d={
+          'M18.207 9.043L12 2.836L5.793 9.043l1.414 1.414L12 5.664l4.793 4.793l1.414-1.414ZM5.793 14.957L12 21.165l6.207-6.208l-1.414-1.414L12 18.336l-4.793-4.793l-1.414 1.414Z'
+        }
+      ></path>
+    </svg>
+  )),
   Edit: svgWrapper((props, ref) => (
     <svg
       fill={'currentColor'}
