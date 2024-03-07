@@ -1,69 +1,112 @@
-import { type ComponentProps, type ComponentPropsWithoutRef, forwardRef, useId } from 'react'
+import { ElementType, ReactNode, useId, useMemo } from 'react'
 
+import { Icons } from '@/shared/assets/icons'
+import { Listbox, ListboxProps } from '@headlessui/react'
 import clsx from 'clsx'
 
-export type SelectOption = {
-  disabled?: boolean
-  label: string
-  value: string
+type BaseOption = {
+  id: number | string
 }
 
-type SelectProps = {
+type ConditionalMultipleProps<TType extends BaseOption> =
+  | {
+      multiple: true
+      onChange?: (value: TType[]) => void
+      value?: TType[]
+    }
+  | {
+      multiple?: false
+      onChange?: (value: TType) => void
+      value?: TType
+    }
+
+export type SelectProps<TTag extends ElementType, TType extends BaseOption, TActualType> = Omit<
+  ListboxProps<TTag, TType, TActualType>,
+  'defaultValue' | 'multiple' | 'onChange' | 'value'
+> & {
   errorMessage?: string
+  getLabel: (value: TType) => string
   label?: string
-  options: SelectOption[]
-  /**
-   * Additional props for customizing the underlying `div` element,
-   * which serves as the parent for the input.
-   * Use it for setting `className` or `style`.
-   */
-  rootProps?: ComponentProps<'div'>
-} & ComponentPropsWithoutRef<'select'>
+  options: TType[]
+  renderOption?: (value: TType, o: { active?: boolean; selected?: boolean }) => ReactNode
+  renderPreview?: (value?: TType | TType[]) => ReactNode
+} & ConditionalMultipleProps<TType>
 
-export const Select = forwardRef<HTMLSelectElement, SelectProps>(
-  ({ className, errorMessage, id, label, options, rootProps, ...rest }, ref) => {
-    const generatedId = useId()
+export const Select = <TTag extends ElementType, TType extends BaseOption, TActualType>({
+  errorMessage,
+  getLabel,
+  label,
+  options,
+  renderOption = o => getLabel(o),
+  renderPreview,
+  value,
+  ...rest
+}: SelectProps<TTag, TType, TActualType>) => {
+  const id = useId()
 
-    const selectId = (id ?? generatedId) + 'select'
+  const isValueArray = Array.isArray(value)
 
-    const showError = !!errorMessage && errorMessage?.length > 0
+  const showError = !!errorMessage && errorMessage?.length > 0
 
-    return (
-      <div {...rootProps} className={clsx('flex flex-col gap-1', rootProps?.className)}>
-        {label && <label htmlFor={selectId}>{label}</label>}
+  const valueMap = useMemo(() => {
+    if (isValueArray) {
+      return value.map(v => (
+        <span className={'px-2 whitespace-nowrap'} key={v.id}>
+          {getLabel(v)}
+        </span>
+      ))
+    }
 
-        <select
-          aria-invalid={showError}
-          className={clsx(
-            'rounded border border-slate-300 focus:border-teal-600 px-2 h-10 outline-none aria-[invalid=true]:border-rose-600 transition-all duration-200',
-            className
-          )}
-          id={selectId}
-          ref={ref}
-          {...rest}
+    return value && <span className={'px-2 whitespace-nowrap'}>{getLabel(value)}</span>
+  }, [getLabel, isValueArray, value])
+
+  return (
+    <div className={'flex flex-col gap-1'}>
+      {label && <label htmlFor={id}>{label}</label>}
+
+      <Listbox value={value} {...rest}>
+        <div
+          className={
+            'relative rounded border border-slate-300 focus-within:border-teal-600 h-10 outline-none z-10'
+          }
         >
-          {options.map(option => (
-            <option
-              className={option.disabled ? 'disabled:opacity-50 bg-gray-300' : undefined}
-              disabled={option.disabled}
-              key={option.value}
-              value={option.value}
-            >
-              {option.label}
-            </option>
-          ))}
-        </select>
+          <Listbox.Button
+            className={' h-full w-full outline-none grow bg-transparent flex items-center '}
+            id={id}
+          >
+            {renderPreview?.(value) ?? valueMap}
 
-        {showError && <span className={'text-rose-400 text-sm'}>{errorMessage}</span>}
-      </div>
-    )
-  }
-)
+            <Icons.ChevronUpDown
+              aria-hidden={'true'}
+              className={'h-5 w-10 text-gray-400 ml-auto'}
+            />
+          </Listbox.Button>
 
-// ==============================================================================
+          <Listbox.Options
+            className={
+              'absolute top-full mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm'
+            }
+          >
+            {options?.map(option => (
+              <Listbox.Option
+                className={({ active, selected }) =>
+                  clsx(
+                    'relative flex cursor-default select-none p-4 ',
+                    active ? 'bg-teal-600 text-white' : 'text-slate-900',
+                    selected && 'bg-teal-500 text-white'
+                  )
+                }
+                key={option.id}
+                value={option}
+              >
+                {params => <>{renderOption(option, params)}</>}
+              </Listbox.Option>
+            ))}
+          </Listbox.Options>
+        </div>
+      </Listbox>
 
-if (import.meta.env.DEV) {
-  Select.displayName = 'Select'
+      {showError && <span className={'text-rose-400 text-sm'}>{errorMessage}</span>}
+    </div>
+  )
 }
-
-// ==============================================================================
