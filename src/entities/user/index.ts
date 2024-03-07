@@ -1,4 +1,7 @@
 export type { User } from './model/types'
 export { useUsers } from './model/users-store'
+export { AvatarList } from './ui/avatar-list/avatar-list'
 export { getAvatarUrl } from './ui/get-avatar-url/get-avatar-url'
-export { UsersList } from './ui/users-list/users-list'
+export { UserMultiSelect } from './ui/user-multi-select/user-multi-select'
+export { UserPreview } from './ui/user-preview/user-preview'
+export { UserSelect } from './ui/user-select/user-select'
