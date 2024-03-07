@@ -1,10 +1,12 @@
-import { type User, UsersList } from '@/entities/user'
+import { User } from '@/entities/user'
 import { useCheckSignIn } from '@/features/auth/check-sign-in'
 import { SignInButton } from '@/features/auth/sign-in'
 import { SignOutButton } from '@/features/auth/sign-out'
 import { CreateUserForm } from '@/features/user/create-user'
 import { RemoveUserButton } from '@/features/user/remove-user'
 import { CenterContentLayout } from '@/shared/ui/layouts'
+
+import { UserList } from '../user-list/user-list'
 
 export const UsersPage = () => {
   const { isUserSignIn } = useCheckSignIn()
@@ -25,7 +27,7 @@ export const UsersPage = () => {
         <h2 className={'text-lg mb-2 font-semibold'}>Добавить пользователя</h2>
         <CreateUserForm />
       </div>
-      <UsersList userActions={getUserActions} />
+      <UserList userActions={getUserActions} />
     </CenterContentLayout>
   )
 }
