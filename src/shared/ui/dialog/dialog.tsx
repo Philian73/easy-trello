@@ -5,8 +5,8 @@ import { Button, Modal, type ModalProps } from '@/shared/ui'
 type DialogProps = {
   cancelButtonText?: string
   children: ReactNode
-  confirmButtonText: string
-  onConfirmButtonClick: () => void
+  confirmButtonText?: string
+  onConfirmButtonClick?: () => void
 } & ModalProps
 
 export const Dialog: FC<DialogProps> = ({
@@ -18,6 +18,7 @@ export const Dialog: FC<DialogProps> = ({
   ...rest
 }) => {
   const showCancelButton = !!cancelButtonText && cancelButtonText?.length > 0
+  const showConfirmButton = !!confirmButtonText && confirmButtonText?.length > 0
 
   return (
     <Modal onClose={onClose} {...rest}>
@@ -29,9 +30,11 @@ export const Dialog: FC<DialogProps> = ({
             {cancelButtonText}
           </Button>
         )}
-        <Button onClick={onConfirmButtonClick} type={'submit'}>
-          {confirmButtonText}
-        </Button>
+        {showConfirmButton && (
+          <Button onClick={onConfirmButtonClick} type={'submit'}>
+            {confirmButtonText}
+          </Button>
+        )}
       </div>
     </Modal>
   )

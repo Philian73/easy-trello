@@ -17,6 +17,7 @@ export const Modal: FC<ModalProps> = ({
   children,
   onClose,
   showCloseButton = true,
+  title,
   width = 'md',
   ...rest
 }) => {
@@ -35,7 +36,7 @@ export const Modal: FC<ModalProps> = ({
             )}
           >
             <div className={'pt-6 pb-4 text-2xl'}>
-              <Dialog.Title>Deactivate account</Dialog.Title>
+              <Dialog.Title>{title}</Dialog.Title>
               {showCloseButton && (
                 <button
                   className={

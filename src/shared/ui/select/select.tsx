@@ -4,19 +4,23 @@ import { Icons } from '@/shared/assets/icons'
 import { Listbox, ListboxProps } from '@headlessui/react'
 import clsx from 'clsx'
 
-type BaseOption = {
-  id: number | string
-}
+type BaseOption =
+  | {
+      id: number | string
+    }
+  | undefined
 
 type ConditionalMultipleProps<TType extends BaseOption> =
   | {
       multiple: true
       onChange?: (value: TType[]) => void
+      renderPreview?: (value?: TType[]) => ReactNode
       value?: TType[]
     }
   | {
       multiple?: false
       onChange?: (value: TType) => void
+      renderPreview?: (value?: TType) => ReactNode
       value?: TType
     }
 
@@ -29,7 +33,6 @@ export type SelectProps<TTag extends ElementType, TType extends BaseOption, TAct
   label?: string
   options: TType[]
   renderOption?: (value: TType, o: { active?: boolean; selected?: boolean }) => ReactNode
-  renderPreview?: (value?: TType | TType[]) => ReactNode
 } & ConditionalMultipleProps<TType>
 
 export const Select = <TTag extends ElementType, TType extends BaseOption, TActualType>({
@@ -51,7 +54,7 @@ export const Select = <TTag extends ElementType, TType extends BaseOption, TActu
   const valueMap = useMemo(() => {
     if (isValueArray) {
       return value.map(v => (
-        <span className={'px-2 whitespace-nowrap'} key={v.id}>
+        <span className={'px-2 whitespace-nowrap'} key={v?.id}>
           {getLabel(v)}
         </span>
       ))
@@ -67,14 +70,14 @@ export const Select = <TTag extends ElementType, TType extends BaseOption, TActu
       <Listbox value={value} {...rest}>
         <div
           className={
-            'relative rounded border border-slate-300 focus-within:border-teal-600 h-10 outline-none z-10'
+            'relative rounded border border-slate-300 focus-within:border-teal-600 h-10 outline-none data-[headlessui-state="open"]:z-10'
           }
         >
           <Listbox.Button
             className={' h-full w-full outline-none grow bg-transparent flex items-center '}
             id={id}
           >
-            {renderPreview?.(value) ?? valueMap}
+            {renderPreview?.(value as (TType & TType[]) | undefined) ?? valueMap}
 
             <Icons.ChevronUpDown
               aria-hidden={'true'}
@@ -96,7 +99,7 @@ export const Select = <TTag extends ElementType, TType extends BaseOption, TActu
                     selected && 'bg-teal-500 text-white'
                   )
                 }
-                key={option.id}
+                key={option?.id}
                 value={option}
               >
                 {params => <>{renderOption(option, params)}</>}
