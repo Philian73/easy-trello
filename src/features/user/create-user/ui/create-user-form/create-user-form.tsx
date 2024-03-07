@@ -23,7 +23,7 @@ export const CreateUserForm: FC<CreateUserFormProps> = ({ className, ...rest }) 
     reset,
   } = useForm<CreateUserFormData>({
     defaultValues: {
-      avatarId: '',
+      name: '',
     },
   })
 
