@@ -1,6 +1,6 @@
 import type { FC } from 'react'
 
-import { Select } from '@/shared/ui'
+import { Combobox } from '@/shared/ui'
 
 import { type User, UserPreview, useUsers } from '../../'
 
@@ -26,7 +26,7 @@ export const UserMultiSelect: FC<UserMultiSelectProps> = ({
   }
 
   return (
-    <Select
+    <Combobox
       className={className}
       errorMessage={errorMessage}
       getLabel={user => user.name}
