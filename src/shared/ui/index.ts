@@ -1,4 +1,5 @@
 export { Button } from './button/button'
+export { Combobox } from './combobox/combobox'
 export { Dialog } from './dialog/dialog'
 export { Header } from './header/header'
 export { ImageSelect } from './image-select/image-select'
