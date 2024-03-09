@@ -1,6 +1,7 @@
 import { CreateBoardButton, useCanCreateBoard } from '@/features/board/create-board'
-import { BoardsList } from '@/pages/boards-page/ui/boards-list/boards-list'
 import { CenterContentLayout } from '@/shared/ui/layouts'
+
+import { BoardsList } from '../boards-list/boards-list'
 
 export const BoardsPage = () => {
   const canCreate = useCanCreateBoard()

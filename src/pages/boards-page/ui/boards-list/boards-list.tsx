@@ -9,9 +9,9 @@ import { useCanViewBoardFn } from '@/features/board/view-board'
 
 import { generateBoardUrl } from '../../model/generate-board-url'
 
-type BoardsList = Omit<ComponentPropsWithoutRef<'div'>, 'children'>
+type BoardsListProps = Omit<ComponentPropsWithoutRef<'div'>, 'children'>
 
-export const BoardsList: FC<BoardsList> = props => {
+export const BoardsList: FC<BoardsListProps> = props => {
   const boards = useBoards(state => state.boards)
   const users = useUsers(state => state.usersMap())
 
