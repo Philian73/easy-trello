@@ -8,6 +8,9 @@ export const NavLinks = () => {
 
   return (
     <div className={'text-lg flex gap-5'}>
+      <NavLink className={linkClasses} to={ROUTER_PATHS.TASKS}>
+        Задачи
+      </NavLink>
       <NavLink className={linkClasses} to={ROUTER_PATHS.USERS}>
         Пользователи
       </NavLink>
