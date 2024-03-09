@@ -4,17 +4,18 @@ import clsx from 'clsx'
 
 type TextFieldProps = {
   errorMessage?: string
-  label?: string
   /**
    * Additional props for customizing the underlying `div` element,
    * which serves as the parent for the input.
    * Use it for setting `className` or `style`.
    */
+  fullWidth?: boolean
+  label?: string
   rootProps?: ComponentProps<'div'>
 } & ComponentPropsWithoutRef<'input'>
 
 export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
-  ({ className, errorMessage, id, label, rootProps, ...rest }, ref) => {
+  ({ className, errorMessage, fullWidth, id, label, rootProps, ...rest }, ref) => {
     const generatedId = useId()
 
     const inputId = (id ?? generatedId) + 'input'
@@ -22,7 +23,10 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
     const showError = !!errorMessage && errorMessage?.length > 0
 
     return (
-      <div {...rootProps} className={clsx('flex flex-col gap-1', rootProps?.className)}>
+      <div
+        {...rootProps}
+        className={clsx('flex flex-col gap-1', fullWidth && 'grow', rootProps?.className)}
+      >
         {label && <label htmlFor={inputId}>{label}</label>}
 
         <input
