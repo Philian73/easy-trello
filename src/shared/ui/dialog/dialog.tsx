@@ -1,10 +1,9 @@
-import type { FC, ReactNode } from 'react'
+import { type FC, cloneElement, isValidElement } from 'react'
 
 import { Button, Modal, type ModalProps } from '@/shared/ui'
 
 type DialogProps = {
   cancelButtonText?: string
-  children: ReactNode
   confirmButtonText?: string
   onConfirmButtonClick?: () => void
 } & ModalProps
@@ -20,22 +19,34 @@ export const Dialog: FC<DialogProps> = ({
   const showCancelButton = !!cancelButtonText && cancelButtonText?.length > 0
   const showConfirmButton = !!confirmButtonText && confirmButtonText?.length > 0
 
+  const buttonsBlock = (
+    <div className={'mt-auto pt-4 flex gap-4 justify-end'}>
+      {showCancelButton && (
+        <Button onClick={onClose} type={'button'} variant={'outlined'}>
+          {cancelButtonText}
+        </Button>
+      )}
+      {showConfirmButton && <Button onClick={onConfirmButtonClick}>{confirmButtonText}</Button>}
+    </div>
+  )
+
   return (
     <Modal onClose={onClose} {...rest}>
-      {children}
-
-      <div className={'mt-auto py-4 flex gap-4 justify-end'}>
-        {showCancelButton && (
-          <Button onClick={onClose} type={'button'} variant={'outlined'}>
-            {cancelButtonText}
-          </Button>
-        )}
-        {showConfirmButton && (
-          <Button onClick={onConfirmButtonClick} type={'submit'}>
-            {confirmButtonText}
-          </Button>
-        )}
-      </div>
+      {isValidElement(children) ? (
+        cloneElement(
+          children,
+          {},
+          <>
+            {children.props.children}
+            {buttonsBlock}
+          </>
+        )
+      ) : (
+        <>
+          {children}
+          {buttonsBlock}
+        </>
+      )}
     </Modal>
   )
 }
