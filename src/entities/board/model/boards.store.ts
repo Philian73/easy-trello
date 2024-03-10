@@ -8,7 +8,7 @@ import { boardsRepository } from './boards.repository'
 export type BoardsStore = {
   boards: BoardPartial[]
   createBoard: (data: CreateBoardData) => Promise<void>
-  getBoardById: (id: string) => BoardPartial | undefined
+  getBoardById: (id?: string) => BoardPartial | undefined
   loadBoards: () => Promise<void>
   removeBoard: (userId: string) => Promise<void>
   updateBoard: (id: string, data: UpdateBoardData) => Promise<void>
