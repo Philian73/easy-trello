@@ -28,15 +28,16 @@ export const Modal: FC<ModalProps> = ({
         <div className={'flex min-h-full items-center justify-center p-4'}>
           <Dialog.Panel
             className={clsx(
-              'flex flex-col bg-white rounded-lg min-h-[320px] mx-auto relative px-6',
+              'flex flex-col bg-white rounded-lg min-h-[320px] mx-auto relative px-6 pt-6 pb-4',
               {
                 full: 'mx-5',
                 md: 'max-w-[640px] w-full',
               }[width]
             )}
           >
-            <div className={'pt-6 pb-4 text-2xl'}>
+            <header className={'mb-4 text-2xl'}>
               <Dialog.Title>{title}</Dialog.Title>
+
               {showCloseButton && (
                 <button
                   className={
@@ -47,7 +48,7 @@ export const Modal: FC<ModalProps> = ({
                   <Icons.CrossLight className={'w-4 h-4 text-white'} />
                 </button>
               )}
-            </div>
+            </header>
 
             {children}
           </Dialog.Panel>
