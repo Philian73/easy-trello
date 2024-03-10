@@ -18,6 +18,6 @@ export const useCanViewBoardFn = () => {
   return (boardId: string) => {
     const board = getBoardById(boardId)
 
-    return canViewBoard(board, session)
+    return !!canViewBoard(board, session)
   }
 }
