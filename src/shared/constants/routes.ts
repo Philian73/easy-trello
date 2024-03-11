@@ -1,7 +1,7 @@
 export const ROUTER_PATHS = {
-  BOARD: 'board/:boardId',
-  BOARDS: 'board',
+  BOARD: 'boards/:boardId',
+  BOARDS: 'boards',
   HOME: '/',
   TASKS: '/tasks',
-  USERS: 'user',
+  USERS: 'users',
 } as const
