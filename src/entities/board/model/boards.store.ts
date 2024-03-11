@@ -10,6 +10,7 @@ export type BoardsStore = {
   createBoard: (data: CreateBoardData) => Promise<void>
   getBoardById: (id?: string) => BoardPartial | undefined
   loadBoards: () => Promise<void>
+  removeAuthorFromBoards: (userId: string) => Promise<void>
   removeBoard: (userId: string) => Promise<void>
   updateBoard: (id: string, data: UpdateBoardData) => Promise<void>
 }
@@ -28,6 +29,20 @@ export const useBoards = create<BoardsStore>((set, get) => ({
   },
   async loadBoards() {
     set({ boards: await boardsRepository.getBoards() })
+  },
+  async removeAuthorFromBoards(userId) {
+    for (const board of get().boards) {
+      const newBoard = {
+        ...board,
+        editorsIds: board.editorsIds.filter(id => id !== userId),
+      }
+
+      if (newBoard.ownerId === userId) {
+        await get().removeBoard(newBoard.id)
+      } else {
+        await get().updateBoard(newBoard.id, newBoard)
+      }
+    }
   },
   async removeBoard(userId) {
     await boardsRepository.removeBoard(userId)
