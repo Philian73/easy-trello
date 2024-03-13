@@ -17,6 +17,7 @@
 - [x] react-hook-form / @hookform/devtools
 - [x] @headlessui/react (primitives)
 - [x] immer
+- [x] react-beautiful-dnd
 ---
 
 ### low coupling / high cohesion
