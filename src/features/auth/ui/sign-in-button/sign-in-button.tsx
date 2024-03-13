@@ -4,7 +4,7 @@ import { type ComponentPropsWithoutRef, forwardRef } from 'react'
 
 import { Button } from '@/shared/ui'
 
-import { useSignInUser } from '../../model/use-sign-in-user'
+import { useSignIn } from '../../model/use-sign-in'
 
 type SignInButtonProps = {
   user: User
@@ -12,7 +12,7 @@ type SignInButtonProps = {
 
 export const SignInButton = forwardRef<HTMLButtonElement, SignInButtonProps>(
   ({ user, ...rest }, ref) => {
-    const signInUser = useSignInUser()
+    const signInUser = useSignIn()
 
     return (
       <Button ref={ref} {...rest} onClick={() => signInUser(user)}>

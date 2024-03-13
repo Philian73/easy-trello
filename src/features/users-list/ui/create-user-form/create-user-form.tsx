@@ -1,19 +1,16 @@
 import type { ComponentPropsWithoutRef, FC } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 
-import { getAvatarUrl, useUsers } from '@/entities/user'
+import { getAvatarUrl } from '@/entities/user'
 import { Button, ImageSelect, TextField } from '@/shared/ui'
 import clsx from 'clsx'
 
-export type CreateUserFormData = {
-  avatarId: string
-  name: string
-}
+import { type CreateUserFormData, useCreateUser } from '../../model/use-create-user'
 
 type CreateUserFormProps = Omit<ComponentPropsWithoutRef<'form'>, 'onSubmit'>
 
 export const CreateUserForm: FC<CreateUserFormProps> = ({ className, ...rest }) => {
-  const createUser = useUsers(state => state.createUser)
+  const createUser = useCreateUser()
 
   const {
     control,
@@ -29,12 +26,11 @@ export const CreateUserForm: FC<CreateUserFormProps> = ({ className, ...rest }) 
 
   return (
     <form
-      {...rest}
       className={clsx('flex flex-col gap-4', className)}
-      method={'post'}
       noValidate
+      {...rest}
       onSubmit={handleSubmit(data => {
-        createUser?.(data)
+        createUser(data)
         reset()
       })}
     >
