@@ -16,6 +16,7 @@
 - [x] nanoid
 - [x] react-hook-form / @hookform/devtools
 - [x] @headlessui/react (primitives)
+- [x] immer
 ---
 
 ### low coupling / high cohesion
