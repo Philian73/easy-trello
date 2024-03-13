@@ -1,16 +1,22 @@
 import type { CreateBoardData } from '@/entities/board'
 
-import type { ComponentPropsWithoutRef, FC } from 'react'
+import type { ComponentPropsWithoutRef, FC, ReactNode } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 
 import { UserMultiSelect } from '@/entities/user'
 import { Dialog, TextField } from '@/shared/ui'
+import { DevTool } from '@hookform/devtools'
 
 import { useCreateBoard } from '../../model/use-create-board'
 
-type CreateBoardModalProps = Omit<ComponentPropsWithoutRef<typeof Dialog>, 'children'>
+type CreateBoardModalProps = {
+  /**
+   * Cancel and confirm buttons from the "Dialog" component
+   */
+  children?: ReactNode
+} & Omit<ComponentPropsWithoutRef<typeof Dialog>, 'children'>
 
-export const CreateBoardModal: FC<CreateBoardModalProps> = ({ onClose, ...rest }) => {
+export const CreateBoardModal: FC<CreateBoardModalProps> = ({ children, onClose, ...rest }) => {
   const {
     control,
     formState: { errors },
@@ -19,7 +25,7 @@ export const CreateBoardModal: FC<CreateBoardModalProps> = ({ onClose, ...rest }
   } = useForm<CreateBoardData>({
     defaultValues: {
       editorsIds: [],
-      name: '',
+      title: '',
     },
   })
 
@@ -29,17 +35,16 @@ export const CreateBoardModal: FC<CreateBoardModalProps> = ({ onClose, ...rest }
 
   return (
     <Dialog
+      cancelButtonText={'Отмена'}
       confirmButtonText={'Создать'}
       onClose={onClose}
-      onConfirmButtonClick={onSubmit}
       title={'Создание доски'}
-      width={'md'}
       {...rest}
     >
-      <form className={'flex flex-col gap-4'} method={'post'} noValidate onSubmit={onSubmit}>
+      <form className={'flex flex-col gap-4'} noValidate onSubmit={onSubmit}>
         <TextField
-          {...register('name', { required: 'Название доски - обязательное поле.' })}
-          errorMessage={errors.name?.message}
+          {...register('title', { required: 'Название доски - обязательное поле.' })}
+          errorMessage={errors.title?.message}
           label={'Название'}
         />
 
@@ -56,6 +61,10 @@ export const CreateBoardModal: FC<CreateBoardModalProps> = ({ onClose, ...rest }
             />
           )}
         />
+
+        {children}
+
+        {import.meta.env.DEV && <DevTool control={control} />}
       </form>
     </Dialog>
   )

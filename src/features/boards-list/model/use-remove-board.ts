@@ -1,23 +1,23 @@
-import { useBoards } from '@/entities/board'
+import { type BoardPartial, useBoards } from '@/entities/board'
 import { useGetConfirmation } from '@/shared/lib/confirmation'
 
-import { useCanRemoveBoardFn } from './use-can-remove-board'
+import { useBoardsListDeps } from '../deps'
 
 export const useRemoveBoard = () => {
   const getConfirmation = useGetConfirmation()
-  const canRemoveFn = useCanRemoveBoardFn()
+  const { canRemoveBoard } = useBoardsListDeps()
 
   const removeBoard = useBoards(state => state.removeBoard)
 
-  return async (boardId: string) => {
+  return async (board: BoardPartial) => {
     const confirmation = await getConfirmation({
       description: 'Вы действительно хотите удалить доску?',
     })
 
-    if (!canRemoveFn(boardId) && !confirmation) {
+    if (!confirmation || !canRemoveBoard(board)) {
       return
     }
 
-    await removeBoard(boardId)
+    await removeBoard(board.id)
   }
 }

@@ -1,46 +1,61 @@
-import { ComponentPropsWithoutRef, FC } from 'react'
+import type { BoardPartial, UpdateBoardData } from '@/entities/board'
+
+import type { ComponentPropsWithoutRef, FC, ReactNode } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 
-import { UpdateBoardData, useBoards } from '@/entities/board'
 import { UserMultiSelect, UserSelect } from '@/entities/user'
 import { Dialog, TextField } from '@/shared/ui'
+import { DevTool } from '@hookform/devtools'
 
 import { useUpdateBoard } from '../../model/use-update-board'
 
 type UpdateBoardModalProps = {
-  boardId: string
-} & Omit<ComponentPropsWithoutRef<typeof Dialog>, 'children'>
+  board: BoardPartial
+  /**
+   * Cancel and confirm buttons from the "Dialog" component
+   */
+  children?: ReactNode
+} & Omit<
+  ComponentPropsWithoutRef<typeof Dialog>,
+  'cancelButtonText' | 'children' | 'confirmButtonText' | 'title'
+>
 
-export const UpdateBoardModal: FC<UpdateBoardModalProps> = ({ boardId, onClose, ...rest }) => {
-  const board = useBoards(state => state.getBoardById(boardId))
-
+export const UpdateBoardModal: FC<UpdateBoardModalProps> = ({
+  board,
+  children,
+  onClose,
+  ...rest
+}) => {
   const {
     control,
     formState: { errors },
     handleSubmit,
     register,
   } = useForm<UpdateBoardData>({
-    defaultValues: board,
+    defaultValues: {
+      editorsIds: board.editorsIds ?? [],
+      ownerId: board.ownerId ?? '',
+      title: board.title ?? '',
+    },
   })
 
-  const { updateBoard } = useUpdateBoard(boardId)
+  const { updateBoard } = useUpdateBoard(board)
 
   const onSubmit = handleSubmit(data => updateBoard(data, onClose))
 
   return (
     <Dialog
+      {...rest}
       cancelButtonText={'Отмена'}
       confirmButtonText={'Обновить'}
       onClose={onClose}
-      onConfirmButtonClick={onSubmit}
       title={'Редактирование доски'}
-      {...rest}
     >
       <form className={'flex flex-col gap-4'} noValidate onSubmit={onSubmit}>
         <TextField
-          errorMessage={errors.name?.message}
+          errorMessage={errors.title?.message}
           label={'Название'}
-          {...register('name', { required: 'Название доски - обязательное поле' })}
+          {...register('title', { required: 'Название доски - обязательное поле' })}
         />
 
         <Controller
@@ -72,6 +87,10 @@ export const UpdateBoardModal: FC<UpdateBoardModalProps> = ({ boardId, onClose, 
             />
           )}
         />
+
+        {children}
+
+        {import.meta.env.DEV && <DevTool control={control} />}
       </form>
     </Dialog>
   )

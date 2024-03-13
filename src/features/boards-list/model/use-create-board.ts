@@ -1,19 +1,19 @@
 import { type CreateBoardData, useBoards } from '@/entities/board'
 import { useSession } from '@/entities/session'
 
-import { useCanCreateBoard } from './use-can-create-board'
+import { useBoardsListDeps } from '../deps'
 
 export const useCreateBoard = () => {
-  const session = useSession(state => state.currentSession)
-  const canCreate = useCanCreateBoard()
+  const ownerId = useSession(state => state.currentSession?.userId)
   const createBoardRaw = useBoards(state => state.createBoard)
+  const { canCreateBoard } = useBoardsListDeps()
 
   const createBoard = async (data: CreateBoardData, onCreate: () => void) => {
-    if (!canCreate || !session?.userId) {
+    if (!canCreateBoard || !ownerId) {
       return
     }
 
-    await createBoardRaw({ ...data, ownerId: session.userId })
+    await createBoardRaw({ ...data, ownerId })
 
     onCreate()
   }

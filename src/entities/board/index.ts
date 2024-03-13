@@ -1,9 +1,8 @@
 export { type BoardsStore, useBoards } from './model/boards.store'
 export type {
   Board,
-  BoardAuthor,
+  BoardCard,
   BoardCol,
-  BoardItem,
   BoardPartial,
   CreateBoardData,
   UpdateBoardData,

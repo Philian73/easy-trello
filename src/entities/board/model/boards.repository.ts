@@ -11,14 +11,7 @@ export const boardsRepository = {
       .then(boards => boards.find(board => board.id === id))
   },
   async getBoards(): Promise<BoardPartial[]> {
-    return persistStorage.getItemSafe<Board[]>(BOARDS_STORAGE_KEY, []).then(boards =>
-      boards.map(board => ({
-        editorsIds: board.editorsIds,
-        id: board.id,
-        name: board.name,
-        ownerId: board.ownerId,
-      }))
-    )
+    return persistStorage.getItemSafe<Board[]>(BOARDS_STORAGE_KEY, [])
   },
   async removeBoard(boardId: string) {
     const boards = await this.getBoards()

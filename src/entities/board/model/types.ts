@@ -1,45 +1,38 @@
 export type BoardPartial = {
   editorsIds: string[]
   id: string
-  name: string
   ownerId: string
+  title: string
 }
 
 export type Board = {
   cols: BoardCol[]
   editorsIds: string[]
   id: string
-  name: string
   ownerId: string
+  title: string
 }
 
 export type BoardCol = {
   id: string
-  items: BoardItem[]
-  name: string
+  items: BoardCard[]
+  title: string
 }
 
-export type BoardItem = {
-  author: BoardAuthor
-  description: string
+export type BoardCard = {
+  assigneeId?: string
   id: string
-  name: string
-}
-
-export type BoardAuthor = {
-  avatarId: string
-  id: string
-  name: string
+  title: string
 }
 
 export type CreateBoardData = {
   editorsIds: string[]
-  name: string
   ownerId: string
+  title: string
 }
 
 export type UpdateBoardData = {
   editorsIds?: string[]
-  name?: string
   ownerId?: string
+  title?: string
 }

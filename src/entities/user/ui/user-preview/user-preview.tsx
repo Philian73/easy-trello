@@ -8,7 +8,7 @@ type UserPreviewProps = {
   avatarId: string
   name: string
   size: 'lg' | 'md' | 'sm'
-} & Omit<ComponentPropsWithoutRef<'div'>, 'children'>
+} & Omit<ComponentPropsWithoutRef<'div'>, 'children' | 'name'>
 
 export const UserPreview: FC<UserPreviewProps> = ({ avatarId, className, name, size, ...rest }) => {
   return (
