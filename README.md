@@ -18,6 +18,7 @@
 - [x] @headlessui/react (primitives)
 - [x] immer
 - [x] react-beautiful-dnd
+- [x] @casl/ability
 ---
 
 ### low coupling / high cohesion
