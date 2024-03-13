@@ -16,9 +16,7 @@ export { subject }
 export const useAbilityFactory = () => {
   const session = useSession(state => state.currentSession)
 
-  const ability = useMemo(() => {
+  return useMemo(() => {
     return abilityFactory(session)
   }, [session])
-
-  return ability
 }
