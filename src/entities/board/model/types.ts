@@ -27,7 +27,6 @@ export type BoardCard = {
 
 export type CreateBoardData = {
   editorsIds: string[]
-  ownerId: string
   title: string
 }
 

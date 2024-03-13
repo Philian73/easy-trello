@@ -7,7 +7,7 @@ import { boardsRepository } from './boards.repository'
 
 export type BoardsStore = {
   boards: BoardPartial[]
-  createBoard: (data: CreateBoardData) => Promise<void>
+  createBoard: (ownerId: string, data: CreateBoardData) => Promise<void>
   getBoardById: (id?: string) => BoardPartial | undefined
   loadBoards: () => Promise<void>
   removeAuthorFromBoards: (userId: string) => Promise<void>
@@ -17,8 +17,8 @@ export type BoardsStore = {
 
 export const useBoards = create<BoardsStore>((set, get) => ({
   boards: [],
-  async createBoard(data) {
-    const newBoard = { id: nanoid(), ...data, cols: [] }
+  async createBoard(ownerId, data) {
+    const newBoard = { id: nanoid(), ownerId, ...data, cols: [] }
 
     await boardsRepository.saveBoard(newBoard)
 

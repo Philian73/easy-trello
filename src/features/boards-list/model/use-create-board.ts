@@ -13,7 +13,7 @@ export const useCreateBoard = () => {
       return
     }
 
-    await createBoardRaw({ ...data, ownerId })
+    await createBoardRaw(ownerId, { ...data })
 
     onCreate()
   }
