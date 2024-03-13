@@ -2,12 +2,11 @@ import { RouterProvider, createBrowserRouter, redirect } from 'react-router-dom'
 
 import { BoardPage } from '@/pages/board-page'
 import { BoardsPage } from '@/pages/boards-page'
-import { TasksPage } from '@/pages/tasks-page'
 import { UsersPage } from '@/pages/users-page'
 import { ROUTER_PATHS } from '@/shared/constants'
 import { RootLayout } from '@/widgets/root-layout'
 
-const { BOARD, BOARDS, HOME, TASKS, USERS } = ROUTER_PATHS
+const { BOARD, BOARDS, HOME, USERS } = ROUTER_PATHS
 
 const router = createBrowserRouter([
   {
@@ -15,10 +14,6 @@ const router = createBrowserRouter([
       {
         loader: () => redirect(USERS),
         path: '',
-      },
-      {
-        element: <TasksPage />,
-        path: TASKS,
       },
       {
         element: <BoardPage />,

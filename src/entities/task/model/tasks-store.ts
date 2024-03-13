@@ -6,14 +6,13 @@ import { create } from 'zustand'
 import { tasksRepository } from './tasks-repository'
 
 export type TasksStore = {
-  createTask: (data: CreateTaskData, authorId: string) => Promise<void>
+  createTask: (data: CreateTaskData, authorId: string) => Promise<Task>
   getTaskById: (taskId: string) => Task | undefined
   loadTasks: () => Promise<void>
-  removeBoardFromTasks: (userId: string, boardId: string) => Promise<void>
   removeTask: (taskId: string) => Promise<void>
   removeUserTasks: (userId: string) => Promise<void>
   tasks: Task[]
-  updateTask: (taskId: string, data: UpdateTaskData) => Promise<void>
+  updateTask: (taskId: string, data: UpdateTaskData) => Promise<Task>
 }
 
 export const useTasks = create<TasksStore>((set, get) => ({
@@ -25,27 +24,13 @@ export const useTasks = create<TasksStore>((set, get) => ({
     set({
       tasks: await tasksRepository.getTasks(),
     })
+
+    return newTask
   },
   getTaskById(taskId) {
     return get().tasks.find(task => task.id === taskId)
   },
   async loadTasks() {
-    set({
-      tasks: await tasksRepository.getTasks(),
-    })
-  },
-  async removeBoardFromTasks(userId, boardId) {
-    const tasksToUpdate = get().tasks.filter(
-      task => task.authorId === userId && task.boardId === boardId
-    )
-
-    for (const task of tasksToUpdate) {
-      await tasksRepository.saveTask({
-        ...task,
-        boardId: undefined,
-      })
-    }
-
     set({
       tasks: await tasksRepository.getTasks(),
     })
@@ -69,7 +54,7 @@ export const useTasks = create<TasksStore>((set, get) => ({
     const task = await tasksRepository.getTask(taskId)
 
     if (!task) {
-      return
+      throw new Error()
     }
 
     const newTask = { ...task, ...data }
@@ -79,5 +64,7 @@ export const useTasks = create<TasksStore>((set, get) => ({
     set({
       tasks: await tasksRepository.getTasks(),
     })
+
+    return newTask
   },
 }))
