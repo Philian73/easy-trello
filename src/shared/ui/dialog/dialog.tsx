@@ -4,6 +4,7 @@ import { Button, Modal, type ModalProps } from '@/shared/ui'
 
 type DialogProps = {
   cancelButtonText?: string
+  confirmButtonDisabled?: boolean
   confirmButtonText?: string
   onConfirmButtonClick?: () => void
 } & ModalProps
@@ -11,6 +12,7 @@ type DialogProps = {
 export const Dialog: FC<DialogProps> = ({
   cancelButtonText,
   children,
+  confirmButtonDisabled = false,
   confirmButtonText,
   onClose,
   onConfirmButtonClick,
@@ -26,7 +28,11 @@ export const Dialog: FC<DialogProps> = ({
           {cancelButtonText}
         </Button>
       )}
-      {showConfirmButton && <Button onClick={onConfirmButtonClick}>{confirmButtonText}</Button>}
+      {showConfirmButton && (
+        <Button disabled={confirmButtonDisabled} onClick={onConfirmButtonClick}>
+          {confirmButtonText}
+        </Button>
+      )}
     </div>
   )
 
