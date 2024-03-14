@@ -7,25 +7,35 @@ import { boardsRepository } from './boards.repository'
 
 export type BoardsStore = {
   boards: BoardPartial[]
-  createBoard: (ownerId: string, data: CreateBoardData) => Promise<void>
-  getBoardById: (id?: string) => BoardPartial | undefined
+  createBoard: (authorId: string, data: CreateBoardData) => Promise<void>
+  getBoardById: (boardId?: string) => BoardPartial | undefined
   loadBoards: () => Promise<void>
   removeAuthorFromBoards: (userId: string) => Promise<void>
-  removeBoard: (userId: string) => Promise<void>
-  updateBoard: (id: string, data: UpdateBoardData) => Promise<void>
+  removeBoard: (boardId: string) => Promise<void>
+  updateBoard: (boardId: string, data: UpdateBoardData) => Promise<void>
 }
 
 export const useBoards = create<BoardsStore>((set, get) => ({
   boards: [],
-  async createBoard(ownerId, data) {
-    const newBoard = { id: nanoid(), ownerId, ...data, cols: [] }
+  async createBoard(authorId, data) {
+    const date = new Date().toISOString()
+
+    const newBoard = {
+      authorId,
+      cards: [],
+      created: date,
+      id: nanoid(),
+      ownerId: authorId,
+      updated: date,
+      ...data,
+    }
 
     await boardsRepository.saveBoard(newBoard)
 
     set({ boards: await boardsRepository.getBoards() })
   },
-  getBoardById(id) {
-    return get().boards.find(board => board.id === id)
+  getBoardById(boardId) {
+    return get().boards.find(board => board.id === boardId)
   },
   async loadBoards() {
     set({ boards: await boardsRepository.getBoards() })
@@ -44,21 +54,21 @@ export const useBoards = create<BoardsStore>((set, get) => ({
       }
     }
   },
-  async removeBoard(userId) {
-    await boardsRepository.removeBoard(userId)
+  async removeBoard(boardId) {
+    await boardsRepository.removeBoard(boardId)
 
     set({
       boards: await boardsRepository.getBoards(),
     })
   },
-  async updateBoard(id, data) {
-    const board = await boardsRepository.getBoard(id)
+  async updateBoard(boardId, data) {
+    const board = await boardsRepository.getBoard(boardId)
 
     if (!board) {
       return
     }
 
-    const newBoard = { ...board, ...data }
+    const newBoard = { ...board, ...data, updated: new Date().toISOString() }
 
     await boardsRepository.saveBoard(newBoard)
 
