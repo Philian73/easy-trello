@@ -2,7 +2,7 @@ import { type FC, cloneElement, isValidElement } from 'react'
 
 import { Button, Modal, type ModalProps } from '@/shared/ui'
 
-type DialogProps = {
+export type DialogProps = {
   cancelButtonText?: string
   confirmButtonDisabled?: boolean
   confirmButtonText?: string
@@ -12,7 +12,7 @@ type DialogProps = {
 export const Dialog: FC<DialogProps> = ({
   cancelButtonText,
   children,
-  confirmButtonDisabled = false,
+  confirmButtonDisabled,
   confirmButtonText,
   onClose,
   onConfirmButtonClick,

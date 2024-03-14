@@ -1,10 +1,10 @@
 import type { BoardPartial, UpdateBoardData } from '@/entities/board'
 
-import type { ComponentPropsWithoutRef, FC, ReactNode } from 'react'
+import type { FC, ReactNode } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 
 import { UserMultiSelect, UserSelect } from '@/entities/user'
-import { Dialog, TextField } from '@/shared/ui'
+import { Dialog, type DialogProps, TextField } from '@/shared/ui'
 import { DevTool } from '@hookform/devtools'
 
 import { useUpdateBoard } from '../../model/use-update-board'
@@ -15,10 +15,7 @@ type UpdateBoardModalProps = {
    * Cancel and confirm buttons from the "Dialog" component
    */
   children?: ReactNode
-} & Omit<
-  ComponentPropsWithoutRef<typeof Dialog>,
-  'cancelButtonText' | 'children' | 'confirmButtonText' | 'title'
->
+} & Omit<DialogProps, 'cancelButtonText' | 'confirmButtonDisabled' | 'confirmButtonText' | 'title'>
 
 export const UpdateBoardModal: FC<UpdateBoardModalProps> = ({
   board,
@@ -28,7 +25,7 @@ export const UpdateBoardModal: FC<UpdateBoardModalProps> = ({
 }) => {
   const {
     control,
-    formState: { errors },
+    formState: { errors, isDirty },
     handleSubmit,
     register,
   } = useForm<UpdateBoardData>({
@@ -45,10 +42,11 @@ export const UpdateBoardModal: FC<UpdateBoardModalProps> = ({
 
   return (
     <Dialog
+      onClose={onClose}
       {...rest}
       cancelButtonText={'Отмена'}
+      confirmButtonDisabled={!isDirty}
       confirmButtonText={'Обновить'}
-      onClose={onClose}
       title={'Редактирование доски'}
     >
       <form className={'flex flex-col gap-4'} noValidate onSubmit={onSubmit}>
