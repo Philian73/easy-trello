@@ -15,7 +15,7 @@ export const useRemoveBoard = () => {
     })
 
     if (!confirmation || !canRemoveBoard(board)) {
-      return
+      throw new Error('У вас нет прав для удаления этой доски.')
     }
 
     await removeBoard(board.id)

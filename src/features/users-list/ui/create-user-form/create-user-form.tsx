@@ -1,5 +1,6 @@
 import type { ComponentPropsWithoutRef, FC } from 'react'
 import { Controller, useForm } from 'react-hook-form'
+import { toast } from 'react-toastify'
 
 import { getAvatarUrl } from '@/entities/user'
 import { Button, ImageSelect, TextField } from '@/shared/ui'
@@ -24,15 +25,18 @@ export const CreateUserForm: FC<CreateUserFormProps> = ({ className, ...rest }) 
     },
   })
 
+  const onSubmit = handleSubmit(async data => {
+    await createUser(data)
+    reset()
+    toast.success('Пользователь успешно создан.')
+  })
+
   return (
     <form
       className={clsx('flex flex-col gap-4', className)}
       noValidate
       {...rest}
-      onSubmit={handleSubmit(data => {
-        createUser(data)
-        reset()
-      })}
+      onSubmit={onSubmit}
     >
       <TextField
         {...register('name', { required: 'Имя пользователя - обязательное поле.' })}

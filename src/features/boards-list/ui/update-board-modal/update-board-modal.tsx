@@ -2,8 +2,10 @@ import type { BoardPartial, UpdateBoardData } from '@/entities/board'
 
 import type { FC, ReactNode } from 'react'
 import { Controller, useForm } from 'react-hook-form'
+import { toast } from 'react-toastify'
 
 import { UserMultiSelect, UserSelect } from '@/entities/user'
+import { handleErrorResponse } from '@/shared/lib/utils'
 import { Dialog, type DialogProps, TextField } from '@/shared/ui'
 import { DevTool } from '@hookform/devtools'
 
@@ -38,7 +40,14 @@ export const UpdateBoardModal: FC<UpdateBoardModalProps> = ({
 
   const { updateBoard } = useUpdateBoard(board)
 
-  const onSubmit = handleSubmit(data => updateBoard(data, onClose))
+  const onSubmit = handleSubmit(async data => {
+    try {
+      await updateBoard(data, onClose)
+      toast.success('Доска успешно обновлена.')
+    } catch (error) {
+      handleErrorResponse(error, toast.error)
+    }
+  })
 
   return (
     <Dialog

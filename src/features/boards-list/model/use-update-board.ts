@@ -15,7 +15,7 @@ export const useUpdateBoard = (board?: BoardPartial) => {
 
   const updateBoard = async (data: UpdateBoardData, onUpdate: () => void) => {
     if (!board || !canUpdateBoard(board)) {
-      return
+      throw new Error('У вас нет прав для редактирования этой доски.')
     }
 
     if (ownerId !== data.ownerId) {

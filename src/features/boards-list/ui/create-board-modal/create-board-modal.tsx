@@ -2,8 +2,10 @@ import type { CreateBoardData } from '@/entities/board'
 
 import type { FC, ReactNode } from 'react'
 import { Controller, useForm } from 'react-hook-form'
+import { toast } from 'react-toastify'
 
 import { UserMultiSelect } from '@/entities/user'
+import { handleErrorResponse } from '@/shared/lib/utils'
 import { Dialog, type DialogProps, TextField } from '@/shared/ui'
 import { DevTool } from '@hookform/devtools'
 
@@ -30,7 +32,14 @@ export const CreateBoardModal: FC<CreateBoardModalProps> = ({ children, onClose,
   })
   const { createBoard } = useCreateBoard()
 
-  const onSubmit = handleSubmit(data => createBoard(data, onClose))
+  const onSubmit = handleSubmit(async data => {
+    try {
+      await createBoard(data, onClose)
+      toast.success('Доска успешно создана.')
+    } catch (error) {
+      handleErrorResponse(error, toast.error)
+    }
+  })
 
   return (
     <Dialog

@@ -8,7 +8,7 @@ export type CreateUserFormData = {
 export const useCreateUser = () => {
   const createUser = useUsers(state => state.createUser)
 
-  return (data: CreateUserFormData) => {
-    createUser?.(data)
+  return async (data: CreateUserFormData) => {
+    await createUser(data)
   }
 }

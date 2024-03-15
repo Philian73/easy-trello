@@ -10,7 +10,7 @@ export const useCreateBoard = () => {
 
   const createBoard = async (data: CreateBoardData, onCreate: () => void) => {
     if (!canCreateBoard || !ownerId) {
-      return
+      throw new Error('У Вас нет прав для создания доски.')
     }
 
     await createBoardRaw(ownerId, data)
