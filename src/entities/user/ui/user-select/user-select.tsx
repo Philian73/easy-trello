@@ -7,6 +7,7 @@ import { type User, UserPreview, useUsers } from '../../'
 type UserSelectProps = {
   className?: string
   errorMessage?: string
+  filterOptions?: (option: User) => boolean
   label?: string
   onChangeUserId: (id?: string) => void
   required?: boolean
@@ -16,13 +17,14 @@ type UserSelectProps = {
 export const UserSelect: FC<UserSelectProps> = ({
   className,
   errorMessage,
+  filterOptions = () => true,
   label,
   onChangeUserId,
   required,
   userId,
 }) => {
   const user = useUsers(state => (userId ? state.getUserById(userId) : undefined))
-  const users = useUsers(state => state.users)
+  const users = useUsers(state => state.users.filter(filterOptions))
 
   const options = required ? users : [undefined, ...users]
 
@@ -42,7 +44,7 @@ export const UserSelect: FC<UserSelectProps> = ({
         user ? <UserPreview size={'sm'} {...user} /> : <span>Не выбрано</span>
       }
       renderPreview={user =>
-        !Array.isArray(user) && user ? (
+        user ? (
           <UserPreview className={'shrink-0 px-1'} size={'sm'} {...user} />
         ) : (
           <span>Не выбрано</span>
