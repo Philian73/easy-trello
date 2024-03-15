@@ -103,6 +103,9 @@ devDependencies:
   prettier:
     specifier: ^3.2.5
     version: 3.2.5
+  react-toastify:
+    specifier: ^10.0.5
+    version: 10.0.5(react-dom@18.2.0)(react@18.2.0)
   tailwindcss:
     specifier: ^3.4.1
     version: 3.4.1
@@ -3407,6 +3410,17 @@ packages:
     peerDependencies:
       react-dom: ^16.8.0 || ^17 || ^18
     dependencies:
+      react-dom: 18.2.0(react@18.2.0)
+    dev: true
+
+  /react-toastify@10.0.5(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-mNKt2jBXJg4O7pSdbNUfDdTsK9FIdikfsIE/yUCxbAEXl4HMyJaivrVFcn3Elvt5xvCQYhUZm+hqTIu1UXM3Pw==}
+    peerDependencies:
+      react: '>=18'
+      react-dom: '>=18'
+    dependencies:
+      clsx: 2.1.0
+      react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
     dev: true
 

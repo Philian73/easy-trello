@@ -19,6 +19,7 @@
 - [x] immer
 - [x] react-beautiful-dnd
 - [x] @casl/ability
+- [x] react-toastify
 ---
 
 ### low coupling / high cohesion
