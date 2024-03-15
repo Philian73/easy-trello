@@ -11,7 +11,7 @@ export const abilityContext = createStrictContext<Ability>()
 export const useAbility = () => {
   return useStrictContext(abilityContext)
 }
-export { subject }
+export { subject as subjectDefault }
 
 export const useAbilityFactory = () => {
   const session = useSession(state => state.currentSession)

@@ -1,7 +1,11 @@
+import type { BoardPartialSubject } from '@/entities/board'
+
 import type { FC, PropsWithChildren } from 'react'
 
-import { subject, useAbility } from '@/features/auth'
+import { subjectDefault, useAbility } from '@/features/auth'
 import { boardsListDepsContext } from '@/features/boards-list'
+
+const subject = subjectDefault<'Board', BoardPartialSubject>
 
 export const BoardsListProvider: FC<PropsWithChildren> = ({ children }) => {
   const ability = useAbility()
@@ -10,9 +14,21 @@ export const BoardsListProvider: FC<PropsWithChildren> = ({ children }) => {
     <boardsListDepsContext.Provider
       value={{
         canCreateBoard: () => ability.can('create', 'Board'),
-        canRemoveBoard: board => ability.can('delete', subject('Board', board)),
-        canUpdateBoard: board => ability.can('update', subject('Board', board)),
-        canViewBoard: board => ability.can('read', subject('Board', board)),
+        canRemoveBoard: board =>
+          ability.can(
+            'delete',
+            subject('Board', { editorsIds: board.editorsIds, ownerId: board.ownerId })
+          ),
+        canUpdateBoard: board =>
+          ability.can(
+            'update',
+            subject('Board', { editorsIds: board.editorsIds, ownerId: board.ownerId })
+          ),
+        canViewBoard: board =>
+          ability.can(
+            'read',
+            subject('Board', { editorsIds: board.editorsIds, ownerId: board.ownerId })
+          ),
       }}
     >
       {children}

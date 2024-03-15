@@ -5,7 +5,8 @@ type CRUD = 'create' | 'delete' | 'read' | 'update'
 type Abilities =
   | ['sign-in-as' | 'sign-out', 'User' | { id: string }]
   | [CRUD, 'Board' | { editorsIds: string[]; ownerId: string }]
-  | [CRUD, 'Task' | { authorId: string }]
+  | [CRUD, 'BoardCard' | { editorsIds: string[]; ownerId: string }]
+  | [CRUD, 'BoardTask' | { editorsIds: string[]; ownerId: string }]
 type Conditions = MongoQuery
 
 export type Ability = MongoAbility<Abilities, Conditions>
@@ -26,34 +27,27 @@ export const abilityFactory = (session: Session | undefined) => {
     // BOARD
     can('create', 'Board')
 
-    can('read', 'Board', {
+    can(['read', 'update', 'delete'], 'Board', {
       ownerId: userId,
     })
     can('read', 'Board', {
       editorsIds: { $in: [userId] },
     })
 
-    can('delete', 'Board', {
+    // CARD
+    can(['create', 'update', 'delete', 'read'], 'BoardCard', {
       ownerId: userId,
     })
-
-    can('update', 'Board', {
-      ownerId: userId,
+    can(['create', 'update', 'delete', 'read'], 'BoardCard', {
+      editorsIds: { $in: [userId] },
     })
 
     // TASK
-    can('create', 'Task')
-
-    can('read', 'Task', {
-      authorId: userId,
+    can(['create', 'update', 'delete', 'read'], 'BoardTask', {
+      ownerId: userId,
     })
-
-    can('delete', 'Task', {
-      authorId: userId,
-    })
-
-    can('update', 'Task', {
-      authorId: userId,
+    can(['create', 'update', 'delete', 'read'], 'BoardTask', {
+      editorsIds: { $in: [userId] },
     })
   })
 }

@@ -2,8 +2,10 @@ import type { FC, PropsWithChildren } from 'react'
 
 import { useBoards } from '@/entities/board'
 import { useSession } from '@/entities/session'
-import { SignInButton, SignOutButton, subject, useAbility } from '@/features/auth'
+import { SignInButton, SignOutButton, subjectDefault, useAbility } from '@/features/auth'
 import { usersListDepsContext } from '@/features/users-list'
+
+const subject = subjectDefault<'User', { id: string }>
 
 export const UsersPageProviders: FC<PropsWithChildren> = ({ children }) => {
   const ability = useAbility()

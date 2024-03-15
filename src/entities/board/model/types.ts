@@ -30,6 +30,8 @@ export type BoardTask = {
 
 export type BoardPartial = Omit<Board, 'authorId' | 'cards' | 'created' | 'updated'>
 
+export type BoardPartialSubject = Pick<Board, 'editorsIds' | 'ownerId'>
+
 export type CreateBoardData = Pick<Board, 'editorsIds' | 'title'>
 
 export type UpdateBoardData = Partial<Pick<Board, 'editorsIds' | 'ownerId' | 'title'>>

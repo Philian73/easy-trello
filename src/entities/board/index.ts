@@ -4,6 +4,7 @@ export type {
   Board,
   BoardCard,
   BoardPartial,
+  BoardPartialSubject,
   BoardTask,
   CreateBoardCardData,
   CreateBoardData,
