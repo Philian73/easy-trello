@@ -26,7 +26,7 @@ export const BoardsList: FC<BoardsListProps> = props => {
             <th className={'text-start'}>Название:</th>
             <th className={'text-start'}>Админ:</th>
             <th className={'text-start'}>Редакторы:</th>
-            <th></th>
+            <th className={'w-1'}></th>
           </tr>
         </thead>
         <tbody>
