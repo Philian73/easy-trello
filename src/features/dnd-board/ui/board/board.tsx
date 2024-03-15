@@ -15,7 +15,12 @@ export const Board: FC<BoardProps> = ({ className, ...rest }) => {
   const cards = board.cards
   const moveBoardCard = boardStore.useSelector(state => state.moveBoardCard)
   const moveBoardTask = boardStore.useSelector(state => state.moveBoardTask)
+
   const { canUpdateBoardCard, canUpdateBoardTask } = useBoardDeps()
+
+  if (cards.length === 0) {
+    return <span className={'mt-5 text-xl'}>Список карточек пуст.</span>
+  }
 
   const onDragEnd = async (e: DropResult) => {
     if (canUpdateBoardCard(board) && e.type === 'BoardCard' && e.destination) {
