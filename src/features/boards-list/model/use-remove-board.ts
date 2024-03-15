@@ -14,7 +14,11 @@ export const useRemoveBoard = () => {
       description: 'Вы действительно хотите удалить доску?',
     })
 
-    if (!confirmation || !canRemoveBoard(board)) {
+    if (!confirmation) {
+      return null
+    }
+
+    if (!canRemoveBoard(board)) {
       throw new Error('У вас нет прав для удаления этой доски.')
     }
 

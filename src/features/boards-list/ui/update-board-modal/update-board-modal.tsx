@@ -17,7 +17,10 @@ type UpdateBoardModalProps = {
    * Cancel and confirm buttons from the "Dialog" component
    */
   children?: ReactNode
-} & Omit<DialogProps, 'cancelButtonText' | 'confirmButtonDisabled' | 'confirmButtonText' | 'title'>
+} & Omit<
+  DialogProps,
+  'cancelButtonText' | 'children' | 'confirmButtonDisabled' | 'confirmButtonText' | 'title'
+>
 
 export const UpdateBoardModal: FC<UpdateBoardModalProps> = ({
   board,

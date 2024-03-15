@@ -17,9 +17,11 @@ export const RemoveBoardButton: FC<RemoveBoardButtonProps> = ({ board, ...rest }
 
   const handleRemoveBoard = useCallback(async () => {
     try {
-      await removeBoard(board)
+      const res = await removeBoard(board)
 
-      toast.success('Доска успешно удалена.')
+      if (res !== null) {
+        toast.success('Доска успешно удалена.')
+      }
     } catch (error) {
       handleErrorResponse(error, toast.error)
     }

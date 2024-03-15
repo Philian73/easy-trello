@@ -14,7 +14,7 @@ export const useRemoveUser = () => {
     })
 
     if (!confirmation) {
-      return
+      return null
     }
 
     await onBeforeRemoveUser(userId)

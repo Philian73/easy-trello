@@ -16,8 +16,11 @@ export const UsersList: FC<UsersListProps> = props => {
 
   const handleRemoveUser = useCallback(
     (userId: string) => async () => {
-      await removeUser(userId)
-      toast.success('Пользователь успешно удалён.')
+      const res = await removeUser(userId)
+
+      if (res !== null) {
+        toast.success('Пользователь успешно удалён.')
+      }
     },
     [removeUser]
   )
