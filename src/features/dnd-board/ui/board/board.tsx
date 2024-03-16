@@ -3,7 +3,6 @@ import { DragDropContext, type DropResult, Droppable } from 'react-beautiful-dnd
 
 import clsx from 'clsx'
 
-import { useBoardDeps } from '../../deps'
 import { useBoardStore } from '../../model/use-board-store'
 import { BoardCard } from '../board-card/board-card'
 
@@ -16,17 +15,15 @@ export const Board: FC<BoardProps> = ({ className, ...rest }) => {
   const moveBoardCard = boardStore.useSelector(state => state.moveBoardCard)
   const moveBoardTask = boardStore.useSelector(state => state.moveBoardTask)
 
-  const { canUpdateBoardCard, canUpdateBoardTask } = useBoardDeps()
-
   if (cards.length === 0) {
     return <span className={'mt-5 text-xl'}>Список карточек пуст.</span>
   }
 
   const onDragEnd = async (e: DropResult) => {
-    if (canUpdateBoardCard(board) && e.type === 'BoardCard' && e.destination) {
+    if (e.type === 'BoardCard' && e.destination) {
       await moveBoardCard(e.source.index, e.destination.index ?? 0)
     }
-    if (canUpdateBoardTask(board) && e.type === 'BoardTask' && e.destination) {
+    if (e.type === 'BoardTask' && e.destination) {
       await moveBoardTask(
         {
           cardId: e.source.droppableId,
