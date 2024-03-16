@@ -1,32 +1,32 @@
 import type { UpdateBoardTaskData } from '@/entities/board'
 import type { User } from '@/entities/user'
 
-import { useBoardDeps } from '../deps'
+import { useCallback } from 'react'
+import { toast } from 'react-toastify'
+
+import { handleErrorResponse } from '@/shared/lib/utils'
+
 import { useBoardStore } from './use-board-store'
 
-export const useUpdateBoardTask = () => {
-  const board = useBoardStore().useSelector(state => state.board)
+export const useUpdateBoardTask = (cardId: string, taskId: string, onUpdate: () => void) => {
+  const boardStore = useBoardStore()
+  const board = boardStore.useSelector(state => state.board)
+  const updateBoardTaskRaw = boardStore.useSelector(state => state.updateBoardTask)
 
-  const { canUpdateBoardTask } = useBoardDeps()
+  const canAssigneeUserToTask = useCallback(
+    (user: User) => board.ownerId === user.id || board.editorsIds.includes(user.id),
+    [board.editorsIds, board.ownerId]
+  )
 
-  const updateBoardTaskRaw = useBoardStore().useSelector(state => state.updateBoardTask)
-
-  const updateBoardTask = async (
-    cardId: string,
-    taskId: string,
-    data: UpdateBoardTaskData,
-    onUpdate: () => void
-  ) => {
-    if (!board || !canUpdateBoardTask(board)) {
-      throw new Error('У вас нет прав для редактирования этой задачи.')
+  const updateBoardTask = async (data: UpdateBoardTaskData) => {
+    try {
+      await updateBoardTaskRaw(cardId, taskId, data)
+      onUpdate()
+      toast.success('Задача успешно обновлена.')
+    } catch (error) {
+      handleErrorResponse(error, toast.error)
     }
-
-    await updateBoardTaskRaw(cardId, taskId, data)
-    onUpdate()
   }
-
-  const canAssigneeUserToTask = (user: User) =>
-    board.ownerId === user.id || board.editorsIds.includes(user.id)
 
   return { canAssigneeUserToTask, updateBoardTask }
 }
