@@ -3,6 +3,7 @@ import type { StoreApi, UseBoundStore } from 'zustand'
 import { useEffect, useState } from 'react'
 
 import { type Board, boardsRepository } from '@/entities/board'
+import { useSession } from '@/entities/session'
 import { createStrictContext, useStrictContext } from '@/shared/lib/hooks'
 
 import { type BoardStore, createBoardStore } from './board-store'
@@ -32,7 +33,8 @@ export const useFetchBoard = (boardId?: string) => {
 }
 
 export const useBoardStoreFactory = (board: Board) => {
-  const [boardStore] = useState(() => createBoardStore({ board }))
+  const session = useSession(state => state.currentSession)
+  const [boardStore] = useState(() => createBoardStore({ board, session }))
 
   return { boardStore }
 }

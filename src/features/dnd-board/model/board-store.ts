@@ -1,3 +1,5 @@
+import type { Session } from '@/entities/session'
+
 import {
   type Board,
   type BoardCard,
@@ -16,12 +18,12 @@ import { create } from 'zustand'
 export type BoardStore = {
   board: Board
 
-  createBoardCard: (authorId: string, data: CreateBoardCardData) => Promise<void>
+  createBoardCard: (data: CreateBoardCardData) => Promise<void>
   updateBoardCard: (cardId: string, data: UpdateBoardCardData) => Promise<void>
   removeBoardCard: (cardId: string) => Promise<void>
   moveBoardCard: (index: number, newIndex: number) => Promise<void>
 
-  createBoardTask: (authorId: string, cardId: string, data: CreateBoardTaskData) => Promise<void>
+  createBoardTask: (cardId: string, data: CreateBoardTaskData) => Promise<void>
   updateBoardTask: (cardId: string, taskId: string, data: UpdateBoardTaskData) => Promise<void>
   removeBoardTask: (cardId: string, taskId: string) => Promise<void>
   moveBoardTask: (
@@ -34,11 +36,15 @@ export type BoardStore = {
 }
 
 /* eslint-disable perfectionist/sort-objects */
-export const createBoardStore = ({ board }: { board: Board }) => {
+export const createBoardStore = ({ board, session }: { board: Board; session?: Session }) => {
   return create<BoardStore>((set, get) => ({
     board,
 
-    async createBoardCard(authorId, data) {
+    async createBoardCard(data) {
+      if (!session) {
+        throw new Error('Not authorized.')
+      }
+
       const board = get().board
       const date = new Date().toDateString()
 
@@ -47,7 +53,7 @@ export const createBoardStore = ({ board }: { board: Board }) => {
         tasks: [],
         created: date,
         updated: date,
-        authorId,
+        authorId: session.userId,
         ...data,
       }
 
@@ -104,7 +110,11 @@ export const createBoardStore = ({ board }: { board: Board }) => {
       return get().saveBoard(newBoard)
     },
 
-    async createBoardTask(authorId, cardId, data) {
+    async createBoardTask(cardId, data) {
+      if (!session) {
+        throw new Error('Not authorized.')
+      }
+
       const board = get().board
       const date = new Date().toISOString()
 
@@ -112,7 +122,7 @@ export const createBoardStore = ({ board }: { board: Board }) => {
         id: nanoid(),
         created: date,
         updated: date,
-        authorId,
+        authorId: session.userId,
         ...data,
       }
 
