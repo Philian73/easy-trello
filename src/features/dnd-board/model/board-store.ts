@@ -5,7 +5,7 @@ import {
   type CreateBoardCardData,
   type CreateBoardTaskData,
   type UpdateBoardCardData,
-  UpdateBoardTaskData,
+  type UpdateBoardTaskData,
   boardsRepository,
 } from '@/entities/board'
 import { produce } from 'immer'
@@ -37,6 +37,7 @@ export type BoardStore = {
 export const createBoardStore = ({ board }: { board: Board }) => {
   return create<BoardStore>((set, get) => ({
     board,
+
     async createBoardCard(authorId, data) {
       const board = get().board
       const date = new Date().toDateString()
@@ -64,6 +65,8 @@ export const createBoardStore = ({ board }: { board: Board }) => {
 
         if (index !== -1) {
           draft.cards[index] = { ...draft.cards[index], ...data, updated: new Date().toISOString() }
+        } else {
+          throw new Error('Card not found.')
         }
       })(board)
 
@@ -77,6 +80,8 @@ export const createBoardStore = ({ board }: { board: Board }) => {
 
         if (index !== -1) {
           draft.cards.splice(index, 1)
+        } else {
+          throw new Error('Card not found.')
         }
       })(board)
 
@@ -116,6 +121,8 @@ export const createBoardStore = ({ board }: { board: Board }) => {
 
         if (index !== -1) {
           draft.cards[index].tasks.push(newTask)
+        } else {
+          throw new Error('You cannot create a task on a non-existent card.')
         }
       })(board)
 
@@ -136,7 +143,11 @@ export const createBoardStore = ({ board }: { board: Board }) => {
               ...data,
               updated: new Date().toISOString(),
             }
+          } else {
+            throw new Error('Task not found.')
           }
+        } else {
+          throw new Error('You cannot update a task in a non-existent card.')
         }
       })(board)
 
@@ -153,7 +164,11 @@ export const createBoardStore = ({ board }: { board: Board }) => {
 
           if (itemIndex !== -1) {
             draft.cards[index].tasks.splice(itemIndex, 1)
+          } else {
+            throw new Error('Task not found.')
           }
+        } else {
+          throw new Error('You cannot delete a task in a non-existent card.')
         }
       })(board)
 
