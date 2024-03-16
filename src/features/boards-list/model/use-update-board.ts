@@ -24,7 +24,7 @@ export const useUpdateBoard = (board?: BoardPartial) => {
       })
 
       if (!confirmation) {
-        return
+        return null
       }
     }
 

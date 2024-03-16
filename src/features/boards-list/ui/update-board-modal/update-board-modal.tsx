@@ -45,8 +45,11 @@ export const UpdateBoardModal: FC<UpdateBoardModalProps> = ({
 
   const onSubmit = handleSubmit(async data => {
     try {
-      await updateBoard(data, onClose)
-      toast.success('Доска успешно обновлена.')
+      const res = await updateBoard(data, onClose)
+
+      if (res !== null) {
+        toast.success('Доска успешно обновлена.')
+      }
     } catch (error) {
       handleErrorResponse(error, toast.error)
     }
