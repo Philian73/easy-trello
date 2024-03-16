@@ -6,7 +6,6 @@ type BoardDeps = {
   canCreateBoardCard: (board: Board) => boolean
   canCreateBoardTask: (board: Board) => boolean
   canRemoveBoardTask: (board: Board) => boolean
-  canUpdateBoardCard: (board: Board) => boolean
   canUpdateBoardTask: (board: Board) => boolean
 }
 

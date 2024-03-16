@@ -35,12 +35,6 @@ export const BoardDepsProvider: FC<PropsWithChildren> = ({ children }) => {
             subjectTask('BoardTask', { editorsIds: board.editorsIds, ownerId: board.ownerId })
           )
         },
-        canUpdateBoardCard(board) {
-          return ability.can(
-            'update',
-            subjectCard('BoardCard', { editorsIds: board.editorsIds, ownerId: board.ownerId })
-          )
-        },
         canUpdateBoardTask(board) {
           return ability.can(
             'update',

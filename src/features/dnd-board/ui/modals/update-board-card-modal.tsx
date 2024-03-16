@@ -8,7 +8,7 @@ import { handleErrorResponse } from '@/shared/lib/utils'
 import { Dialog, type DialogProps, TextField } from '@/shared/ui'
 import { DevTool } from '@hookform/devtools'
 
-import { useUpdateBoardCard } from '../../model/use-update-board-card'
+import { useBoardStore } from '../../model/use-board-store'
 
 type UpdateBoardCardModalProps = {
   /**
@@ -38,11 +38,12 @@ export const UpdateBoardCardModal: FC<UpdateBoardCardModalProps> = ({
     },
   })
 
-  const { updateBoardCard } = useUpdateBoardCard(card.id)
+  const updateBoardCard = useBoardStore().useSelector(state => state.updateBoardCard)
 
   const onSubmit = handleSubmit(async data => {
     try {
-      await updateBoardCard(data, onClose)
+      await updateBoardCard(card.id, data)
+      onClose()
       toast.success('Карточка успешно обновлена.')
     } catch (error) {
       handleErrorResponse(error, toast.error)
