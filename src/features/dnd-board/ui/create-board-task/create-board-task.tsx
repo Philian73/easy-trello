@@ -7,7 +7,7 @@ import { toast } from 'react-toastify'
 import { handleErrorResponse } from '@/shared/lib/utils'
 import { TextField } from '@/shared/ui'
 
-import { useCreateBoardTask } from '../../model/use-create-board-task'
+import { useBoardStore } from '../../model/use-board-store'
 
 type CreateBoardTaskProps = {
   cardId: string
@@ -15,7 +15,8 @@ type CreateBoardTaskProps = {
 
 export const CreateBoardTask: FC<CreateBoardTaskProps> = ({ cardId }) => {
   const [create, setCreate] = useState(false)
-  const { createBoardTask } = useCreateBoardTask()
+
+  const createBoardTask = useBoardStore().useSelector(state => state.createBoardTask)
 
   const {
     formState: { errors },
