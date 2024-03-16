@@ -13,7 +13,7 @@ type ImageSelectProps<T> = {
   value?: T
 }
 
-export const ImageSelect = <T extends unknown>({
+export const ImageSelect = <T,>({
   className,
   errorMessage,
   getSrc,
