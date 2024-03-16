@@ -1,11 +1,9 @@
 import { type ComponentPropsWithoutRef, type FC, useState } from 'react'
 import { Draggable } from 'react-beautiful-dnd'
-import { toast } from 'react-toastify'
 
-import { BoardTask as BoardTaskType } from '@/entities/board'
+import { type BoardTask as BoardTaskType } from '@/entities/board'
 import { UserPreview, useUsers } from '@/entities/user'
 import { Icons } from '@/shared/assets/icons'
-import { handleErrorResponse } from '@/shared/lib/utils'
 import clsx from 'clsx'
 
 import { useRemoveBoardTask } from '../../model/use-remove-board-task'
@@ -22,19 +20,7 @@ export const BoardTask: FC<BoardTaskProps> = ({ cardId, className, index, task, 
 
   const assignee = useUsers(state => (task.assigneeId ? state.usersMap()[task.assigneeId] : null))
 
-  const { removeBoardTask } = useRemoveBoardTask()
-
-  const handleRemoveBoardTask = async () => {
-    try {
-      const res = await removeBoardTask(cardId, task.id)
-
-      if (res !== null) {
-        toast.success('Задача успешно удалена.')
-      }
-    } catch (error) {
-      handleErrorResponse(error, toast.error)
-    }
-  }
+  const { removeBoardTask } = useRemoveBoardTask(cardId, task.id)
 
   return (
     <Draggable draggableId={task.id} index={index}>
@@ -65,7 +51,7 @@ export const BoardTask: FC<BoardTaskProps> = ({ cardId, className, index, task, 
                 className={
                   'text-rose-600 p-1 rounded-full hover:bg-rose-100 transition-all opacity-0 action'
                 }
-                onClick={handleRemoveBoardTask}
+                onClick={removeBoardTask}
               >
                 <Icons.TrashOutlined className={'w-4 h-4'} />
               </button>

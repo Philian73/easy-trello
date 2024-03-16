@@ -1,31 +1,30 @@
-import { useGetConfirmation } from '@/shared/lib/confirmation'
+import { toast } from 'react-toastify'
 
-import { useBoardDeps } from '../deps'
+import { useGetConfirmation } from '@/shared/lib/confirmation'
+import { handleErrorResponse } from '@/shared/lib/utils'
+
 import { useBoardStore } from './use-board-store'
 
-export const useRemoveBoardTask = () => {
-  const board = useBoardStore().useSelector(state => state.board)
-
+export const useRemoveBoardTask = (cardId: string, taskId: string) => {
   const getConfirmation = useGetConfirmation()
-  const { canRemoveBoardTask } = useBoardDeps()
-
   const removeBoardTaskRaw = useBoardStore().useSelector(state => state.removeBoardTask)
 
-  const removeBoardTask = async (cardId: string, taskId: string) => {
+  const removeBoardTask = async () => {
     const confirmation = await getConfirmation({
       description: 'Вы уверены, что хотите удалить эту задачу?',
       title: 'Удаление задачи',
     })
 
     if (!confirmation) {
-      return null
+      return
     }
 
-    if (!canRemoveBoardTask(board)) {
-      throw new Error('У вас нет прав для удаления этой задачи.')
+    try {
+      await removeBoardTaskRaw(cardId, taskId)
+      toast.success('Задача успешно удалена.')
+    } catch (error) {
+      handleErrorResponse(error, toast.error)
     }
-
-    await removeBoardTaskRaw(cardId, taskId)
   }
 
   return { removeBoardTask }
