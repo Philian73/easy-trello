@@ -1,10 +1,8 @@
 import { type ComponentPropsWithoutRef, type FC, useState } from 'react'
 import { Draggable, Droppable } from 'react-beautiful-dnd'
-import { toast } from 'react-toastify'
 
 import { type BoardCard as BoardCardType } from '@/entities/board'
 import { Icons } from '@/shared/assets/icons'
-import { handleErrorResponse } from '@/shared/lib/utils'
 import clsx from 'clsx'
 
 import { useRemoveBoardCard } from '../../model/use-remove-board-card'
@@ -19,19 +17,8 @@ type BoardCardProps = {
 
 export const BoardCard: FC<BoardCardProps> = ({ card, className, index, ...rest }) => {
   const [updateCardModalOpen, setUpdateCardModalOpen] = useState(false)
-  const { removeBoardCard } = useRemoveBoardCard()
 
-  const handleRemoveBoardCard = async () => {
-    try {
-      const res = await removeBoardCard(card.id)
-
-      if (res !== null) {
-        toast.success('Карточка успешно удалена.')
-      }
-    } catch (error) {
-      handleErrorResponse(error, toast.error)
-    }
-  }
+  const { removeBoardCard } = useRemoveBoardCard(card.id)
 
   return (
     <Draggable draggableId={card.id} index={index}>
@@ -62,7 +49,7 @@ export const BoardCard: FC<BoardCardProps> = ({ card, className, index, ...rest 
               className={
                 'text-rose-600 p-1 rounded-full hover:bg-rose-100 transition-all opacity-0 action'
               }
-              onClick={handleRemoveBoardCard}
+              onClick={removeBoardCard}
             >
               <Icons.TrashOutlined className={'w-4 h-4'} />
             </button>

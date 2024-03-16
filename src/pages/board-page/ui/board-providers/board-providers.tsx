@@ -47,12 +47,6 @@ export const BoardDepsProvider: FC<PropsWithChildren> = ({ children }) => {
             subjectTask('BoardTask', { editorsIds: board.editorsIds, ownerId: board.ownerId })
           )
         },
-        carRemoveBoardCard(board) {
-          return ability.can(
-            'delete',
-            subjectCard('BoardCard', { editorsIds: board.editorsIds, ownerId: board.ownerId })
-          )
-        },
       }}
     >
       {children}
@@ -60,11 +54,11 @@ export const BoardDepsProvider: FC<PropsWithChildren> = ({ children }) => {
   )
 }
 
-type BoardProvidersProps = {
+type BoardStoreProviderProps = {
   board: Board
 } & PropsWithChildren
 
-export const BoardStoreProvider: FC<BoardProvidersProps> = ({ board, children }) => {
+export const BoardStoreProvider: FC<BoardStoreProviderProps> = ({ board, children }) => {
   const { boardStore } = useBoardStoreFactory(board)
 
   return <boardStoreContext.Provider value={boardStore}>{children}</boardStoreContext.Provider>

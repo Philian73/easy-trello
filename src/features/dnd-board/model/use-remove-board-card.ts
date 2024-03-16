@@ -1,30 +1,30 @@
-import { useGetConfirmation } from '@/shared/lib/confirmation'
+import { toast } from 'react-toastify'
 
-import { useBoardDeps } from '../deps'
+import { useGetConfirmation } from '@/shared/lib/confirmation'
+import { handleErrorResponse } from '@/shared/lib/utils'
+
 import { useBoardStore } from './use-board-store'
 
-export const useRemoveBoardCard = () => {
-  const board = useBoardStore().useSelector(state => state.board)
-
+export const useRemoveBoardCard = (cardId: string) => {
   const getConfirmation = useGetConfirmation()
-  const { carRemoveBoardCard } = useBoardDeps()
   const removeBoardCardRaw = useBoardStore().useSelector(state => state.removeBoardCard)
 
-  const removeBoardCard = async (cardId: string) => {
+  const removeBoardCard = async () => {
     const confirmation = await getConfirmation({
       description: 'Вы уверены, что хотите удалить эту карточку?',
       title: 'Удаление карточки',
     })
 
     if (!confirmation) {
-      return null
+      return
     }
 
-    if (!carRemoveBoardCard(board)) {
-      throw new Error('У вас нет прав для удаления этой карточки.')
+    try {
+      await removeBoardCardRaw(cardId)
+      toast.success('Карточка успешно удалена.')
+    } catch (error) {
+      handleErrorResponse(error, toast.error)
     }
-
-    await removeBoardCardRaw(cardId)
   }
 
   return { removeBoardCard }

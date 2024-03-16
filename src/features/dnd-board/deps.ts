@@ -8,7 +8,6 @@ type BoardDeps = {
   canRemoveBoardTask: (board: Board) => boolean
   canUpdateBoardCard: (board: Board) => boolean
   canUpdateBoardTask: (board: Board) => boolean
-  carRemoveBoardCard: (board: Board) => boolean
 }
 
 export const boardDepsContext = createStrictContext<BoardDeps>()
