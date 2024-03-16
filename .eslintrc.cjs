@@ -17,6 +17,7 @@ module.exports = {
     'plugin:import/typescript',
     'plugin:prettier/recommended',
     'plugin:perfectionist/recommended-natural',
+    'plugin:boundaries/recommended',
   ],
   overrides: [
     {
@@ -114,6 +115,17 @@ module.exports = {
               [
                 'shared',
                 {
+                  segment: 'assets',
+                },
+              ],
+            ],
+            allow: '*/index.ts',
+          },
+          {
+            target: [
+              [
+                'shared',
+                {
                   segment: 'lib',
                 },
               ],
@@ -152,6 +164,17 @@ module.exports = {
               ],
             ],
             allow: 'index.ts',
+          },
+          {
+            target: [
+              [
+                'shared',
+                {
+                  segment: 'ui',
+                },
+              ],
+            ],
+            allow: '*/index.ts',
           },
           {
             target: ['app', 'pages', 'widgets', 'features', 'entities'],
