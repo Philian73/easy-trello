@@ -192,8 +192,7 @@ module.exports = {
           {
             from: ['shared'],
             disallow: ['app', 'pages', 'widgets', 'features', 'entities'],
-            message:
-               'Shared module must not import upper layers (${dependency.type})',
+            message: 'Shared module must not import upper layers (${dependency.type})',
           },
           {
             from: ['entities'],
@@ -231,8 +230,7 @@ module.exports = {
           },
           {
             from: ['widgets'],
-            message:
-               'Feature must not import upper layers (${dependency.type})',
+            message: 'Widget must not import upper layers (${dependency.type})',
             disallow: ['app', 'pages'],
           },
           {
