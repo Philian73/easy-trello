@@ -8,7 +8,7 @@ import { handleErrorResponse } from '@/shared/lib/utils'
 import { Dialog, type DialogProps, TextField } from '@/shared/ui'
 import { DevTool } from '@hookform/devtools'
 
-import { useCreateBoardCard } from '../../model/use-create-board-card'
+import { useBoardStore } from '../../model/use-board-store'
 
 type CreateBoardCardModalProps = {
   /**
@@ -32,11 +32,12 @@ export const CreateBoardCardModal: FC<CreateBoardCardModalProps> = ({
       title: '',
     },
   })
-  const { createBoardCard } = useCreateBoardCard()
+  const createBoardCard = useBoardStore().useSelector(state => state.createBoardCard)
 
   const onSubmit = handleSubmit(async data => {
     try {
-      await createBoardCard(data, onClose)
+      await createBoardCard(data)
+      onClose()
       toast.success('Карточка успешно создана.')
     } catch (error) {
       handleErrorResponse(error, toast.error)

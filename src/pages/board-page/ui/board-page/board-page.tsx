@@ -8,7 +8,7 @@ import { Board, CreateBoardCardButton, useFetchBoard } from '@/features/dnd-boar
 import { ComposeChildren } from '@/shared/lib/compose-children'
 import { PageSpinner } from '@/shared/ui'
 
-import { BoardDepsProvider, BoardStoreProvider } from '../board-providers/board-providers'
+import { BoardStoreProvider } from '../board-providers/board-providers'
 
 const subject = subjectDefault<'Board', BoardPartialSubject>
 
@@ -31,7 +31,6 @@ export const BoardPage = () => {
 
   return (
     <ComposeChildren>
-      <BoardDepsProvider />
       <BoardStoreProvider board={board} />
       {ability.can(
         'read',

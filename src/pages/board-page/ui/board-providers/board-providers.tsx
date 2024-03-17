@@ -1,52 +1,8 @@
-import type { Board, BoardPartialSubject } from '@/entities/board'
+import type { Board } from '@/entities/board'
 
 import type { FC, PropsWithChildren } from 'react'
 
-import { subjectDefault, useAbility } from '@/features/auth'
-import { boardDepsContext, boardStoreContext, useBoardStoreFactory } from '@/features/dnd-board'
-
-const subjectCard = subjectDefault<'BoardCard', BoardPartialSubject>
-const subjectTask = subjectDefault<'BoardTask', BoardPartialSubject>
-
-export const BoardDepsProvider: FC<PropsWithChildren> = ({ children }) => {
-  const ability = useAbility()
-
-  return (
-    <boardDepsContext.Provider
-      value={{
-        canCreateBoardCard(board) {
-          return ability.can(
-            'create',
-            subjectCard('BoardCard', {
-              editorsIds: board.editorsIds,
-              ownerId: board.ownerId,
-            })
-          )
-        },
-        canCreateBoardTask(board) {
-          return ability.can(
-            'create',
-            subjectTask('BoardTask', { editorsIds: board.editorsIds, ownerId: board.ownerId })
-          )
-        },
-        canRemoveBoardTask(board) {
-          return ability.can(
-            'delete',
-            subjectTask('BoardTask', { editorsIds: board.editorsIds, ownerId: board.ownerId })
-          )
-        },
-        canUpdateBoardTask(board) {
-          return ability.can(
-            'update',
-            subjectTask('BoardTask', { editorsIds: board.editorsIds, ownerId: board.ownerId })
-          )
-        },
-      }}
-    >
-      {children}
-    </boardDepsContext.Provider>
-  )
-}
+import { boardStoreContext, useBoardStoreFactory } from '@/features/dnd-board'
 
 type BoardStoreProviderProps = {
   board: Board
