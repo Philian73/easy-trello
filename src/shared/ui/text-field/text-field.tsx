@@ -52,8 +52,17 @@ export const TextField = forwardRef(
     )
   }
 ) as ForwardRefExoticComponent<TextFieldProps & RefAttributes<HTMLInputElement>> & {
+  Search: typeof Search
   TextArea: typeof TextArea
 }
+
+// ==============================================================================
+
+type SearchProps = Omit<TextFieldProps, 'type'>
+
+const Search = forwardRef<HTMLInputElement, SearchProps>((props, ref) => {
+  return <TextField {...props} ref={ref} type={'search'} />
+})
 
 // ==============================================================================
 
@@ -103,12 +112,14 @@ const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
 // ==============================================================================
 
 TextField.TextArea = TextArea
+TextField.Search = Search
 
 // ==============================================================================
 
 if (import.meta.env.DEV) {
   TextField.displayName = 'TextField'
   TextArea.displayName = 'TextField.TextArea'
+  Search.displayName = 'TextField.Search'
 }
 
 // ==============================================================================
