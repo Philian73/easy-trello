@@ -5,6 +5,7 @@ import { type BoardCard as BoardCardType } from '@/entities/board'
 import { Icons } from '@/shared/assets/icons'
 import clsx from 'clsx'
 
+import { useBoardSearch } from '../../model/use-board-search'
 import { useRemoveBoardCard } from '../../model/use-remove-board-card'
 import { BoardTask } from '../board-task/board-task'
 import { CreateBoardTask } from '../create-board-task/create-board-task'
@@ -19,6 +20,10 @@ export const BoardCard: FC<BoardCardProps> = ({ card, className, index, ...rest 
   const [updateCardModalOpen, setUpdateCardModalOpen] = useState(false)
 
   const { removeBoardCard } = useRemoveBoardCard(card.id)
+
+  const { filterTasksWithQuery, query } = useBoardSearch()
+
+  const tasks = !query ? card.tasks : card.tasks.filter(filterTasksWithQuery)
 
   return (
     <Draggable draggableId={card.id} index={index}>
@@ -74,7 +79,7 @@ export const BoardCard: FC<BoardCardProps> = ({ card, className, index, ...rest 
                 className={clsx('p-1', isDraggingOver && 'bg-blue-100/50')}
                 ref={innerRef}
               >
-                {card.tasks.map((task, index) => (
+                {tasks.map((task, index) => (
                   <BoardTask cardId={card.id} index={index} key={task.id} task={task} />
                 ))}
                 {placeholder}

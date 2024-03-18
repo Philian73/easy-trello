@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom'
 
 import { useSession } from '@/entities/session'
 import { subjectDefault, useAbility } from '@/features/auth'
-import { Board, CreateBoardCardButton, useFetchBoard } from '@/features/dnd-board'
+import { Board, BoardSearch, CreateBoardCardButton, useFetchBoard } from '@/features/dnd-board'
 import { BoardEditors, UpdateBoardAccessButton } from '@/features/manage-board-access'
 import { PageSpinner } from '@/shared/ui'
 
@@ -53,6 +53,8 @@ export const BoardPage = () => {
           <div className={'flex gap-2 shrink-0 mb-2'}>
             <CreateBoardCardButton />
           </div>
+
+          <BoardSearch />
 
           <BoardEditors />
 

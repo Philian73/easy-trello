@@ -1,8 +1,8 @@
 import type { Board } from '@/entities/board'
 
-import type { FC, PropsWithChildren } from 'react'
+import { type FC, type PropsWithChildren, useState } from 'react'
 
-import { boardStoreContext, useBoardStoreFactory } from '@/features/dnd-board'
+import { boardSearchContext, boardStoreContext, useBoardStoreFactory } from '@/features/dnd-board'
 import { manageBoardAccessDepsContext } from '@/features/manage-board-access'
 import { ComposeChildren } from '@/shared/lib/compose-children'
 
@@ -13,6 +13,8 @@ type BoardProvidersProps = {
 export const BoardProviders: FC<BoardProvidersProps> = ({ board, children }) => {
   const { boardStore } = useBoardStoreFactory(board)
 
+  const queryState = useState('')
+
   return (
     <ComposeChildren>
       <boardStoreContext.Provider value={boardStore} />
@@ -21,6 +23,8 @@ export const BoardProviders: FC<BoardProvidersProps> = ({ board, children }) => 
           boardAccessInfo: { editorsIds: board.editorsIds, id: board.id, ownerId: board.ownerId },
         }}
       />
+      <boardSearchContext.Provider value={queryState} />
+
       {children}
     </ComposeChildren>
   )

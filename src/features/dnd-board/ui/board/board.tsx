@@ -3,6 +3,7 @@ import { DragDropContext, type DropResult, Droppable } from 'react-beautiful-dnd
 
 import clsx from 'clsx'
 
+import { useBoardSearch } from '../../model/use-board-search'
 import { useBoardStore } from '../../model/use-board-store'
 import { BoardCard } from '../board-card/board-card'
 
@@ -10,10 +11,11 @@ type BoardProps = Omit<ComponentPropsWithoutRef<'div'>, 'children'>
 
 export const Board: FC<BoardProps> = ({ className, ...rest }) => {
   const boardStore = useBoardStore()
-  const board = boardStore.useSelector(state => state.board)
-  const cards = board.cards
+  const cards = boardStore.useSelector(state => state.board.cards)
   const moveBoardCard = boardStore.useSelector(state => state.moveBoardCard)
   const moveBoardTask = boardStore.useSelector(state => state.moveBoardTask)
+
+  const { filterTasksWithQuery, query } = useBoardSearch()
 
   if (cards.length === 0) {
     return <span className={'mt-5 text-xl'}>Список карточек пуст.</span>
@@ -47,9 +49,13 @@ export const Board: FC<BoardProps> = ({ className, ...rest }) => {
             className={clsx('flex bg-gray-100 rounded-xl p-4 px-2', className)}
             ref={innerRef}
           >
-            {cards.map((card, index) => (
-              <BoardCard card={card} index={index} key={card.id} />
-            ))}
+            {cards.map((card, index) => {
+              if (query && card.tasks.filter(filterTasksWithQuery).length === 0) {
+                return null
+              }
+
+              return <BoardCard card={card} index={index} key={card.id} />
+            })}
 
             {placeholder}
           </div>
