@@ -1,11 +1,11 @@
 import { CreateUserForm, UsersList } from '@/features/users-list'
 import { CenterContentLayout } from '@/shared/ui/layouts'
 
-import { UsersPageProviders } from '../users-providers/users-providers'
+import { UsersProviders } from '../users-providers'
 
 export const UsersPage = () => {
   return (
-    <UsersPageProviders>
+    <UsersProviders>
       <CenterContentLayout className={'py-10'}>
         <h1 className={'text-3xl'}>Пользователи</h1>
         <div className={'mt-10'}>
@@ -15,6 +15,6 @@ export const UsersPage = () => {
         <h2 className={'text-lg mb-2 font-semibold mt-10'}>Все пользователи</h2>
         <UsersList />
       </CenterContentLayout>
-    </UsersPageProviders>
+    </UsersProviders>
   )
 }

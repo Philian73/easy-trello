@@ -2,7 +2,7 @@ import { useAbility } from '@/features/auth'
 import { BoardsList, CreateBoardButton } from '@/features/boards-list'
 import { CenterContentLayout } from '@/shared/ui/layouts'
 
-import { BoardsListProvider } from '../boards-providers/boards-providers'
+import { BoardsListProviders } from '../boards-providers'
 
 export const BoardsPage = () => {
   const ability = useAbility()
@@ -17,7 +17,7 @@ export const BoardsPage = () => {
   )
 
   return (
-    <BoardsListProvider>
+    <BoardsListProviders>
       <CenterContentLayout className={'py-10'}>
         <h1 className={'text-3xl'}>Доски</h1>
         {ability.can('create', 'Board') ? (
@@ -26,6 +26,6 @@ export const BoardsPage = () => {
           <span className={'mt-5 text-xl block'}>У вас нет прав для работы с этой страницей.</span>
         )}
       </CenterContentLayout>
-    </BoardsListProvider>
+    </BoardsListProviders>
   )
 }

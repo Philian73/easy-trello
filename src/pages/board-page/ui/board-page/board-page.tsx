@@ -6,10 +6,9 @@ import { useSession } from '@/entities/session'
 import { subjectDefault, useAbility } from '@/features/auth'
 import { Board, CreateBoardCardButton, useFetchBoard } from '@/features/dnd-board'
 import { BoardEditors, UpdateBoardAccessButton } from '@/features/manage-board-access'
-import { ComposeChildren } from '@/shared/lib/compose-children'
 import { PageSpinner } from '@/shared/ui'
 
-import { BoardDepsProvider, BoardStoreProvider } from '../board-providers/board-providers'
+import { BoardProviders } from '../board-providers'
 
 const subject = subjectDefault<'Board', BoardPartialSubject>
 
@@ -39,36 +38,29 @@ export const BoardPage = () => {
     return <PageSpinner />
   }
 
-  const manageBoardAccess: BoardPartialSubject = {
-    editorsIds: board.editorsIds,
-    ownerId: board.ownerId,
+  const canReadBoard = ability.can('read', subject('Board', board))
+  const canUpdateAccess = ability.can('update-access', subject('Board', board))
+
+  if (!canReadBoard) {
+    return <span className={'mt-5 text-xl block'}>У вас нет прав для работы с этой страницей.</span>
   }
 
-  const canReadBoard = ability.can('read', subject('Board', manageBoardAccess))
-  const canUpdateAccess = ability.can('update-access', subject('Board', manageBoardAccess))
-
   return (
-    <ComposeChildren>
-      <BoardStoreProvider board={board} />
-      <BoardDepsProvider board={board} />
-      {canReadBoard ? (
-        <div className={'flex flex-col py-3 px-4 grow'}>
-          <h1 className={'text-3xl mb-4 shrink-0 '}>{board.title}</h1>
-          <div className={'shrink-0 mb-2 flex gap-5'}>
-            <div className={'flex gap-2 shrink-0 mb-2'}>
-              <CreateBoardCardButton />
-            </div>
-
-            <BoardEditors />
-
-            {canUpdateAccess && <UpdateBoardAccessButton onUpdate={fetchBoard} />}
+    <BoardProviders board={board}>
+      <div className={'flex flex-col py-3 px-4 grow'}>
+        <h1 className={'text-3xl mb-4 shrink-0 '}>{board.title}</h1>
+        <div className={'shrink-0 mb-2 flex gap-5'}>
+          <div className={'flex gap-2 shrink-0 mb-2'}>
+            <CreateBoardCardButton />
           </div>
 
-          <Board className={'basis-0 grow'} />
+          <BoardEditors />
+
+          {canUpdateAccess && <UpdateBoardAccessButton onUpdate={fetchBoard} />}
         </div>
-      ) : (
-        <span className={'mt-5 text-xl block'}>У вас нет прав для работы с этой страницей.</span>
-      )}
-    </ComposeChildren>
+
+        <Board className={'basis-0 grow'} />
+      </div>
+    </BoardProviders>
   )
 }
