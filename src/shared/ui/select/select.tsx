@@ -87,7 +87,7 @@ export const Select = <TTag extends ElementType, TType extends BaseOption, TActu
 
           <Listbox.Options
             className={
-              'absolute top-full mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm'
+              'absolute top-full mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm z-50'
             }
           >
             {options?.map((option, i) => (
