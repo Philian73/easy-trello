@@ -13,14 +13,23 @@ import { BoardDepsProvider, BoardStoreProvider } from '../board-providers/board-
 
 const subject = subjectDefault<'Board', BoardPartialSubject>
 
-export const BoardPage = () => {
+const useBoard = () => {
+  const session = useSession(state => state.currentSession)
+
   const ability = useAbility()
 
   const params = useParams<'boardId'>()
   const boardId = params.boardId
-  const session = useSession(state => state.currentSession)
 
-  const { board } = useFetchBoard(boardId)
+  return {
+    ...useFetchBoard(boardId),
+    ability,
+    session,
+  }
+}
+
+export const BoardPage = () => {
+  const { ability, board, fetchBoard, session } = useBoard()
 
   if (!session) {
     return <div>Не авторизован</div>
@@ -30,14 +39,13 @@ export const BoardPage = () => {
     return <PageSpinner />
   }
 
-  const canReadBoard = ability.can(
-    'read',
-    subject('Board', { editorsIds: board.editorsIds, ownerId: board.ownerId })
-  )
-  const canUpdateAccess = ability.can(
-    'update-access',
-    subject('Board', { editorsIds: board.editorsIds, ownerId: board.ownerId })
-  )
+  const manageBoardAccess: BoardPartialSubject = {
+    editorsIds: board.editorsIds,
+    ownerId: board.ownerId,
+  }
+
+  const canReadBoard = ability.can('read', subject('Board', manageBoardAccess))
+  const canUpdateAccess = ability.can('update-access', subject('Board', manageBoardAccess))
 
   return (
     <ComposeChildren>
@@ -53,7 +61,7 @@ export const BoardPage = () => {
 
             <BoardEditors />
 
-            {canUpdateAccess && <UpdateBoardAccessButton />}
+            {canUpdateAccess && <UpdateBoardAccessButton onUpdate={fetchBoard} />}
           </div>
 
           <Board className={'basis-0 grow'} />

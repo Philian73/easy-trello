@@ -1,6 +1,6 @@
 import type { StoreApi, UseBoundStore } from 'zustand'
 
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 import { type Board, boardsRepository } from '@/entities/board'
 import { useSession } from '@/entities/session'
@@ -15,7 +15,7 @@ export const useBoardStore = () => ({ useSelector: useStrictContext(boardStoreCo
 export const useFetchBoard = (boardId?: string) => {
   const [board, setBoard] = useState<Board>()
 
-  useEffect(() => {
+  const fetchBoard = useCallback(() => {
     if (!boardId) {
       return
     }
@@ -29,7 +29,11 @@ export const useFetchBoard = (boardId?: string) => {
     })
   }, [boardId])
 
-  return { board }
+  useEffect(() => {
+    fetchBoard()
+  }, [fetchBoard])
+
+  return { board, fetchBoard }
 }
 
 export const useBoardStoreFactory = (board: Board) => {
