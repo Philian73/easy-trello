@@ -20,6 +20,7 @@
 - [x] react-beautiful-dnd
 - [x] @casl/ability
 - [x] react-toastify
+- [x] @tanstack/react-query / @tanstack/react-query-devtools
 ---
 
 ### low coupling / high cohesion
