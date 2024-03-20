@@ -3,8 +3,8 @@ import { Providers } from './providers'
 
 export const App = () => {
   return (
-    <AppLoader>
-      <Providers />
-    </AppLoader>
+    <Providers>
+      <AppLoader />
+    </Providers>
   )
 }
