@@ -1,5 +1,4 @@
-export type User = {
+export type CreateUserFormData = {
   avatarId: string
-  id: string
   name: string
 }

@@ -1,8 +1,12 @@
+import type { UserDto } from '@/shared/api'
+
 import type { FC } from 'react'
 
 import { Combobox } from '@/shared/ui'
+import { useQuery } from '@tanstack/react-query'
 
-import { type User, UserPreview, useUsers } from '../../'
+import { usersQuery } from '../../api/user-queries'
+import { UserPreview } from '../user-preview/user-preview'
 
 type UserMultiSelectProps = {
   className?: string
@@ -19,9 +23,13 @@ export const UserMultiSelect: FC<UserMultiSelectProps> = ({
   onChangeUserIds,
   userIds,
 }) => {
-  const users = useUsers(state => state.users)
+  const { data: users } = useQuery({
+    ...usersQuery,
+    initialData: [],
+  })
+
   const selectedUsers = users.filter(user => userIds.includes(user.id))
-  const onChangeUsers = (users: User[]) => {
+  const onChangeUsers = (users: UserDto[]) => {
     onChangeUserIds(users.map(u => u.id))
   }
 

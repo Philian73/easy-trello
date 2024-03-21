@@ -1,14 +1,14 @@
-import { useUsers } from '@/entities/user'
-import { useGetConfirmation } from '@/shared/lib/confirmation'
+import { toast } from 'react-toastify'
 
-import { useUsersListDeps } from '../deps'
+import { useRemoveUserMutation } from '@/entities/user'
+import { useGetConfirmation } from '@/shared/lib/confirmation'
+import { handleErrorResponse } from '@/shared/lib/utils'
 
 export const useRemoveUser = () => {
-  const { onBeforeRemoveUser } = useUsersListDeps()
   const getConfirmation = useGetConfirmation()
-  const removeUser = useUsers(state => state.removeUser)
+  const { isPending, mutateAsync: removeUserRaw } = useRemoveUserMutation()
 
-  return async (userId: string) => {
+  const removeUser = async (userId: string) => {
     const confirmation = await getConfirmation({
       description: 'Вы действительно хотите удалить пользователя?',
     })
@@ -17,7 +17,16 @@ export const useRemoveUser = () => {
       return null
     }
 
-    await onBeforeRemoveUser(userId)
-    await removeUser(userId)
+    try {
+      await removeUserRaw(userId)
+      toast.success('Пользователь успешно удалён.')
+    } catch (error) {
+      handleErrorResponse(error, toast.error)
+    }
+  }
+
+  return {
+    isPending,
+    removeUser,
   }
 }

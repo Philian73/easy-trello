@@ -1,27 +1,31 @@
-import type { User } from '@/entities/user'
+import type { UserDto } from '@/shared/api'
 
 import { type ComponentPropsWithoutRef, forwardRef } from 'react'
 import { toast } from 'react-toastify'
 
+import { useLoginMutation } from '@/entities/session'
+import { handleErrorResponse } from '@/shared/lib/utils'
 import { Button } from '@/shared/ui'
 
-import { useSignIn } from '../../model/use-sign-in'
-
 type SignInButtonProps = {
-  user: User
-} & Omit<ComponentPropsWithoutRef<'button'>, 'children' | 'onClick'>
+  user: UserDto
+} & Omit<ComponentPropsWithoutRef<'button'>, 'children' | 'disabled' | 'onClick'>
 
 export const SignInButton = forwardRef<HTMLButtonElement, SignInButtonProps>(
   ({ user, ...rest }, ref) => {
-    const signInUser = useSignIn()
+    const { isPending, mutate: signInUser } = useLoginMutation()
 
-    const handleSignIn = async () => {
-      await signInUser(user)
-      toast.success('Авторизация прошла успешно.')
+    const handleSignInUser = () => {
+      try {
+        signInUser(user)
+        toast.success('Авторизация прошла успешно.')
+      } catch (error) {
+        handleErrorResponse(error, toast.error)
+      }
     }
 
     return (
-      <Button ref={ref} {...rest} onClick={handleSignIn}>
+      <Button disabled={isPending} ref={ref} {...rest} onClick={handleSignInUser}>
         Войти как
       </Button>
     )

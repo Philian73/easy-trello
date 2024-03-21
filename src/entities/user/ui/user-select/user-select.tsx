@@ -1,13 +1,17 @@
+import type { UserDto } from '@/shared/api'
+
 import type { FC } from 'react'
 
 import { Select } from '@/shared/ui'
+import { useQuery } from '@tanstack/react-query'
 
-import { type User, UserPreview, useUsers } from '../../'
+import { usersQuery } from '../../api/user-queries'
+import { UserPreview } from '../user-preview/user-preview'
 
 type UserSelectProps = {
   className?: string
   errorMessage?: string
-  filterOptions?: (option: User) => boolean
+  filterOptions?: (option: UserDto) => boolean
   label?: string
   onChangeUserId: (id?: string) => void
   required?: boolean
@@ -23,12 +27,17 @@ export const UserSelect: FC<UserSelectProps> = ({
   required,
   userId,
 }) => {
-  const user = useUsers(state => (userId ? state.getUserById(userId) : undefined))
-  const users = useUsers(state => state.users.filter(filterOptions))
+  const { data: users } = useQuery({
+    ...usersQuery,
+    initialData: [],
+    select: users => users.filter(filterOptions),
+  })
+
+  const user = users.find(user => user.id === userId)
 
   const options = required ? users : [undefined, ...users]
 
-  const onChangeUser = (user?: User) => {
+  const onChangeUser = (user?: UserDto) => {
     onChangeUserId(user?.id)
   }
 
