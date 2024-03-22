@@ -1,37 +1,49 @@
-import type { BoardPartialSubject } from '@/entities/board'
+import type { BoardPartial } from '@/features/boards-list'
 
-import { useParams } from 'react-router-dom'
+import { Navigate, useParams } from 'react-router-dom'
 
-import { useSession } from '@/entities/session'
+import { boardByIdQuery } from '@/entities/board'
+import { sessionQuery } from '@/entities/session'
 import { subjectDefault, useAbility } from '@/features/auth'
-import { Board, BoardSearch, CreateBoardCardButton, useFetchBoard } from '@/features/dnd-board'
+import { Board, BoardSearch, CreateBoardCardButton } from '@/features/dnd-board'
 import { BoardEditors, UpdateBoardAccessButton } from '@/features/manage-board-access'
 import { PageSpinner } from '@/shared/ui'
+import { useQuery, useSuspenseQuery } from '@tanstack/react-query'
 
 import { BoardProviders } from '../board-providers'
 
-const subject = subjectDefault<'Board', BoardPartialSubject>
+const subject = subjectDefault<'Board', BoardPartial>
 
 const useBoard = () => {
-  const session = useSession(state => state.currentSession)
-
   const ability = useAbility()
 
+  const { data: session } = useSuspenseQuery(sessionQuery)
+
   const params = useParams<'boardId'>()
-  const boardId = params.boardId
+  const boardId = params.boardId ?? ''
+
+  const { data: board, isError } = useQuery({
+    ...boardByIdQuery(boardId),
+    enabled: !!boardId,
+  })
 
   return {
-    ...useFetchBoard(boardId),
     ability,
+    board,
+    isError,
     session,
   }
 }
 
 export const BoardPage = () => {
-  const { ability, board, fetchBoard, session } = useBoard()
+  const { ability, board, isError, session } = useBoard()
 
   if (!session) {
     return <div>Не авторизован</div>
+  }
+
+  if (isError) {
+    return <Navigate to={'*'} />
   }
 
   if (!board) {
@@ -58,7 +70,7 @@ export const BoardPage = () => {
 
           <BoardEditors />
 
-          {canUpdateAccess && <UpdateBoardAccessButton onUpdate={fetchBoard} />}
+          {canUpdateAccess && <UpdateBoardAccessButton />}
         </div>
 
         <Board className={'basis-0 grow'} />

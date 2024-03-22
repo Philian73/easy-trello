@@ -1,4 +1,4 @@
-import type { BoardCard, UpdateBoardCardData } from '@/entities/board'
+import type { BoardCard, UpdateBoardCardData } from '@/features/dnd-board/model/types'
 
 import type { FC, ReactNode } from 'react'
 import { useForm } from 'react-hook-form'

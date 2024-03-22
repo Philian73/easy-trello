@@ -1,15 +1,14 @@
-import type { Session } from '@/entities/session'
+import type {
+  Board,
+  BoardCard,
+  BoardTask,
+  CreateBoardCardData,
+  CreateBoardTaskData,
+  UpdateBoardCardData,
+  UpdateBoardTaskData,
+} from './types'
+import type { SessionDto } from '@/shared/api'
 
-import {
-  type Board,
-  type BoardCard,
-  type BoardTask,
-  type CreateBoardCardData,
-  type CreateBoardTaskData,
-  type UpdateBoardCardData,
-  type UpdateBoardTaskData,
-  boardsRepository,
-} from '@/entities/board'
 import { produce } from 'immer'
 import { nanoid } from 'nanoid'
 import { create } from 'zustand'
@@ -30,21 +29,22 @@ export type BoardStore = {
     start: { cardId: string; index: number },
     end: { cardId: string; index: number }
   ) => Promise<void>
-
-  reloadBoard: () => Promise<void>
-  saveBoard: (board: Board) => Promise<void>
 }
 
 /* eslint-disable perfectionist/sort-objects */
-export const createBoardStore = ({ board, session }: { board: Board; session?: Session }) => {
+export const createBoardStore = ({
+  board,
+  session,
+  saveBoard,
+}: {
+  board: Board
+  session: SessionDto | null
+  saveBoard: (board: Board) => Promise<void>
+}) => {
   return create<BoardStore>((set, get) => ({
     board,
 
     async createBoardCard(data) {
-      if (!session) {
-        throw new Error('Not authorized.')
-      }
-
       const board = get().board
       const date = new Date().toDateString()
 
@@ -53,7 +53,7 @@ export const createBoardStore = ({ board, session }: { board: Board; session?: S
         tasks: [],
         created: date,
         updated: date,
-        authorId: session.userId,
+        authorId: session!.userId,
         ...data,
       }
 
@@ -61,7 +61,11 @@ export const createBoardStore = ({ board, session }: { board: Board; session?: S
         draft.cards.push(newCard)
       })(board)
 
-      return get().saveBoard(newBoard)
+      set({
+        board: newBoard,
+      })
+
+      return saveBoard(newBoard)
     },
     async updateBoardCard(cardId, data) {
       const board = get().board
@@ -76,7 +80,11 @@ export const createBoardStore = ({ board, session }: { board: Board; session?: S
         }
       })(board)
 
-      return get().saveBoard(newBoard)
+      set({
+        board: newBoard,
+      })
+
+      return saveBoard(newBoard)
     },
     async removeBoardCard(cardId) {
       const board = get().board
@@ -91,7 +99,11 @@ export const createBoardStore = ({ board, session }: { board: Board; session?: S
         }
       })(board)
 
-      return get().saveBoard(newBoard)
+      set({
+        board: newBoard,
+      })
+
+      return saveBoard(newBoard)
     },
     async moveBoardCard(index, newIndex) {
       const board = get().board
@@ -107,14 +119,14 @@ export const createBoardStore = ({ board, session }: { board: Board; session?: S
         board: newBoard,
       })
 
-      return get().saveBoard(newBoard)
+      set({
+        board: newBoard,
+      })
+
+      return saveBoard(newBoard)
     },
 
     async createBoardTask(cardId, data) {
-      if (!session) {
-        throw new Error('Not authorized.')
-      }
-
       const board = get().board
       const date = new Date().toISOString()
 
@@ -122,7 +134,7 @@ export const createBoardStore = ({ board, session }: { board: Board; session?: S
         id: nanoid(),
         created: date,
         updated: date,
-        authorId: session.userId,
+        authorId: session!.userId,
         ...data,
       }
 
@@ -136,7 +148,11 @@ export const createBoardStore = ({ board, session }: { board: Board; session?: S
         }
       })(board)
 
-      return get().saveBoard(newBoard)
+      set({
+        board: newBoard,
+      })
+
+      return saveBoard(newBoard)
     },
     async updateBoardTask(cardId, taskId, data) {
       const board = get().board
@@ -161,7 +177,11 @@ export const createBoardStore = ({ board, session }: { board: Board; session?: S
         }
       })(board)
 
-      return get().saveBoard(newBoard)
+      set({
+        board: newBoard,
+      })
+
+      return saveBoard(newBoard)
     },
     async removeBoardTask(cardId, taskId) {
       const board = get().board
@@ -182,7 +202,11 @@ export const createBoardStore = ({ board, session }: { board: Board; session?: S
         }
       })(board)
 
-      return get().saveBoard(newBoard)
+      set({
+        board: newBoard,
+      })
+
+      return saveBoard(newBoard)
     },
     async moveBoardTask(start, end) {
       const board = get().board
@@ -219,18 +243,7 @@ export const createBoardStore = ({ board, session }: { board: Board; session?: S
         board: newBoard,
       })
 
-      return get().saveBoard(newBoard)
-    },
-
-    async reloadBoard() {
-      set({
-        board: await boardsRepository.getBoard(get().board.id),
-      })
-    },
-    async saveBoard(board) {
-      await boardsRepository.saveBoard(board)
-
-      set({ board })
+      return saveBoard(newBoard)
     },
   }))
 }

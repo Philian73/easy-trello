@@ -16,7 +16,7 @@ export const useRemoveBoardTask = (cardId: string, taskId: string) => {
     })
 
     if (!confirmation) {
-      return
+      return null
     }
 
     try {

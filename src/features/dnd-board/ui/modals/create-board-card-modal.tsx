@@ -1,9 +1,8 @@
-import type { CreateBoardCardData } from '@/entities/board'
-
 import type { FC, ReactNode } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 
+import { CreateBoardCardData } from '@/features/dnd-board/model/types'
 import { handleErrorResponse } from '@/shared/lib/utils'
 import { Dialog, type DialogProps, TextField } from '@/shared/ui'
 import { DevTool } from '@hookform/devtools'

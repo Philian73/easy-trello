@@ -64,7 +64,13 @@ export const boardsApi = {
   async getBoard(boardId: string): Promise<BoardDto | undefined> {
     const boards = (await boardsApi.getBoards()) as BoardDto[]
 
-    return boards.find(board => board.id === boardId)
+    const board = boards.find(board => board.id === boardId)
+
+    if (!board) {
+      throw new Error('Board not found.')
+    }
+
+    return board
   },
 
   async createBoard(data: CreateBoardDto) {

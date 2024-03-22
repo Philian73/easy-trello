@@ -35,7 +35,7 @@ export const UserSelect: FC<UserSelectProps> = ({
 
   const user = users.find(user => user.id === userId)
 
-  const options = required ? users : [undefined, ...users]
+  const options = required ? users : [{ id: '' } as UserDto, ...users]
 
   const onChangeUser = (user?: UserDto) => {
     onChangeUserId(user?.id)
@@ -50,16 +50,16 @@ export const UserSelect: FC<UserSelectProps> = ({
       onChange={onChangeUser}
       options={options}
       renderOption={user =>
-        user ? <UserPreview size={'sm'} {...user} /> : <span>Не выбрано</span>
+        user?.name ? <UserPreview size={'sm'} {...user} /> : <span>Не выбрано</span>
       }
       renderPreview={user =>
-        user ? (
+        user?.name ? (
           <UserPreview className={'shrink-0 px-1'} size={'sm'} {...user} />
         ) : (
           <span>Не выбрано</span>
         )
       }
-      value={user}
+      value={user ?? options[0]}
     />
   )
 }
