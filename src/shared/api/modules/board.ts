@@ -20,7 +20,17 @@ export type BoardCardDto = {
   authorId: string
   created: string
   id: string
-  taskIds: string[]
+  tasks: BoardTaskDto[]
+  title: string
+  updated: string
+}
+
+export type BoardTaskDto = {
+  assigneeId?: string
+  authorId: string
+  created: string
+  description?: string
+  id: string
   title: string
   updated: string
 }
