@@ -1,9 +1,12 @@
+import type { BoardTask as BoardTaskType } from '../../model/types'
+
 import { type ComponentPropsWithoutRef, type FC, useState } from 'react'
 import { Draggable } from 'react-beautiful-dnd'
 
-import { type BoardTask as BoardTaskType } from '@/entities/board'
-import { UserPreview, useUsers } from '@/entities/user'
+import { UserPreview, usersQuery } from '@/entities/user'
 import { Icons } from '@/shared/assets/icons'
+import { listToRecord } from '@/shared/lib/list-to-record'
+import { useQuery } from '@tanstack/react-query'
 import clsx from 'clsx'
 
 import { useRemoveBoardTask } from '../../model/use-remove-board-task'
@@ -18,9 +21,9 @@ type BoardTaskProps = {
 export const BoardTask: FC<BoardTaskProps> = ({ cardId, className, index, task, ...rest }) => {
   const [updateBoardTaskModalOpen, setUpdateBoardTaskModalOpen] = useState(false)
 
-  const assignee = useUsers(state => (task.assigneeId ? state.usersMap()[task.assigneeId] : null))
-
   const { removeBoardTask } = useRemoveBoardTask(cardId, task.id)
+
+  const { data: usersMap = {} } = useQuery({ ...usersQuery, select: listToRecord })
 
   return (
     <Draggable draggableId={task.id} index={index}>
@@ -66,7 +69,9 @@ export const BoardTask: FC<BoardTaskProps> = ({ cardId, className, index, task, 
               )}
             </div>
 
-            {assignee && <UserPreview className={'mt-3'} size={'sm'} {...assignee} />}
+            {task.assigneeId && (
+              <UserPreview className={'mt-3'} size={'sm'} {...usersMap[task.assigneeId]} />
+            )}
           </div>
         </div>
       )}

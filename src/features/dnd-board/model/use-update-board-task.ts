@@ -1,5 +1,4 @@
-import type { UpdateBoardTaskData } from '@/entities/board'
-import type { User } from '@/entities/user'
+import type { UpdateBoardTaskData } from './types'
 
 import { useCallback } from 'react'
 import { toast } from 'react-toastify'
@@ -14,8 +13,8 @@ export const useUpdateBoardTask = (cardId: string, taskId: string, onUpdate: () 
   const updateBoardTaskRaw = boardStore.useSelector(state => state.updateBoardTask)
 
   const canAssigneeUserToTask = useCallback(
-    (user: User) => board.ownerId === user.id || board.editorsIds.includes(user.id),
-    [board.editorsIds, board.ownerId]
+    (user: { id: string }) => board.ownerId === user.id || board.editorIds.includes(user.id),
+    [board.editorIds, board.ownerId]
   )
 
   const updateBoardTask = async (data: UpdateBoardTaskData) => {

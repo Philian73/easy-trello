@@ -1,13 +1,17 @@
+import type { UserDto } from '@/shared/api'
+
 import type { FC } from 'react'
 
 import { Select } from '@/shared/ui'
+import { useQuery } from '@tanstack/react-query'
 
-import { type User, UserPreview, useUsers } from '../../'
+import { usersQuery } from '../../api/user-queries'
+import { UserPreview } from '../user-preview/user-preview'
 
 type UserSelectProps = {
   className?: string
   errorMessage?: string
-  filterOptions?: (option: User) => boolean
+  filterOptions?: (option: UserDto) => boolean
   label?: string
   onChangeUserId: (id?: string) => void
   required?: boolean
@@ -23,12 +27,17 @@ export const UserSelect: FC<UserSelectProps> = ({
   required,
   userId,
 }) => {
-  const user = useUsers(state => (userId ? state.getUserById(userId) : undefined))
-  const users = useUsers(state => state.users.filter(filterOptions))
+  const { data: users } = useQuery({
+    ...usersQuery,
+    initialData: [],
+    select: users => users.filter(filterOptions),
+  })
 
-  const options = required ? users : [undefined, ...users]
+  const user = users.find(user => user.id === userId)
 
-  const onChangeUser = (user?: User) => {
+  const options = required ? users : [{ id: '' } as UserDto, ...users]
+
+  const onChangeUser = (user?: UserDto) => {
     onChangeUserId(user?.id)
   }
 
@@ -41,16 +50,16 @@ export const UserSelect: FC<UserSelectProps> = ({
       onChange={onChangeUser}
       options={options}
       renderOption={user =>
-        user ? <UserPreview size={'sm'} {...user} /> : <span>Не выбрано</span>
+        user?.name ? <UserPreview size={'sm'} {...user} /> : <span>Не выбрано</span>
       }
       renderPreview={user =>
-        user ? (
+        user?.name ? (
           <UserPreview className={'shrink-0 px-1'} size={'sm'} {...user} />
         ) : (
           <span>Не выбрано</span>
         )
       }
-      value={user}
+      value={user ?? options[0]}
     />
   )
 }

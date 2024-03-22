@@ -1,11 +1,9 @@
-import type { BoardPartial, UpdateBoardData } from '@/entities/board'
+import type { BoardPartial, UpdateBoardFormData } from '../../model/types'
 
 import type { FC, ReactNode } from 'react'
 import { Controller, useForm } from 'react-hook-form'
-import { toast } from 'react-toastify'
 
 import { UserMultiSelect, UserSelect } from '@/entities/user'
-import { handleErrorResponse } from '@/shared/lib/utils'
 import { Dialog, type DialogProps, TextField } from '@/shared/ui'
 import { DevTool } from '@hookform/devtools'
 
@@ -33,38 +31,25 @@ export const UpdateBoardModal: FC<UpdateBoardModalProps> = ({
     formState: { errors, isDirty },
     handleSubmit,
     register,
-  } = useForm<UpdateBoardData>({
+  } = useForm<UpdateBoardFormData>({
     defaultValues: {
-      editorsIds: board.editorsIds ?? [],
+      editorIds: board.editorIds ?? [],
       ownerId: board.ownerId ?? '',
       title: board.title ?? '',
     },
   })
-
-  const { updateBoard } = useUpdateBoard(board)
-
-  const onSubmit = handleSubmit(async data => {
-    try {
-      const res = await updateBoard(data, onClose)
-
-      if (res !== null) {
-        toast.success('Доска успешно обновлена.')
-      }
-    } catch (error) {
-      handleErrorResponse(error, toast.error)
-    }
-  })
+  const { isPending, updateBoard } = useUpdateBoard(board.id, onClose)
 
   return (
     <Dialog
       onClose={onClose}
       {...rest}
       cancelButtonText={'Отмена'}
-      confirmButtonDisabled={!isDirty}
+      confirmButtonDisabled={!isDirty || isPending}
       confirmButtonText={'Обновить'}
       title={'Редактирование доски'}
     >
-      <form className={'flex flex-col gap-4'} noValidate onSubmit={onSubmit}>
+      <form className={'flex flex-col gap-4'} noValidate onSubmit={handleSubmit(updateBoard)}>
         <TextField
           errorMessage={errors.title?.message}
           label={'Название'}
@@ -89,11 +74,11 @@ export const UpdateBoardModal: FC<UpdateBoardModalProps> = ({
 
         <Controller
           control={control}
-          name={'editorsIds'}
+          name={'editorIds'}
           render={({ field: { onChange, value } }) => (
             <UserMultiSelect
               className={'w-full'}
-              errorMessage={errors.editorsIds?.message}
+              errorMessage={errors.editorIds?.message}
               label={'Редакторы'}
               onChangeUserIds={onChange}
               userIds={value ?? []}

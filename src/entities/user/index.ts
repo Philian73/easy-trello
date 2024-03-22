@@ -1,5 +1,4 @@
-export type { User } from './model/types'
-export { useUsers } from './model/users-store'
+export { useCreateUserMutation, useRemoveUserMutation, usersQuery } from './api/user-queries'
 export { AvatarList } from './ui/avatar-list/avatar-list'
 export { getAvatarUrl } from './ui/get-avatar-url/get-avatar-url'
 export { UserMultiSelect } from './ui/user-multi-select/user-multi-select'

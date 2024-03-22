@@ -1,22 +1,28 @@
 import { useMemo } from 'react'
 
-import { useUsers } from '@/entities/user'
+import { usersQuery } from '@/entities/user'
+import { listToRecord } from '@/shared/lib/list-to-record'
+import { useQuery } from '@tanstack/react-query'
 
 import { useManageBoardAccessDeps } from '../deps'
 
 export const useBoardEditors = () => {
   const {
-    boardAccessInfo: { editorsIds, ownerId },
+    boardAccessInfo: { editorIds, ownerId },
   } = useManageBoardAccessDeps()
 
-  const usersMap = useUsers(state => state.usersMap())
+  const { data: usersMap = {} } = useQuery({
+    ...usersQuery,
+    initialData: [],
+    select: listToRecord,
+  })
 
   const { editors, owner } = useMemo(() => {
     return {
-      editors: editorsIds ? editorsIds?.map(id => usersMap[id].avatarId) : [],
-      owner: usersMap[ownerId]?.avatarId,
+      editors: editorIds ? editorIds?.map(id => usersMap[id].avatarId) : [],
+      owner: usersMap[ownerId],
     }
-  }, [editorsIds, ownerId, usersMap])
+  }, [editorIds, ownerId, usersMap])
 
   return { editors, owner }
 }

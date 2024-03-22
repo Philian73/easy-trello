@@ -1,4 +1,4 @@
-import type { CreateBoardTaskData } from '@/entities/board'
+import type { CreateBoardTaskData } from '../../model/types'
 
 import { type FC, useState } from 'react'
 import { useForm } from 'react-hook-form'

@@ -1,8 +1,9 @@
 import { useMemo } from 'react'
 
-import { useSession } from '@/entities/session'
+import { sessionQuery } from '@/entities/session'
 import { createStrictContext, useStrictContext } from '@/shared/lib/hooks'
-import { subject } from '@casl/ability'
+import { subject as subjectDefault } from '@casl/ability'
+import { useSuspenseQuery } from '@tanstack/react-query'
 
 import { type Ability, abilityFactory } from './ability-factory'
 
@@ -11,10 +12,12 @@ export const abilityContext = createStrictContext<Ability>()
 export const useAbility = () => {
   return useStrictContext(abilityContext)
 }
-export { subject as subjectDefault }
+export { subjectDefault }
 
 export const useAbilityFactory = () => {
-  const session = useSession(state => state.currentSession)
+  const { data: session } = useSuspenseQuery({
+    ...sessionQuery,
+  })
 
   return useMemo(() => {
     return abilityFactory(session)

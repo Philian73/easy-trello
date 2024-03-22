@@ -1,16 +1,28 @@
 import { type ComponentPropsWithoutRef, forwardRef } from 'react'
+import { toast } from 'react-toastify'
 
+import { useLogoutMutation } from '@/entities/session'
+import { handleErrorResponse } from '@/shared/lib/utils'
 import { Button } from '@/shared/ui'
 
-import { useSignOut } from '../../model/use-sign-out'
-
-type SignOutButtonProps = Omit<ComponentPropsWithoutRef<'button'>, 'children' | 'onClick'>
+type SignOutButtonProps = Omit<
+  ComponentPropsWithoutRef<'button'>,
+  'children' | 'disabled' | 'onClick'
+>
 
 export const SignOutButton = forwardRef<HTMLButtonElement, SignOutButtonProps>((props, ref) => {
-  const signOut = useSignOut()
+  const { isPending, mutate: signOut } = useLogoutMutation()
+
+  const handleSignOut = () => {
+    try {
+      signOut()
+    } catch (error) {
+      handleErrorResponse(error, toast.error)
+    }
+  }
 
   return (
-    <Button ref={ref} {...props} onClick={signOut} variant={'secondary'}>
+    <Button disabled={isPending} ref={ref} {...props} onClick={handleSignOut} variant={'secondary'}>
       Выйти
     </Button>
   )

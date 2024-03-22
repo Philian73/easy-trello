@@ -1,15 +1,15 @@
-import { type BoardPartial, useBoards } from '@/entities/board'
+import { toast } from 'react-toastify'
+
+import { useRemoveBoardMutation } from '@/entities/board'
 import { useGetConfirmation } from '@/shared/lib/confirmation'
+import { handleErrorResponse } from '@/shared/lib/utils'
 
-import { useBoardsListDeps } from '../deps'
-
-export const useRemoveBoard = () => {
+export const useRemoveBoard = (boardId: string) => {
   const getConfirmation = useGetConfirmation()
-  const { canRemoveBoard } = useBoardsListDeps()
 
-  const removeBoard = useBoards(state => state.removeBoard)
+  const { isPending, mutateAsync: removeBoardRaw } = useRemoveBoardMutation()
 
-  return async (board: BoardPartial) => {
+  const removeBoard = async () => {
     const confirmation = await getConfirmation({
       description: 'Вы действительно хотите удалить доску?',
     })
@@ -18,10 +18,16 @@ export const useRemoveBoard = () => {
       return null
     }
 
-    if (!canRemoveBoard(board)) {
-      throw new Error('У вас нет прав для удаления этой доски.')
+    try {
+      await removeBoardRaw(boardId)
+      toast.success('Доска успешно удалена.')
+    } catch (error) {
+      handleErrorResponse(error, toast.error)
     }
+  }
 
-    await removeBoard(board.id)
+  return {
+    isPending,
+    removeBoard,
   }
 }

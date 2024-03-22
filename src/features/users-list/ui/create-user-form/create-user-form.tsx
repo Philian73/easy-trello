@@ -1,17 +1,19 @@
+import type { CreateUserFormData } from '../../model/types'
+
 import type { ComponentPropsWithoutRef, FC } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 
-import { getAvatarUrl } from '@/entities/user'
+import { getAvatarUrl, useCreateUserMutation } from '@/entities/user'
+import { handleErrorResponse } from '@/shared/lib/utils'
 import { Button, ImageSelect, TextField } from '@/shared/ui'
+import { DevTool } from '@hookform/devtools'
 import clsx from 'clsx'
-
-import { type CreateUserFormData, useCreateUser } from '../../model/use-create-user'
 
 type CreateUserFormProps = Omit<ComponentPropsWithoutRef<'form'>, 'onSubmit'>
 
 export const CreateUserForm: FC<CreateUserFormProps> = ({ className, ...rest }) => {
-  const createUser = useCreateUser()
+  const { isPending, mutate: createUser } = useCreateUserMutation()
 
   const {
     control,
@@ -25,10 +27,14 @@ export const CreateUserForm: FC<CreateUserFormProps> = ({ className, ...rest }) 
     },
   })
 
-  const onSubmit = handleSubmit(async data => {
-    await createUser(data)
-    reset()
-    toast.success('Пользователь успешно создан.')
+  const onSubmit = handleSubmit(data => {
+    try {
+      createUser(data)
+      reset()
+      toast.success('Пользователь успешно создан.')
+    } catch (error) {
+      handleErrorResponse(error, toast.error)
+    }
   })
 
   return (
@@ -60,7 +66,11 @@ export const CreateUserForm: FC<CreateUserFormProps> = ({ className, ...rest }) 
         rules={{ required: 'Аватар - обязательное поле' }}
       />
 
-      <Button type={'submit'}>Создать</Button>
+      <Button disabled={isPending} type={'submit'}>
+        Создать
+      </Button>
+
+      {import.meta.env.DEV && <DevTool control={control} />}
     </form>
   )
 }

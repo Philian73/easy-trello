@@ -16,7 +16,7 @@ export const useRemoveBoardCard = (cardId: string) => {
     })
 
     if (!confirmation) {
-      return
+      return null
     }
 
     try {

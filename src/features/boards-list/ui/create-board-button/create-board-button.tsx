@@ -1,7 +1,8 @@
 import { useState } from 'react'
 
-import { CreateBoardModal } from '@/features/boards-list/ui/create-board-modal/create-board-modal'
 import { Button } from '@/shared/ui'
+
+import { CreateBoardModal } from '../create-board-modal/create-board-modal'
 
 export const CreateBoardButton = () => {
   const [open, setOpen] = useState(false)

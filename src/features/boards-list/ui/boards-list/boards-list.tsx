@@ -1,8 +1,10 @@
 import type { ComponentPropsWithoutRef, FC } from 'react'
 import { Link } from 'react-router-dom'
 
-import { useBoards } from '@/entities/board'
-import { AvatarList, UserPreview, useUsers } from '@/entities/user'
+import { boardsQuery } from '@/entities/board'
+import { AvatarList, UserPreview, usersQuery } from '@/entities/user'
+import { listToRecord } from '@/shared/lib/list-to-record'
+import { useQuery } from '@tanstack/react-query'
 
 import { useBoardsListDeps } from '../../deps'
 import { generateBoardUrl } from '../../model/generate-board-url'
@@ -12,10 +14,23 @@ import { UpdateBoardButton } from '../update-board-button/update-board-button'
 type BoardsListProps = Omit<ComponentPropsWithoutRef<'div'>, 'children'>
 
 export const BoardsList: FC<BoardsListProps> = props => {
-  const boards = useBoards(state => state.boards)
-  const users = useUsers(state => state.usersMap())
-
   const { canRemoveBoard, canUpdateBoard, canViewBoard } = useBoardsListDeps()
+
+  const { data: usersMap = {} } = useQuery({
+    ...usersQuery,
+    select: listToRecord,
+  })
+
+  const { data: boards } = useQuery({
+    ...boardsQuery,
+    initialData: [],
+    select: boards =>
+      boards.filter(canViewBoard).map(board => ({
+        ...board,
+        editors: board.editorIds.map(id => usersMap[id].avatarId),
+        owner: usersMap[board.ownerId],
+      })),
+  })
 
   return (
     <div {...props}>
@@ -30,7 +45,7 @@ export const BoardsList: FC<BoardsListProps> = props => {
           </tr>
         </thead>
         <tbody>
-          {boards.filter(canViewBoard).map(board => (
+          {boards?.map(board => (
             <tr className={'px-5 py-2 border-b border-b-slate-3'} key={board.id}>
               <td className={'p-2'}>
                 <Link className={'text-xl text-blue-500'} to={generateBoardUrl(board.id)}>
@@ -38,15 +53,15 @@ export const BoardsList: FC<BoardsListProps> = props => {
                 </Link>
               </td>
               <td className={'p-2'}>
-                <UserPreview size={'md'} {...users[board.ownerId]} />
+                <UserPreview size={'md'} {...board.owner} />
               </td>
               <td className={'p-2'}>
-                <AvatarList avatarIds={board.editorsIds.map(id => users[id].avatarId)} />
+                <AvatarList avatarIds={board.editors} />
               </td>
               <td className={'p-2'}>
                 <div className={'flex gap-2 ml-auto'}>
                   {canUpdateBoard(board) && <UpdateBoardButton board={board} />}
-                  {canRemoveBoard(board) && <RemoveBoardButton board={board} />}
+                  {canRemoveBoard(board) && <RemoveBoardButton boardId={board.id} />}
                 </div>
               </td>
             </tr>

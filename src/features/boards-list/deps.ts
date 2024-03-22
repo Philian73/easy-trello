@@ -1,4 +1,4 @@
-import type { BoardPartial } from '@/entities/board'
+import type { BoardPartial } from './model/types'
 
 import { createStrictContext, useStrictContext } from '@/shared/lib/hooks'
 

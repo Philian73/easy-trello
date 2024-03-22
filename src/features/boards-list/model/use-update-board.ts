@@ -1,24 +1,21 @@
-import { type BoardPartial, type UpdateBoardData, useBoards } from '@/entities/board'
-import { useSession } from '@/entities/session'
+import type { UpdateBoardFormData } from './types'
+
+import { toast } from 'react-toastify'
+
+import { useUpdateBoardMutation } from '@/entities/board'
+import { sessionQuery } from '@/entities/session'
 import { useGetConfirmation } from '@/shared/lib/confirmation'
+import { handleErrorResponse } from '@/shared/lib/utils'
+import { useSuspenseQuery } from '@tanstack/react-query'
 
-import { useBoardsListDeps } from '../deps'
+export const useUpdateBoard = (boardId: string, onUpdate: () => void) => {
+  const { data: session } = useSuspenseQuery(sessionQuery)
+  const { isPending, mutateAsync: updateModalRaw } = useUpdateBoardMutation()
 
-export const useUpdateBoard = (board?: BoardPartial) => {
   const getConfirmation = useGetConfirmation()
 
-  const { canUpdateBoard } = useBoardsListDeps()
-
-  const ownerId = useSession(state => state.currentSession?.userId)
-
-  const updateModalRaw = useBoards(state => state.updateBoard)
-
-  const updateBoard = async (data: UpdateBoardData, onUpdate: () => void) => {
-    if (!board || !canUpdateBoard(board)) {
-      throw new Error('У вас нет прав для редактирования этой доски.')
-    }
-
-    if (ownerId !== data.ownerId) {
+  const updateBoard = async (data: UpdateBoardFormData) => {
+    if (session?.userId !== data.ownerId) {
       const confirmation = await getConfirmation({
         description: 'Вы действительно хотите передать доску другому пользователю?',
       })
@@ -28,9 +25,14 @@ export const useUpdateBoard = (board?: BoardPartial) => {
       }
     }
 
-    await updateModalRaw(board.id, data)
-    onUpdate()
+    try {
+      await updateModalRaw({ id: boardId, ...data })
+      onUpdate()
+      toast.success('Доска успешно обновлена.')
+    } catch (error) {
+      handleErrorResponse(error, toast.error)
+    }
   }
 
-  return { updateBoard }
+  return { isPending, updateBoard }
 }

@@ -137,6 +137,17 @@ module.exports = {
               [
                 'shared',
                 {
+                  segment: 'api',
+                },
+              ],
+            ],
+            allow: 'index.ts',
+          },
+          {
+            target: [
+              [
+                'shared',
+                {
                   segment: 'lib',
                 },
               ],

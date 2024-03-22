@@ -1,7 +1,8 @@
+import type { BoardCard as BoardCardType } from '../../model/types'
+
 import { type ComponentPropsWithoutRef, type FC, useState } from 'react'
 import { Draggable, Droppable } from 'react-beautiful-dnd'
 
-import { type BoardCard as BoardCardType } from '@/entities/board'
 import { Icons } from '@/shared/assets/icons'
 import clsx from 'clsx'
 
