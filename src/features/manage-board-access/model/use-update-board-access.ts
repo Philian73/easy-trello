@@ -2,29 +2,31 @@ import type { UpdateBoardAccessData } from './types'
 
 import { toast } from 'react-toastify'
 
-import { useBoards } from '@/entities/board'
-import { useSession } from '@/entities/session'
+import { useUpdateBoardMutation } from '@/entities/board'
+import { sessionQuery } from '@/entities/session'
 import { useGetConfirmation } from '@/shared/lib/confirmation'
 import { handleErrorResponse } from '@/shared/lib/utils'
+import { useSuspenseQuery } from '@tanstack/react-query'
 
 export const useUpdateBoardAccess = (boardId: string, onUpdate: () => void) => {
+  const { data: session } = useSuspenseQuery(sessionQuery)
+  const { mutateAsync: updateBoardRaw } = useUpdateBoardMutation()
+
   const getConfirmation = useGetConfirmation()
-  const userId = useSession(state => state.currentSession?.userId)
-  const updateBoardRaw = useBoards(state => state.updateBoard)
 
   const updateBoard = async (data: UpdateBoardAccessData) => {
-    if (userId !== data.ownerId) {
+    if (session?.userId !== data.ownerId) {
       const confirmation = await getConfirmation({
         description: 'Вы действительно хотите передать доску другому пользователю?',
       })
 
       if (!confirmation) {
-        return
+        return null
       }
     }
 
     try {
-      await updateBoardRaw(boardId, data)
+      await updateBoardRaw({ id: boardId, ...data })
       onUpdate()
       toast.success('Права доски изменены.')
     } catch (error) {

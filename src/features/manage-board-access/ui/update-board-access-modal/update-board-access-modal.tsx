@@ -33,7 +33,7 @@ export const UpdateBoardAccessModal: FC<UpdateBoardAccessModalProps> = ({
     handleSubmit,
   } = useForm<UpdateBoardAccessData>({
     defaultValues: {
-      editorsIds: boardAccessInfo.editorsIds ?? [],
+      editorIds: boardAccessInfo.editorIds ?? [],
       ownerId: boardAccessInfo.ownerId ?? '',
     },
   })
@@ -70,11 +70,11 @@ export const UpdateBoardAccessModal: FC<UpdateBoardAccessModalProps> = ({
 
         <Controller
           control={control}
-          name={'editorsIds'}
+          name={'editorIds'}
           render={({ field: { onChange, value } }) => (
             <UserMultiSelect
               className={'w-full'}
-              errorMessage={errors.editorsIds?.message}
+              errorMessage={errors.editorIds?.message}
               label={'Редакторы'}
               onChangeUserIds={onChange}
               userIds={value ?? []}

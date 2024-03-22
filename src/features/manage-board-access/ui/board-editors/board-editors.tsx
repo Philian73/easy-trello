@@ -1,6 +1,6 @@
 import type { ComponentPropsWithoutRef, FC } from 'react'
 
-import { AvatarList } from '@/entities/user'
+import { AvatarList, UserPreview } from '@/entities/user'
 import clsx from 'clsx'
 
 import { useBoardEditors } from '../../model/use-board-editors'
@@ -17,7 +17,7 @@ export const BoardEditors: FC<BoardEditorsProps> = ({ className, ...rest }) => {
   return (
     <div className={clsx('flex gap-2 items-center', className)} {...rest}>
       <span>Администратор: </span>
-      <AvatarList avatarIds={[owner]} />
+      <UserPreview size={'md'} {...owner} />
 
       <span>Редакторы: </span>
       {editors.length > 0 ? <AvatarList avatarIds={editors} /> : <span>Редакторов нет.</span>}

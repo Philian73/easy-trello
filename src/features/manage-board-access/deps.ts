@@ -1,6 +1,6 @@
-import { createStrictContext, useStrictContext } from '@/shared/lib/hooks'
+import type { BoardAccessInfo } from './model/types'
 
-import { BoardAccessInfo } from './model/types'
+import { createStrictContext, useStrictContext } from '@/shared/lib/hooks'
 
 type ManageBoardAccessDeps = {
   boardAccessInfo: BoardAccessInfo
