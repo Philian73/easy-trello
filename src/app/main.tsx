@@ -7,20 +7,24 @@ import 'react-toastify/dist/ReactToastify.css'
 
 import { App } from './app'
 
-createRoot(document.getElementById('root')!).render(
-  <>
-    <App />
-    <ToastContainer
-      autoClose={5000}
-      closeOnClick
-      draggable={false}
-      hideProgressBar={false}
-      newestOnTop
-      pauseOnFocusLoss={false}
-      pauseOnHover
-      position={'bottom-right'}
-      rtl={false}
-      transition={Bounce}
-    />
-  </>
-)
+import('@/shared/api/msw')
+  .then(({ worker }) => worker.start())
+  .then(() => {
+    createRoot(document.getElementById('root')!).render(
+      <>
+        <App />
+        <ToastContainer
+          autoClose={5000}
+          closeOnClick
+          draggable={false}
+          hideProgressBar={false}
+          newestOnTop
+          pauseOnFocusLoss={false}
+          pauseOnHover
+          position={'bottom-right'}
+          rtl={false}
+          transition={Bounce}
+        />
+      </>
+    )
+  })
