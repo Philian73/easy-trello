@@ -1,9 +1,9 @@
 import { sessionQuery } from '@/entities/session'
 import { getAvatarUrl } from '@/entities/user'
-import { useQuery } from '@tanstack/react-query'
+import { useSuspenseQuery } from '@tanstack/react-query'
 
 export const Profile = () => {
-  const { data: session } = useQuery(sessionQuery)
+  const { data: session } = useSuspenseQuery(sessionQuery)
 
   if (!session) {
     return null
