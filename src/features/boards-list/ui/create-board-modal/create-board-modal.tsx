@@ -1,22 +1,24 @@
-import type { CreateBoardData } from '@/entities/board'
+import type { CreateBoardFormData } from '../../model/types'
 
 import type { FC, ReactNode } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 
+import { useCreateBoardMutation } from '@/entities/board'
 import { UserMultiSelect } from '@/entities/user'
 import { handleErrorResponse } from '@/shared/lib/utils'
 import { Dialog, type DialogProps, TextField } from '@/shared/ui'
 import { DevTool } from '@hookform/devtools'
-
-import { useCreateBoard } from '../../model/use-create-board'
 
 type CreateBoardModalProps = {
   /**
    * Cancel and confirm buttons from the "Dialog" component
    */
   children?: ReactNode
-} & Omit<DialogProps, 'cancelButtonText' | 'children' | 'confirmButtonText' | 'title'>
+} & Omit<
+  DialogProps,
+  'cancelButtonText' | 'children' | 'confirmButtonDisabled' | 'confirmButtonText' | 'title'
+>
 
 export const CreateBoardModal: FC<CreateBoardModalProps> = ({ children, onClose, ...rest }) => {
   const {
@@ -24,17 +26,18 @@ export const CreateBoardModal: FC<CreateBoardModalProps> = ({ children, onClose,
     formState: { errors },
     handleSubmit,
     register,
-  } = useForm<CreateBoardData>({
+  } = useForm<CreateBoardFormData>({
     defaultValues: {
-      editorsIds: [],
+      editorIds: [],
       title: '',
     },
   })
-  const { createBoard } = useCreateBoard()
+  const { isPending, mutateAsync: createBoard } = useCreateBoardMutation()
 
   const onSubmit = handleSubmit(async data => {
     try {
-      await createBoard(data, onClose)
+      await createBoard(data)
+      onClose()
       toast.success('Доска успешно создана.')
     } catch (error) {
       handleErrorResponse(error, toast.error)
@@ -46,6 +49,7 @@ export const CreateBoardModal: FC<CreateBoardModalProps> = ({ children, onClose,
       onClose={onClose}
       {...rest}
       cancelButtonText={'Отмена'}
+      confirmButtonDisabled={isPending}
       confirmButtonText={'Создать'}
       title={'Создание доски'}
     >
@@ -58,11 +62,11 @@ export const CreateBoardModal: FC<CreateBoardModalProps> = ({ children, onClose,
 
         <Controller
           control={control}
-          name={'editorsIds'}
+          name={'editorIds'}
           render={({ field: { onChange, value } }) => (
             <UserMultiSelect
               className={'w-full'}
-              errorMessage={errors.editorsIds?.message}
+              errorMessage={errors.editorIds?.message}
               label={'Выберите редакторов'}
               onChangeUserIds={onChange}
               userIds={value}

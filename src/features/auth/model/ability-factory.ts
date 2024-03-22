@@ -31,7 +31,7 @@ export const abilityFactory = (session: SessionDto | null) => {
       ownerId: userId,
     })
     can('read', 'Board', {
-      editorsIds: { $in: [userId] },
+      editorIds: { $in: [userId] },
     })
   })
 }

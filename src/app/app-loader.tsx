@@ -1,24 +1,27 @@
 import { type FC, type PropsWithChildren, useEffect, useState } from 'react'
 
-import { useBoards } from '@/entities/board'
-import { useSession } from '@/entities/session'
-import { useUsers } from '@/entities/user'
+import { boardsQuery } from '@/entities/board'
+import { sessionQuery } from '@/entities/session'
+import { usersQuery } from '@/entities/user'
 import { PageSpinner } from '@/shared/ui'
+import { useQueryClient } from '@tanstack/react-query'
 
 export const AppLoader: FC<PropsWithChildren> = ({ children }) => {
-  const loadUsers = useUsers(state => state.loadUsers)
-  const loadSession = useSession(state => state.loadSession)
-  const loadBoards = useBoards(state => state.loadBoards)
+  const queryClient = useQueryClient()
 
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     setIsLoading(true)
 
-    Promise.all([loadSession(), loadUsers(), loadBoards()]).finally(() => {
+    Promise.all([
+      queryClient.prefetchQuery(sessionQuery),
+      queryClient.prefetchQuery(usersQuery),
+      queryClient.prefetchQuery(boardsQuery),
+    ]).finally(() => {
       setIsLoading(false)
     })
-  }, [loadSession, loadUsers, loadBoards])
+  }, [queryClient])
 
   if (isLoading) {
     return <PageSpinner />

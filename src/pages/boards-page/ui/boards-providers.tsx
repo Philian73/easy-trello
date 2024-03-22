@@ -1,12 +1,10 @@
-import type { BoardPartialSubject } from '@/entities/board'
-
 import type { FC, PropsWithChildren } from 'react'
 
 import { subjectDefault, useAbility } from '@/features/auth'
-import { boardsListDepsContext } from '@/features/boards-list'
+import { type BoardPartial, boardsListDepsContext } from '@/features/boards-list'
 import { ComposeChildren } from '@/shared/lib/compose-children'
 
-const subject = subjectDefault<'Board', BoardPartialSubject>
+const subject = subjectDefault<'Board', BoardPartial>
 
 export const BoardsListProviders: FC<PropsWithChildren> = ({ children }) => {
   const ability = useAbility()
