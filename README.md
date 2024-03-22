@@ -21,6 +21,9 @@
 - [x] @casl/ability
 - [x] react-toastify
 - [x] @tanstack/react-query / @tanstack/react-query-devtools
+- [x] axios
+- [x] orval
+- [x] msw (mock server)
 ---
 
 ### low coupling / high cohesion

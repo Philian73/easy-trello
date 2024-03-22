@@ -9,12 +9,14 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "lint": "eslint src --ext .jsx,.js,.tsx,.ts --no-error-on-unmatched-pattern --fix",
-    "format": "prettier --write src"
+    "format": "prettier --write src",
+    "api:generate": "orval"
   },
   "dependencies": {
     "@casl/ability": "^6.7.0",
     "@headlessui/react": "^1.7.18",
     "@tanstack/react-query": "^5.28.4",
+    "axios": "^1.6.8",
     "immer": "^10.0.4",
     "localforage": "^1.10.0",
     "nanoid": "^5.0.6",
@@ -47,6 +49,8 @@
     "eslint-plugin-react": "^7.34.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.5",
+    "msw": "^2.2.10",
+    "orval": "^6.25.0",
     "postcss": "^8.4.35",
     "prettier": "^3.2.5",
     "react-toastify": "^10.0.5",
