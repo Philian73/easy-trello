@@ -14,11 +14,23 @@ const needAuthorization = async () => {
 }
 
 const unauthorized = async () => {
+  return new HttpResponse(
+    JSON.stringify({ message: '403: You do not have permission to take this action.' }),
+    {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      status: 403,
+    }
+  )
+}
+
+const notFound = async () => {
   return new HttpResponse(null, {
     headers: {
       'Content-Type': 'application/json',
     },
-    status: 403,
+    status: 404,
   })
 }
 
@@ -84,6 +96,10 @@ export const getHandlers = async () => {
 
       if (!session) {
         return needAuthorization()
+      }
+
+      if (session.role !== 'admin') {
+        return unauthorized()
       }
 
       const userId = params.userId as string
@@ -183,12 +199,7 @@ export const getHandlers = async () => {
       const board = await boardsRepository.getBoard(boardId)
 
       if (!board) {
-        return new HttpResponse(null, {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          status: 404,
-        })
+        return notFound()
       }
 
       if (board.ownerId !== session.userId && !board.editorIds.includes(session.userId)) {
@@ -210,16 +221,12 @@ export const getHandlers = async () => {
 
       const board = await boardsRepository.getBoard(boardId)
 
-      if (
-        !board ||
-        (board?.ownerId !== session.userId && !board?.editorIds?.includes(session.userId))
-      ) {
-        return new HttpResponse(null, {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          status: 403,
-        })
+      if (!board) {
+        return notFound()
+      }
+
+      if (board?.ownerId !== session.userId && !board?.editorIds?.includes(session.userId)) {
+        return unauthorized()
       }
 
       await boardsRepository.updateBoard(boardId, body as BoardPatchDto)
@@ -238,13 +245,12 @@ export const getHandlers = async () => {
 
       const board = await boardsRepository.getBoard(boardId)
 
-      if (!board || !(board.ownerId === session.userId)) {
-        return new HttpResponse(null, {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          status: 403,
-        })
+      if (!board) {
+        return notFound()
+      }
+
+      if (board.ownerId !== session.userId) {
+        return unauthorized()
       }
 
       await boardsRepository.removeBoard(boardId)
