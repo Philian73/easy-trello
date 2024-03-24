@@ -10,6 +10,8 @@ import { Button, ImageSelect, TextField } from '@/shared/ui'
 import { DevTool } from '@hookform/devtools'
 import clsx from 'clsx'
 
+import { RoleSelect } from '../role-select/role-select'
+
 type CreateUserFormProps = Omit<ComponentPropsWithoutRef<'form'>, 'onSubmit'>
 
 export const CreateUserForm: FC<CreateUserFormProps> = ({ className, ...rest }) => {
@@ -23,18 +25,24 @@ export const CreateUserForm: FC<CreateUserFormProps> = ({ className, ...rest }) 
     reset,
   } = useForm<CreateUserFormData>({
     defaultValues: {
+      avatarId: '1',
+      email: '',
       name: '',
+      password: '',
+      role: 'user',
     },
   })
 
   const onSubmit = handleSubmit(data => {
-    try {
-      createUser(data)
-      reset()
-      toast.success('Пользователь успешно создан.')
-    } catch (error) {
-      handleErrorResponse(error, toast.error)
-    }
+    createUser(data, {
+      onError: error => {
+        handleErrorResponse(error, toast.error)
+      },
+      onSuccess: () => {
+        reset()
+        toast.success('Пользователь успешно создан.')
+      },
+    })
   })
 
   return (
@@ -44,11 +52,43 @@ export const CreateUserForm: FC<CreateUserFormProps> = ({ className, ...rest }) 
       {...rest}
       onSubmit={onSubmit}
     >
-      <TextField
-        {...register('name', { required: 'Имя пользователя - обязательное поле.' })}
-        errorMessage={errors.name?.message}
-        label={'Имя нового пользователя'}
-      />
+      <div className={'grid gap-2 grid-cols-2'}>
+        <TextField
+          errorMessage={errors.email?.message}
+          label={'Email'}
+          placeholder={'example@ex.com'}
+          type={'email'}
+          {...register('email', { required: 'Email пользователя - обязательное поле.' })}
+        />
+
+        <TextField
+          errorMessage={errors.password?.message}
+          label={'Пароль'}
+          placeholder={'*****'}
+          type={'password'}
+          {...register('password', { required: 'Пароль пользователя - обязательное поле.' })}
+        />
+
+        <TextField
+          errorMessage={errors.name?.message}
+          label={'Имя нового пользователя'}
+          {...register('name', { required: 'Имя пользователя - обязательное поле.' })}
+        />
+
+        <Controller
+          control={control}
+          name={'role'}
+          render={({ field: { onChange, value } }) => (
+            <RoleSelect
+              errorMessage={errors.role?.message}
+              label={'Роль пользователя'}
+              onChangeRole={onChange}
+              role={value}
+            />
+          )}
+          rules={{ required: true }}
+        />
+      </div>
 
       <Controller
         control={control}
