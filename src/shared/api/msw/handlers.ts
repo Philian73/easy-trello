@@ -67,6 +67,8 @@ export const getHandlers = async () => {
         return needAuthorization()
       }
 
+      const users = await usersRepository.getUsers()
+
       return ok(users)
     }),
 
