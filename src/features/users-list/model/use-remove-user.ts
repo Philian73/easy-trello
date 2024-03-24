@@ -4,11 +4,11 @@ import { useRemoveUserMutation } from '@/entities/user'
 import { useGetConfirmation } from '@/shared/lib/confirmation'
 import { handleErrorResponse } from '@/shared/lib/utils'
 
-export const useRemoveUser = () => {
+export const useRemoveUser = (userId: string) => {
   const getConfirmation = useGetConfirmation()
-  const { isPending, mutateAsync: removeUserRaw } = useRemoveUserMutation()
+  const { isPending, mutate: removeUserRaw } = useRemoveUserMutation()
 
-  const removeUser = async (userId: string) => {
+  const removeUser = async () => {
     const confirmation = await getConfirmation({
       description: 'Вы действительно хотите удалить пользователя?',
     })
@@ -17,12 +17,14 @@ export const useRemoveUser = () => {
       return null
     }
 
-    try {
-      await removeUserRaw(userId)
-      toast.success('Пользователь успешно удалён.')
-    } catch (error) {
-      handleErrorResponse(error, toast.error)
-    }
+    removeUserRaw(userId, {
+      onError: error => {
+        handleErrorResponse(error, toast.error)
+      },
+      onSuccess: () => {
+        toast.success('Пользователь успешно удалён.')
+      },
+    })
   }
 
   return {

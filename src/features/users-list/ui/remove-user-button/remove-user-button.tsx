@@ -9,14 +9,14 @@ type RemoveUserButtonProps = {
 } & Omit<ComponentPropsWithoutRef<'button'>, 'children' | 'onClick'>
 
 export const RemoveUserButton: FC<RemoveUserButtonProps> = ({ userId, ...rest }) => {
-  const { isPending, removeUser } = useRemoveUser()
+  const { isPending, removeUser } = useRemoveUser(userId)
 
   if (isPending) {
     return <Icons.Spinner className={'w-8 h-8 text-rose-500'} />
   }
 
   return (
-    <button {...rest} onClick={() => removeUser(userId)}>
+    <button {...rest} onClick={removeUser}>
       <Icons.TrashOutlined className={'w-8 h-8 text-rose-500'} />
     </button>
   )
