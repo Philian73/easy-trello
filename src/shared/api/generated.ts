@@ -200,12 +200,12 @@ export const getBoardById = (boardId: string, options?: SecondParameter<typeof c
  */
 export const updateBoard = (
   boardId: string,
-  boardDto: BodyType<BoardDto>,
+  boardPatchDto: BodyType<BoardPatchDto>,
   options?: SecondParameter<typeof createInstance>
 ) => {
   return createInstance<void>(
     {
-      data: boardDto,
+      data: boardPatchDto,
       headers: { 'Content-Type': 'application/json' },
       method: 'PATCH',
       url: `/boards/${boardId}`,

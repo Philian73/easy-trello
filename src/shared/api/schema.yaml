@@ -151,7 +151,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/BoardDto"
+              $ref: "#/components/schemas/BoardPatchDto"
       responses:
         "200":
           description: Successful operation
