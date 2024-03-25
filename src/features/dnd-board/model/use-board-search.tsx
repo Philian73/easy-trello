@@ -1,4 +1,4 @@
-import type { BoardTask } from './types'
+import type { BoardTask } from '@/entities/board'
 
 import { type Dispatch, type SetStateAction, useCallback } from 'react'
 

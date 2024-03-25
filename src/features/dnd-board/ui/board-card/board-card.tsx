@@ -1,4 +1,4 @@
-import type { BoardCard as BoardCardType } from '../../model/types'
+import type { BoardCard as BoardCardType } from '@/entities/board'
 
 import { type ComponentPropsWithoutRef, type FC, useState } from 'react'
 import { Draggable, Droppable } from 'react-beautiful-dnd'

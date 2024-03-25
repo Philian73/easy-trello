@@ -1,4 +1,4 @@
-import type { BoardTask as BoardTaskType } from '../../model/types'
+import type { BoardTask as BoardTaskType } from '@/entities/board'
 
 import { type ComponentPropsWithoutRef, type FC, useState } from 'react'
 import { Draggable } from 'react-beautiful-dnd'

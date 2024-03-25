@@ -1,4 +1,5 @@
-import type { BoardTask, UpdateBoardTaskData } from '../../model/types'
+import type { UpdateBoardTaskData } from '../../model/types'
+import type { BoardTask } from '@/entities/board'
 
 import type { FC, ReactNode } from 'react'
 import { Controller, useForm } from 'react-hook-form'
