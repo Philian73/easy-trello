@@ -5,7 +5,7 @@ import { queryOptions, useMutation, useQueryClient } from '@tanstack/react-query
 const keys = {
   root: ['board'] as const,
   list: () => [...keys.root, 'list'] as const,
-  byId: (id: string) => [...keys.list(), id] as const,
+  byId: (id: string) => [...keys.root, id] as const,
   createBoard: () => [...keys.root, 'createBoard'] as const,
   updateBoard: () => [...keys.root, 'updateBoard'] as const,
   removeBoard: () => [...keys.root, 'removeBoard'] as const,
