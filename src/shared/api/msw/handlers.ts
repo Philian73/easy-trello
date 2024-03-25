@@ -132,6 +132,8 @@ export const getHandlers = async () => {
       const res = await sessionRepository.signIn(body as SignInDto)
 
       if (!res) {
+        await delay(500)
+
         return needAuthorization()
       }
 
