@@ -1,7 +1,7 @@
-/* eslint-disable perfectionist/sort-objects */
-import { boardsApi } from '@/shared/api'
+import { api } from '@/shared/api'
 import { queryOptions, useMutation, useQueryClient } from '@tanstack/react-query'
 
+/* eslint-disable perfectionist/sort-objects */
 const keys = {
   root: ['board'] as const,
   list: () => [...keys.root, 'list'] as const,
@@ -16,7 +16,7 @@ const keys = {
 
 export const boardsQuery = queryOptions({
   queryKey: keys.list(),
-  queryFn: boardsApi.getBoards,
+  queryFn: api.getBoards,
 })
 
 const useInvalidateBoards = () => {
@@ -30,7 +30,7 @@ const useInvalidateBoards = () => {
 export const boardByIdQuery = (boardId: string) => {
   return queryOptions({
     queryKey: keys.byId(boardId),
-    queryFn: async () => (await boardsApi.getBoard(boardId)) ?? null,
+    queryFn: async () => (await api.getBoardById(boardId)) ?? null,
   })
 }
 
@@ -51,7 +51,7 @@ export const useCreateBoardMutation = () => {
 
   return useMutation({
     mutationKey: keys.createBoard(),
-    mutationFn: boardsApi.createBoard,
+    mutationFn: api.createBoard,
     async onSuccess() {
       await invalidateList()
     },
@@ -63,9 +63,10 @@ export const useUpdateBoardMutation = () => {
 
   return useMutation({
     mutationKey: keys.updateBoard(),
-    mutationFn: boardsApi.updateBoard,
-    async onSuccess(_, { id }) {
-      await invalidateById(id)
+    mutationFn: ({ boardId, patch }: { boardId: string; patch: api.BoardPatchDto }) =>
+      api.updateBoard(boardId, patch),
+    async onSuccess(_, { boardId }) {
+      await invalidateById(boardId)
     },
   })
 }
@@ -75,21 +76,9 @@ export const useRemoveBoardMutation = () => {
 
   return useMutation({
     mutationKey: keys.removeBoard(),
-    mutationFn: boardsApi.removeBoard,
+    mutationFn: api.deleteBoard,
     async onSuccess() {
       await invalidateList()
-    },
-  })
-}
-// ==============================================================================
-export const useSaveBoardMutation = () => {
-  const invalidateById = useInvalidateBoardById()
-
-  return useMutation({
-    mutationKey: keys.saveBoard(),
-    mutationFn: boardsApi.saveBoard,
-    async onSuccess(_, { id }) {
-      await invalidateById(id)
     },
   })
 }

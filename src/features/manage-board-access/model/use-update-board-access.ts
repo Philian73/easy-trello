@@ -10,7 +10,7 @@ import { useSuspenseQuery } from '@tanstack/react-query'
 
 export const useUpdateBoardAccess = (boardId: string, onUpdate: () => void) => {
   const { data: session } = useSuspenseQuery(sessionQuery)
-  const { mutateAsync: updateBoardRaw } = useUpdateBoardMutation()
+  const { isPending, mutateAsync: updateBoardRaw } = useUpdateBoardMutation()
 
   const getConfirmation = useGetConfirmation()
 
@@ -25,14 +25,19 @@ export const useUpdateBoardAccess = (boardId: string, onUpdate: () => void) => {
       }
     }
 
-    try {
-      await updateBoardRaw({ id: boardId, ...data })
-      onUpdate()
-      toast.success('Права доски изменены.')
-    } catch (error) {
-      handleErrorResponse(error, toast.error)
-    }
+    await updateBoardRaw(
+      { boardId, patch: data },
+      {
+        onError: error => {
+          handleErrorResponse(error, toast.error)
+        },
+        onSuccess: () => {
+          onUpdate()
+          toast.success('Права доски изменены.')
+        },
+      }
+    )
   }
 
-  return { updateBoard }
+  return { isPending, updateBoard }
 }

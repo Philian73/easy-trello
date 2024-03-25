@@ -18,12 +18,14 @@ export const useRemoveBoard = (boardId: string) => {
       return null
     }
 
-    try {
-      await removeBoardRaw(boardId)
-      toast.success('Доска успешно удалена.')
-    } catch (error) {
-      handleErrorResponse(error, toast.error)
-    }
+    await removeBoardRaw(boardId, {
+      onError: error => {
+        handleErrorResponse(error, toast.error)
+      },
+      onSuccess: () => {
+        toast.success('Доска успешно удалена.')
+      },
+    })
   }
 
   return {

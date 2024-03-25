@@ -25,13 +25,18 @@ export const useUpdateBoard = (boardId: string, onUpdate: () => void) => {
       }
     }
 
-    try {
-      await updateModalRaw({ id: boardId, ...data })
-      onUpdate()
-      toast.success('Доска успешно обновлена.')
-    } catch (error) {
-      handleErrorResponse(error, toast.error)
-    }
+    await updateModalRaw(
+      { boardId, patch: data },
+      {
+        onError: error => {
+          handleErrorResponse(error, toast.error)
+        },
+        onSuccess: () => {
+          onUpdate()
+          toast.success('Доска успешно обновлена.')
+        },
+      }
+    )
   }
 
   return { isPending, updateBoard }

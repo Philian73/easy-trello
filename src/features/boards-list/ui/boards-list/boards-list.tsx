@@ -6,16 +6,14 @@ import { AvatarList, UserPreview, usersQuery } from '@/entities/user'
 import { listToRecord } from '@/shared/lib/list-to-record'
 import { useQuery } from '@tanstack/react-query'
 
-import { useBoardsListDeps } from '../../deps'
 import { generateBoardUrl } from '../../model/generate-board-url'
+import { getBoardsListsSubject, useBoardsListAbility } from '../../model/use-boards-list-ability'
 import { RemoveBoardButton } from '../remove-board-button/remove-board-button'
 import { UpdateBoardButton } from '../update-board-button/update-board-button'
 
 type BoardsListProps = Omit<ComponentPropsWithoutRef<'div'>, 'children'>
 
 export const BoardsList: FC<BoardsListProps> = props => {
-  const { canRemoveBoard, canUpdateBoard, canViewBoard } = useBoardsListDeps()
-
   const { data: usersMap = {} } = useQuery({
     ...usersQuery,
     select: listToRecord,
@@ -25,12 +23,14 @@ export const BoardsList: FC<BoardsListProps> = props => {
     ...boardsQuery,
     initialData: [],
     select: boards =>
-      boards.filter(canViewBoard).map(board => ({
+      boards.map(board => ({
         ...board,
         editors: board.editorIds.map(id => usersMap[id].avatarId),
         owner: usersMap[board.ownerId],
       })),
   })
+
+  const boardsListAbility = useBoardsListAbility()
 
   return (
     <div {...props}>
@@ -60,8 +60,12 @@ export const BoardsList: FC<BoardsListProps> = props => {
               </td>
               <td className={'p-2'}>
                 <div className={'flex gap-2 ml-auto'}>
-                  {canUpdateBoard(board) && <UpdateBoardButton board={board} />}
-                  {canRemoveBoard(board) && <RemoveBoardButton boardId={board.id} />}
+                  {boardsListAbility.can('update', getBoardsListsSubject(board)) && (
+                    <UpdateBoardButton board={board} />
+                  )}
+                  {boardsListAbility.can('delete', getBoardsListsSubject(board)) && (
+                    <RemoveBoardButton boardId={board.id} />
+                  )}
                 </div>
               </td>
             </tr>
