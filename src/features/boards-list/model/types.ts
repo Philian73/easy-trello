@@ -1,9 +1,4 @@
-export type BoardPartial = {
-  editorIds: string[]
-  id: string
-  ownerId: string
-  title: string
-}
+import type { BoardPartial } from '@/entities/board'
 
 export type CreateBoardFormData = Pick<BoardPartial, 'editorIds' | 'title'>
 

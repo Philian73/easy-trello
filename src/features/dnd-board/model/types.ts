@@ -1,31 +1,10 @@
-export type Board = {
-  authorId: string
-  cards: BoardCard[]
-  created: string
-  editorIds: string[]
-  id: string
-  ownerId: string
-  title: string
-  updated: string
-}
+import type { BoardCard } from '@/entities/board'
 
-export type BoardCard = {
-  authorId: string
-  created: string
-  id: string
-  tasks: BoardTask[]
-  title: string
-  updated: string
-}
-
-export type BoardTask = {
-  assigneeId?: string
-  authorId: string
-  created: string
-  description?: string
-  id: string
-  title: string
-  updated: string
+export type UpdateBoardData = {
+  cards?: BoardCard[]
+  editorIds?: string[]
+  ownerId?: string
+  title?: string
 }
 
 export type CreateBoardCardData = {

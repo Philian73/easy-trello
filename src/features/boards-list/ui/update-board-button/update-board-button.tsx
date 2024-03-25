@@ -1,4 +1,4 @@
-import type { BoardPartial } from '../../model/types'
+import type { BoardPartial } from '@/entities/board'
 
 import { type ComponentPropsWithoutRef, type FC, useState } from 'react'
 

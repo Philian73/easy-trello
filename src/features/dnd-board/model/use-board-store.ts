@@ -1,9 +1,8 @@
-import type { Board } from './types'
 import type { StoreApi, UseBoundStore } from 'zustand'
 
 import { useState } from 'react'
 
-import { useSaveBoardMutation } from '@/entities/board'
+import { type Board, useUpdateBoardMutation } from '@/entities/board'
 import { sessionQuery } from '@/entities/session'
 import { createStrictContext, useStrictContext } from '@/shared/lib/hooks'
 import { useSuspenseQuery } from '@tanstack/react-query'
@@ -15,9 +14,9 @@ export const boardStoreContext = createStrictContext<UseBoundStore<StoreApi<Boar
 export const useBoardStore = () => ({ useSelector: useStrictContext(boardStoreContext) })
 
 export const useBoardStoreFactory = (board: Board) => {
-  const { mutateAsync: saveBoard } = useSaveBoardMutation()
+  const { mutateAsync: updateBoard } = useUpdateBoardMutation()
   const { data: session } = useSuspenseQuery(sessionQuery)
-  const [boardStore] = useState(() => createBoardStore({ board, saveBoard, session }))
+  const [boardStore] = useState(() => createBoardStore({ board, session, updateBoard }))
 
   return { boardStore }
 }

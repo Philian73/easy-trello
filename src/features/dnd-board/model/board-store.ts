@@ -1,13 +1,12 @@
 import type {
-  Board,
-  BoardCard,
-  BoardTask,
   CreateBoardCardData,
   CreateBoardTaskData,
   UpdateBoardCardData,
+  UpdateBoardData,
   UpdateBoardTaskData,
 } from './types'
-import type { SessionDto } from '@/shared/api'
+import type { Board, BoardCard, BoardTask } from '@/entities/board'
+import type { Session } from '@/entities/session'
 
 import { produce } from 'immer'
 import { nanoid } from 'nanoid'
@@ -29,17 +28,19 @@ export type BoardStore = {
     start: { cardId: string; index: number },
     end: { cardId: string; index: number }
   ) => Promise<void>
+
+  saveBoard: (board: Board) => void
 }
 
 /* eslint-disable perfectionist/sort-objects */
 export const createBoardStore = ({
   board,
   session,
-  saveBoard,
+  updateBoard,
 }: {
   board: Board
-  session: SessionDto | null
-  saveBoard: (board: Board) => Promise<void>
+  session: Session | null
+  updateBoard: (data: { boardId: string; patch: UpdateBoardData }) => Promise<void>
 }) => {
   return create<BoardStore>((set, get) => ({
     board,
@@ -61,11 +62,7 @@ export const createBoardStore = ({
         draft.cards.push(newCard)
       })(board)
 
-      set({
-        board: newBoard,
-      })
-
-      return saveBoard(newBoard)
+      return get().saveBoard(newBoard)
     },
     async updateBoardCard(cardId, data) {
       const board = get().board
@@ -80,11 +77,7 @@ export const createBoardStore = ({
         }
       })(board)
 
-      set({
-        board: newBoard,
-      })
-
-      return saveBoard(newBoard)
+      return get().saveBoard(newBoard)
     },
     async removeBoardCard(cardId) {
       const board = get().board
@@ -99,11 +92,7 @@ export const createBoardStore = ({
         }
       })(board)
 
-      set({
-        board: newBoard,
-      })
-
-      return saveBoard(newBoard)
+      return get().saveBoard(newBoard)
     },
     async moveBoardCard(index, newIndex) {
       const board = get().board
@@ -115,15 +104,7 @@ export const createBoardStore = ({
         draft.cards.splice(newIndex, 0, card)
       })(board)
 
-      set({
-        board: newBoard,
-      })
-
-      set({
-        board: newBoard,
-      })
-
-      return saveBoard(newBoard)
+      return get().saveBoard(newBoard)
     },
 
     async createBoardTask(cardId, data) {
@@ -148,11 +129,7 @@ export const createBoardStore = ({
         }
       })(board)
 
-      set({
-        board: newBoard,
-      })
-
-      return saveBoard(newBoard)
+      return get().saveBoard(newBoard)
     },
     async updateBoardTask(cardId, taskId, data) {
       const board = get().board
@@ -177,11 +154,7 @@ export const createBoardStore = ({
         }
       })(board)
 
-      set({
-        board: newBoard,
-      })
-
-      return saveBoard(newBoard)
+      return get().saveBoard(newBoard)
     },
     async removeBoardTask(cardId, taskId) {
       const board = get().board
@@ -202,11 +175,7 @@ export const createBoardStore = ({
         }
       })(board)
 
-      set({
-        board: newBoard,
-      })
-
-      return saveBoard(newBoard)
+      return get().saveBoard(newBoard)
     },
     async moveBoardTask(start, end) {
       const board = get().board
@@ -239,11 +208,23 @@ export const createBoardStore = ({
         }
       })(board)
 
+      return get().saveBoard(newBoard)
+    },
+
+    async saveBoard(board) {
       set({
-        board: newBoard,
+        board,
       })
 
-      return saveBoard(newBoard)
+      return await updateBoard({
+        boardId: board.id,
+        patch: {
+          cards: board.cards,
+          title: board.title,
+          editorIds: board.editorIds,
+          ownerId: board.ownerId,
+        },
+      })
     },
   }))
 }

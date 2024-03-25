@@ -1,4 +1,5 @@
-import type { BoardPartial, UpdateBoardFormData } from '../../model/types'
+import type { UpdateBoardFormData } from '../../model/types'
+import type { BoardPartial } from '@/entities/board'
 
 import type { FC, ReactNode } from 'react'
 import { Controller, useForm } from 'react-hook-form'
