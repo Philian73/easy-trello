@@ -1,11 +1,8 @@
+import type { Board as BoardType } from '@/entities/board'
+
 import { type FC, type PropsWithChildren, useState } from 'react'
 
-import {
-  type BoardType,
-  boardSearchContext,
-  boardStoreContext,
-  useBoardStoreFactory,
-} from '@/features/dnd-board'
+import { boardSearchContext, boardStoreContext, useBoardStoreFactory } from '@/features/dnd-board'
 import { manageBoardAccessDepsContext } from '@/features/manage-board-access'
 import { ComposeChildren } from '@/shared/lib/compose-children'
 
