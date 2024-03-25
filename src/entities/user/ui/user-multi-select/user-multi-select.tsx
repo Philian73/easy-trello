@@ -1,4 +1,4 @@
-import type { UserDto } from '@/shared/api'
+import type { User } from '../../model/types'
 
 import type { FC } from 'react'
 
@@ -29,7 +29,7 @@ export const UserMultiSelect: FC<UserMultiSelectProps> = ({
   })
 
   const selectedUsers = users.filter(user => userIds.includes(user.id))
-  const onChangeUsers = (users: UserDto[]) => {
+  const onChangeUsers = (users: User[]) => {
     onChangeUserIds(users.map(u => u.id))
   }
 

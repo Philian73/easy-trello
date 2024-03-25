@@ -1,5 +1,3 @@
-export { queryClient } from './query-client'
-export * from './modules/auth'
-export * from './modules/board'
-export * from './modules/user'
+export { apiInstance } from './api-instance'
 export * as api from './generated'
+export { queryClient } from './query-client'

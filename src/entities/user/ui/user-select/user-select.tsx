@@ -1,4 +1,4 @@
-import type { UserDto } from '@/shared/api'
+import type { User } from '../../model/types'
 
 import type { FC } from 'react'
 
@@ -11,7 +11,7 @@ import { UserPreview } from '../user-preview/user-preview'
 type UserSelectProps = {
   className?: string
   errorMessage?: string
-  filterOptions?: (option: UserDto) => boolean
+  filterOptions?: (option: User) => boolean
   label?: string
   onChangeUserId: (id?: string) => void
   required?: boolean
@@ -35,9 +35,9 @@ export const UserSelect: FC<UserSelectProps> = ({
 
   const user = users.find(user => user.id === userId)
 
-  const options = required ? users : [{ id: '' } as UserDto, ...users]
+  const options = required ? users : [{ id: '' } as User, ...users]
 
-  const onChangeUser = (user?: UserDto) => {
+  const onChangeUser = (user?: User) => {
     onChangeUserId(user?.id)
   }
 
