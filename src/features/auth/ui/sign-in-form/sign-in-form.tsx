@@ -18,20 +18,17 @@ export const SignInForm: FC<SignInForm> = ({ className, ...rest }) => {
     formState: { errors },
     handleSubmit,
     register,
-    setError,
   } = useForm<SignInFormData>({
     defaultValues: {
       email: '',
       password: '',
     },
   })
+  const { isPending, mutateAsync: signIn } = useLoginMutation()
 
-  const { isPending, mutate: signIn } = useLoginMutation()
-
-  const onSubmit = handleSubmit(data => {
-    signIn(data, {
+  const onSubmit = handleSubmit(async data => {
+    await signIn(data, {
       onError: error => {
-        setError('root', error)
         handleErrorResponse(error, toast.error)
       },
       onSuccess: () => {
@@ -62,8 +59,6 @@ export const SignInForm: FC<SignInForm> = ({ className, ...rest }) => {
         type={'password'}
         {...register('password', { required: 'Пароль - обязательное поле.' })}
       />
-
-      {errors.root?.message && <span className={'text-red-500'}>{errors.root.message}</span>}
 
       <Button disabled={isPending} type={'submit'}>
         Войти
