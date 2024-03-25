@@ -1,6 +1,4 @@
-/* eslint-disable-next-line boundaries/entry-point, boundaries/element-types */
-import { useInvalidateSession } from '@/entities/session/@x/user'
-import { usersApi } from '@/shared/api'
+import { api } from '@/shared/api'
 import { queryOptions, useMutation, useQueryClient } from '@tanstack/react-query'
 
 /* eslint-disable perfectionist/sort-objects */
@@ -15,7 +13,7 @@ const keys = {
 
 export const usersQuery = queryOptions({
   queryKey: keys.list(),
-  queryFn: usersApi.getUsers,
+  queryFn: api.getUsers,
 })
 
 const useInvalidateUsers = () => {
@@ -30,7 +28,7 @@ export const useCreateUserMutation = () => {
 
   return useMutation({
     mutationKey: keys.createUser(),
-    mutationFn: usersApi.createUser,
+    mutationFn: api.createUser,
     async onSettled() {
       await invalidateUsers()
     },
@@ -38,14 +36,12 @@ export const useCreateUserMutation = () => {
 }
 // ==============================================================================
 export const useRemoveUserMutation = () => {
-  const invalidateSession = useInvalidateSession()
   const invalidateUsers = useInvalidateUsers()
 
   return useMutation({
     mutationKey: keys.removeUser(),
-    mutationFn: usersApi.removeUser,
+    mutationFn: api.deleteUser,
     async onSettled() {
-      await invalidateSession()
       await invalidateUsers()
     },
   })

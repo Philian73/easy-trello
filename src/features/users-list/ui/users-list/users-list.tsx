@@ -3,7 +3,7 @@ import type { ComponentPropsWithoutRef, FC } from 'react'
 import { UserPreview, usersQuery } from '@/entities/user'
 import { useQuery } from '@tanstack/react-query'
 
-import { useUsersListAbility } from '../..'
+import { getUserSubject, useUsersListAbility } from '../../model/use-users-list-ability'
 import { RemoveUserButton } from '../remove-user-button/remove-user-button'
 
 type UsersListProps = Omit<ComponentPropsWithoutRef<'div'>, 'children'>
@@ -16,8 +16,6 @@ export const UsersList: FC<UsersListProps> = props => {
 
   const usersListAbility = useUsersListAbility()
 
-  const canRemoveUser = usersListAbility.can('delete', 'User')
-
   return (
     <div {...props}>
       {users.map(user => (
@@ -27,7 +25,9 @@ export const UsersList: FC<UsersListProps> = props => {
         >
           <UserPreview avatarId={user.avatarId} name={user.name} size={'md'} />
           <div className={'ml-auto flex gap-2 shrink-0'}>
-            {canRemoveUser && <RemoveUserButton userId={user.id} />}
+            {usersListAbility.can('delete', getUserSubject(user.id)) && (
+              <RemoveUserButton userId={user.id} />
+            )}
           </div>
         </div>
       ))}

@@ -1,9 +1,11 @@
 import { sessionQuery } from '@/entities/session'
 import { type Ability, createModuleAbility } from '@/shared/lib/ability'
-import { defineAbility } from '@casl/ability'
+import { defineAbility, subject } from '@casl/ability'
 import { useSuspenseQuery } from '@tanstack/react-query'
 
 type Abilities = ['create' | 'delete' | 'read', 'User' | { id: string }]
+
+export const getUserSubject = (id: string) => subject('User', { id })
 
 export const useUsersListAbility = createModuleAbility({
   abilityFactory: session => {
