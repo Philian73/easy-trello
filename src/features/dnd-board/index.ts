@@ -1,6 +1,6 @@
-export type { Board as BoardType } from './model/types'
 export { boardSearchContext } from './model/use-board-search'
 export { boardStoreContext, useBoardStoreFactory } from './model/use-board-store'
 export { Board } from './ui/board/board'
 export { BoardSearch } from './ui/board-search/board-search'
 export { CreateBoardCardButton } from './ui/create-board-card-button/create-board-card-button'
+export type { Board as BoardType } from '@/entities/board'
