@@ -1,4 +1,4 @@
-import { authApi } from '@/shared/api'
+import { api } from '@/shared/api'
 import { queryOptions, useMutation, useQueryClient } from '@tanstack/react-query'
 
 /* eslint-disable perfectionist/sort-objects */
@@ -13,11 +13,11 @@ const keys = {
 
 export const sessionQuery = queryOptions({
   queryKey: keys.currentUser(),
-  queryFn: authApi.me,
+  queryFn: api.getSession,
   staleTime: 1000 * 60 * 5,
 })
 
-export const useInvalidateSession = () => {
+const useInvalidateSession = () => {
   const queryClient = useQueryClient()
 
   return () => queryClient.invalidateQueries({ queryKey: keys.root })
@@ -29,7 +29,7 @@ export const useLoginMutation = () => {
 
   return useMutation({
     mutationKey: keys.loginUser(),
-    mutationFn: authApi.login,
+    mutationFn: api.signIn,
     async onSuccess() {
       await invalidateSession()
     },
@@ -41,7 +41,7 @@ export const useLogoutMutation = () => {
 
   return useMutation({
     mutationKey: keys.logoutUser(),
-    mutationFn: authApi.logout,
+    mutationFn: () => api.signOut(),
     async onSuccess() {
       await invalidateSession()
     },
