@@ -1,61 +1,40 @@
-import type { BoardPartial } from '@/features/boards-list'
-
-import { Navigate, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 
 import { boardByIdQuery } from '@/entities/board'
-import { sessionQuery } from '@/entities/session'
-import { subjectDefault, useAbility } from '@/features/auth'
 import { Board, BoardSearch, CreateBoardCardButton } from '@/features/dnd-board'
 import { BoardEditors, UpdateBoardAccessButton } from '@/features/manage-board-access'
 import { PageSpinner } from '@/shared/ui'
-import { useQuery, useSuspenseQuery } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 
+import { getBoardPageSubject, useBoardPageAbility } from '../../model/use-board-page-ability'
 import { BoardProviders } from '../board-providers'
 
-const subject = subjectDefault<'Board', BoardPartial>
-
 const useBoard = () => {
-  const ability = useAbility()
-
-  const { data: session } = useSuspenseQuery(sessionQuery)
-
   const params = useParams<'boardId'>()
   const boardId = params.boardId ?? ''
 
-  const { data: board, isError } = useQuery({
+  const { data: board, isLoading } = useQuery({
     ...boardByIdQuery(boardId),
     enabled: !!boardId,
   })
 
+  const boardPageAbility = useBoardPageAbility()
+
   return {
-    ability,
     board,
-    isError,
-    session,
+    boardPageAbility,
+    isLoading,
   }
 }
 
 export const BoardPage = () => {
-  const { ability, board, isError, session } = useBoard()
+  const { board, boardPageAbility, isLoading } = useBoard()
 
-  if (!session) {
-    return <div>Не авторизован</div>
-  }
-
-  if (isError) {
-    return <Navigate to={'*'} />
-  }
-
-  if (!board) {
+  if (!board || isLoading) {
     return <PageSpinner />
   }
 
-  const canReadBoard = ability.can('read', subject('Board', board))
-  const canUpdateAccess = ability.can('update-access', subject('Board', board))
-
-  if (!canReadBoard) {
-    return <span className={'mt-5 text-xl block'}>У вас нет прав для работы с этой страницей.</span>
-  }
+  const canUpdateAccess = boardPageAbility.can('update-access', getBoardPageSubject(board.ownerId))
 
   return (
     <BoardProviders board={board}>
