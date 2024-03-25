@@ -22,13 +22,7 @@ const options: Option[] = [
   { id: 'admin', label: 'Администратор' },
 ]
 
-export const RoleSelect: FC<RoleSelectProps> = ({
-  className,
-  errorMessage,
-  label,
-  onChangeRole,
-  role,
-}) => {
+export const RoleSelect: FC<RoleSelectProps> = ({ onChangeRole, role, ...rest }) => {
   const value = useMemo(() => {
     return role ? options.find(option => option.id === role) : undefined
   }, [role])
@@ -39,10 +33,8 @@ export const RoleSelect: FC<RoleSelectProps> = ({
 
   return (
     <Select
-      className={className}
-      errorMessage={errorMessage}
+      {...rest}
       getLabel={option => option.label}
-      label={label}
       onChange={onChange}
       options={options}
       value={value}
