@@ -47,19 +47,17 @@ export const getHandlers = async () => {
   const users = await usersRepository.getUsers()
 
   if (users.length === 0) {
-    {
-      await usersRepository.createUser({
-        avatarId: '8',
-        email: 'admin@gmail.com',
-        name: 'Philian73',
-        password: 'admin',
-        role: 'admin',
-      })
-    }
+    await usersRepository.createUser({
+      avatarId: '8',
+      email: 'admin@gmail.com',
+      name: 'Philian73',
+      password: 'admin',
+      role: 'admin',
+    })
   }
 
   return [
-    http.get('api/users', async () => {
+    http.get('/api/users', async () => {
       await delay(1000)
       const session = await sessionRepository.getSession()
 
@@ -72,7 +70,7 @@ export const getHandlers = async () => {
       return ok(users)
     }),
 
-    http.post('api/users', async ({ request }) => {
+    http.post('/api/users', async ({ request }) => {
       await delay(1000)
       const session = await sessionRepository.getSession()
 
@@ -93,7 +91,7 @@ export const getHandlers = async () => {
       return ok(newUser)
     }),
 
-    http.delete('api/users/:userId', async ({ params }) => {
+    http.delete('/api/users/:userId', async ({ params }) => {
       const session = await sessionRepository.getSession()
 
       if (!session) {
@@ -117,7 +115,7 @@ export const getHandlers = async () => {
       return ok()
     }),
 
-    http.get('api/session/me', async () => {
+    http.get('/api/session/me', async () => {
       await delay(1000)
       const session = await sessionRepository.getSession()
 
@@ -128,7 +126,7 @@ export const getHandlers = async () => {
       return ok(session)
     }),
 
-    http.post('api/session/sign-in', async ({ request }) => {
+    http.post('/api/session/sign-in', async ({ request }) => {
       const body = await request.json()
 
       const res = await sessionRepository.signIn(body as SignInDto)
@@ -142,7 +140,7 @@ export const getHandlers = async () => {
       return ok(res)
     }),
 
-    http.post('api/session/sign-out', async () => {
+    http.post('/api/session/sign-out', async () => {
       await delay(1000)
       const session = await sessionRepository.getSession()
 
@@ -155,7 +153,7 @@ export const getHandlers = async () => {
       return ok()
     }),
 
-    http.get('api/boards', async () => {
+    http.get('/api/boards', async () => {
       const session = await sessionRepository.getSession()
 
       if (!session) {
@@ -171,7 +169,7 @@ export const getHandlers = async () => {
       return ok(boardsToShow)
     }),
 
-    http.post('api/boards', async ({ request }) => {
+    http.post('/api/boards', async ({ request }) => {
       const body = (await request.json()) as CreateBoardDto
 
       const session = await sessionRepository.getSession()
@@ -189,7 +187,7 @@ export const getHandlers = async () => {
       return ok(board)
     }),
 
-    http.get('api/boards/:boardId', async ({ params }) => {
+    http.get('/api/boards/:boardId', async ({ params }) => {
       const boardId = params.boardId as string
 
       const session = await sessionRepository.getSession()
@@ -211,7 +209,7 @@ export const getHandlers = async () => {
       return ok(board)
     }),
 
-    http.patch('api/boards/:boardId', async ({ params, request }) => {
+    http.patch('/api/boards/:boardId', async ({ params, request }) => {
       const body = await request.json()
       const boardId = params.boardId as string
 
@@ -236,7 +234,7 @@ export const getHandlers = async () => {
       return ok(board)
     }),
 
-    http.delete('api/boards/:boardId', async ({ params }) => {
+    http.delete('/api/boards/:boardId', async ({ params }) => {
       const boardId = params.boardId as string
 
       const session = await sessionRepository.getSession()
