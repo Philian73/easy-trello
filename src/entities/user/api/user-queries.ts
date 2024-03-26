@@ -1,3 +1,5 @@
+/* eslint-disable-next-line boundaries/element-types, boundaries/entry-point */
+import { useInvalidateBoards } from '@/entities/board/@x/user'
 import { api } from '@/shared/api'
 import { queryOptions, useMutation, useQueryClient } from '@tanstack/react-query'
 
@@ -37,12 +39,14 @@ export const useCreateUserMutation = () => {
 // ==============================================================================
 export const useRemoveUserMutation = () => {
   const invalidateUsers = useInvalidateUsers()
+  const invalidateBoards = useInvalidateBoards()
 
   return useMutation({
     mutationKey: keys.removeUser(),
     mutationFn: api.deleteUser,
     async onSettled() {
       await invalidateUsers()
+      await invalidateBoards()
     },
   })
 }

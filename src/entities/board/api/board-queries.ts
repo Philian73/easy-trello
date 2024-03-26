@@ -19,7 +19,7 @@ export const boardsQuery = queryOptions({
   queryFn: api.getBoards,
 })
 
-const useInvalidateBoards = () => {
+export const useInvalidateBoards = () => {
   const queryClient = useQueryClient()
 
   return () => queryClient.invalidateQueries({ queryKey: keys.list() })
