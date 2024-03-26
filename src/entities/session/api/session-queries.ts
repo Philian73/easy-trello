@@ -37,13 +37,14 @@ export const useLoginMutation = () => {
 }
 // ==============================================================================
 export const useLogoutMutation = () => {
-  const invalidateSession = useInvalidateSession()
+  const queryClient = useQueryClient()
 
   return useMutation({
     mutationKey: keys.logoutUser(),
     mutationFn: () => api.signOut(),
     async onSuccess() {
-      await invalidateSession()
+      queryClient.removeQueries({ predicate: ({ queryKey }) => !queryKey.includes(keys.root[0]) })
+      await queryClient.resetQueries({ queryKey: keys.root })
     },
   })
 }
