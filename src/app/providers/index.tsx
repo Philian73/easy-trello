@@ -11,8 +11,8 @@ export const Providers: FC<PropsWithChildren> = ({ children }) => {
     <ComposeChildren>
       <QueryClientProvider />
       <Confirmations />
-      {children}
       <Router />
+      {children}
     </ComposeChildren>
   )
 }
