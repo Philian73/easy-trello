@@ -24,7 +24,7 @@ export const RootLayout = () => {
         linksContentSlot={isAuthenticated && <NavLinks />}
         rightContentSlot={isAuthenticated && <Profile />}
       />
-      <main className={'grow'}>
+      <main className={'grow flex flex-col'}>
         <Outlet context={{ isAuthenticated } satisfies AuthOutletContext} />
       </main>
     </div>
