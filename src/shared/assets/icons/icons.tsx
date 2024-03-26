@@ -5,6 +5,30 @@ import { withMemoizedForwardRef } from '@/shared/lib/HOC'
 const svgWrapper = withMemoizedForwardRef<SVGSVGElement, SVGProps<SVGSVGElement>>
 
 export const Icons = {
+  BadSmile: svgWrapper((props, ref) => (
+    <svg
+      fill={'currentColor'}
+      height={40}
+      ref={ref}
+      viewBox={'0 0 40 40'}
+      width={40}
+      xmlns={'http://www.w3.org/2000/svg'}
+      {...props}
+    >
+      <path
+        d={
+          'M20 38.5C9.8 38.5 1.5 30.2 1.5 20S9.8 1.5 20 1.5 38.5 9.8 38.5 20 30.2 38.5 20 38.5m0-36C10.35 2.5 2.5 10.35 2.5 20S10.35 37.5 20 37.5 37.5 29.65 37.5 20 29.65 2.5 20 2.5'
+        }
+      />
+      <path
+        d={
+          'm11.48 29.01-.85-.52A10.97 10.97 0 0 1 20 23.25c3.83 0 7.33 1.94 9.36 5.18l-.85.53a10 10 0 0 0-8.5-4.7A9.98 9.98 0 0 0 11.48 29'
+        }
+      />
+      <circle cx={14.67} cy={15.31} r={1} />
+      <circle cx={25.33} cy={15.31} r={1} />
+    </svg>
+  )),
   ChevronUpDown: svgWrapper((props, ref) => (
     <svg
       fill={'currentColor'}
