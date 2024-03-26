@@ -7,13 +7,18 @@ import { PageSpinner } from '@/shared/ui'
 import { useQuery } from '@tanstack/react-query'
 
 import { getBoardPageSubject, useBoardPageAbility } from '../../model/use-board-page-ability'
+import { BoardNotFound } from '../board-not-found/board-not-found'
 import { BoardProviders } from '../board-providers'
 
 const useBoard = () => {
   const params = useParams<'boardId'>()
   const boardId = params.boardId ?? ''
 
-  const { data: board, isLoading } = useQuery({
+  const {
+    data: board,
+    error,
+    isLoading,
+  } = useQuery({
     ...boardByIdQuery(boardId),
     enabled: !!boardId,
   })
@@ -23,15 +28,20 @@ const useBoard = () => {
   return {
     board,
     boardPageAbility,
+    error,
     isLoading,
   }
 }
 
 export const BoardPage = () => {
-  const { board, boardPageAbility, isLoading } = useBoard()
+  const { board, boardPageAbility, error, isLoading } = useBoard()
 
-  if (!board || isLoading) {
-    return <PageSpinner />
+  if (isLoading) {
+    return <PageSpinner isLoading={isLoading} />
+  }
+
+  if (error || !board) {
+    return <BoardNotFound errorMessage={error?.message} />
   }
 
   const canUpdateAccess = boardPageAbility.can('update-access', getBoardPageSubject(board.ownerId))
