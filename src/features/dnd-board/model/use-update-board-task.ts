@@ -17,14 +17,15 @@ export const useUpdateBoardTask = (cardId: string, taskId: string, onUpdate: () 
     [board.editorIds, board.ownerId]
   )
 
-  const updateBoardTask = async (data: UpdateBoardTaskData) => {
-    try {
-      await updateBoardTaskRaw(cardId, taskId, data)
-      onUpdate()
-      toast.success('Задача успешно обновлена.')
-    } catch (error) {
-      handleErrorResponse(error, toast.error)
-    }
+  const updateBoardTask = (data: UpdateBoardTaskData) => {
+    updateBoardTaskRaw(cardId, taskId, data)
+      .then(() => {
+        onUpdate()
+        toast.success('Задача успешно обновлена.')
+      })
+      .catch(error => {
+        handleErrorResponse(error, toast.error)
+      })
   }
 
   return { canAssigneeUserToTask, updateBoardTask }

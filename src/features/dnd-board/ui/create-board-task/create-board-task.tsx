@@ -41,14 +41,15 @@ export const CreateBoardTask: FC<CreateBoardTaskProps> = ({ cardId }) => {
     )
   }
 
-  const onSubmit = handleSubmit(async data => {
-    try {
-      await createBoardTask(cardId, data)
-      reset()
-      toast.success('Задача успешно создана.')
-    } catch (error) {
-      handleErrorResponse(error, toast.error)
-    }
+  const onSubmit = handleSubmit(data => {
+    createBoardTask(cardId, data)
+      .then(() => {
+        reset()
+        toast.success('Задача успешно создана.')
+      })
+      .catch(error => {
+        handleErrorResponse(error, toast.error)
+      })
   })
 
   return (

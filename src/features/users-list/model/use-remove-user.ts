@@ -6,7 +6,7 @@ import { handleErrorResponse } from '@/shared/lib/utils'
 
 export const useRemoveUser = (userId: string) => {
   const getConfirmation = useGetConfirmation()
-  const { isPending, mutate: removeUserRaw } = useRemoveUserMutation()
+  const { isPending, mutateAsync: removeUserRaw } = useRemoveUserMutation()
 
   const removeUser = async () => {
     const confirmation = await getConfirmation({
@@ -17,14 +17,13 @@ export const useRemoveUser = (userId: string) => {
       return null
     }
 
-    removeUserRaw(userId, {
-      onError: error => {
-        handleErrorResponse(error, toast.error)
-      },
-      onSuccess: () => {
+    removeUserRaw(userId)
+      .then(() => {
         toast.success('Пользователь успешно удалён.')
-      },
-    })
+      })
+      .catch(error => {
+        handleErrorResponse(error, toast.error)
+      })
   }
 
   return {

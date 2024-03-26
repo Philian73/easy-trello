@@ -34,16 +34,15 @@ export const CreateBoardModal: FC<CreateBoardModalProps> = ({ children, onClose,
   })
   const { isPending, mutateAsync: createBoard } = useCreateBoardMutation()
 
-  const onSubmit = handleSubmit(async data => {
-    await createBoard(data, {
-      onError: error => {
-        handleErrorResponse(error, toast.error)
-      },
-      onSuccess: () => {
+  const onSubmit = handleSubmit(data => {
+    createBoard(data)
+      .then(() => {
         onClose()
         toast.success('Доска успешно создана.')
-      },
-    })
+      })
+      .catch(error => {
+        handleErrorResponse(error, toast.error)
+      })
   })
 
   return (

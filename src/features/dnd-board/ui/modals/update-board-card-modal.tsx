@@ -41,14 +41,15 @@ export const UpdateBoardCardModal: FC<UpdateBoardCardModalProps> = ({
 
   const updateBoardCard = useBoardStore().useSelector(state => state.updateBoardCard)
 
-  const onSubmit = handleSubmit(async data => {
-    try {
-      await updateBoardCard(card.id, data)
-      onClose()
-      toast.success('Карточка успешно обновлена.')
-    } catch (error) {
-      handleErrorResponse(error, toast.error)
-    }
+  const onSubmit = handleSubmit(data => {
+    updateBoardCard(card.id, data)
+      .then(() => {
+        onClose()
+        toast.success('Карточка успешно обновлена.')
+      })
+      .catch(error => {
+        handleErrorResponse(error, toast.error)
+      })
   })
 
   return (

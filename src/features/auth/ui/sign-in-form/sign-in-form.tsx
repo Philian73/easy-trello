@@ -26,15 +26,14 @@ export const SignInForm: FC<SignInForm> = ({ className, ...rest }) => {
   })
   const { isPending, mutateAsync: signIn } = useLoginMutation()
 
-  const onSubmit = handleSubmit(async data => {
-    await signIn(data, {
-      onError: error => {
-        handleErrorResponse(error, toast.error)
-      },
-      onSuccess: () => {
+  const onSubmit = handleSubmit(data => {
+    signIn(data)
+      .then(() => {
         toast.success('Авторизация прошла успешно.')
-      },
-    })
+      })
+      .catch(error => {
+        handleErrorResponse(error, toast.error)
+      })
   })
 
   return (

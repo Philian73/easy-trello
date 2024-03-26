@@ -25,18 +25,14 @@ export const useUpdateBoardAccess = (boardId: string, onUpdate: () => void) => {
       }
     }
 
-    await updateBoardRaw(
-      { boardId, patch: data },
-      {
-        onError: error => {
-          handleErrorResponse(error, toast.error)
-        },
-        onSuccess: () => {
-          onUpdate()
-          toast.success('Права доски изменены.')
-        },
-      }
-    )
+    updateBoardRaw({ boardId, patch: data })
+      .then(() => {
+        onUpdate()
+        toast.success('Права доски изменены.')
+      })
+      .catch(error => {
+        handleErrorResponse(error, toast.error)
+      })
   }
 
   return { isPending, updateBoard }

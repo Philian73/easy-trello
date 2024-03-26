@@ -19,12 +19,13 @@ export const useRemoveBoardTask = (cardId: string, taskId: string) => {
       return null
     }
 
-    try {
-      await removeBoardTaskRaw(cardId, taskId)
-      toast.success('Задача успешно удалена.')
-    } catch (error) {
-      handleErrorResponse(error, toast.error)
-    }
+    removeBoardTaskRaw(cardId, taskId)
+      .then(() => {
+        toast.success('Задача успешно удалена.')
+      })
+      .catch(error => {
+        handleErrorResponse(error, toast.error)
+      })
   }
 
   return { removeBoardTask }

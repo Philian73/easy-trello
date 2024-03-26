@@ -34,14 +34,15 @@ export const CreateBoardCardModal: FC<CreateBoardCardModalProps> = ({
   })
   const createBoardCard = useBoardStore().useSelector(state => state.createBoardCard)
 
-  const onSubmit = handleSubmit(async data => {
-    try {
-      await createBoardCard(data)
-      onClose()
-      toast.success('Карточка успешно создана.')
-    } catch (error) {
-      handleErrorResponse(error, toast.error)
-    }
+  const onSubmit = handleSubmit(data => {
+    createBoardCard(data)
+      .then(() => {
+        onClose()
+        toast.success('Карточка успешно создана.')
+      })
+      .catch(error => {
+        handleErrorResponse(error, toast.error)
+      })
   })
 
   return (

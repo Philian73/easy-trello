@@ -19,12 +19,13 @@ export const useRemoveBoardCard = (cardId: string) => {
       return null
     }
 
-    try {
-      await removeBoardCardRaw(cardId)
-      toast.success('Карточка успешно удалена.')
-    } catch (error) {
-      handleErrorResponse(error, toast.error)
-    }
+    removeBoardCardRaw(cardId)
+      .then(() => {
+        toast.success('Карточка успешно удалена.')
+      })
+      .catch(error => {
+        handleErrorResponse(error, toast.error)
+      })
   }
 
   return { removeBoardCard }

@@ -15,7 +15,7 @@ import { RoleSelect } from '../role-select/role-select'
 type CreateUserFormProps = Omit<ComponentPropsWithoutRef<'form'>, 'onSubmit'>
 
 export const CreateUserForm: FC<CreateUserFormProps> = ({ className, ...rest }) => {
-  const { isPending, mutate: createUser } = useCreateUserMutation()
+  const { isPending, mutateAsync: createUser } = useCreateUserMutation()
 
   const {
     control,
@@ -34,15 +34,14 @@ export const CreateUserForm: FC<CreateUserFormProps> = ({ className, ...rest }) 
   })
 
   const onSubmit = handleSubmit(data => {
-    createUser(data, {
-      onError: error => {
-        handleErrorResponse(error, toast.error)
-      },
-      onSuccess: () => {
+    createUser(data)
+      .then(() => {
         reset()
         toast.success('Пользователь успешно создан.')
-      },
-    })
+      })
+      .catch(error => {
+        handleErrorResponse(error, toast.error)
+      })
   })
 
   return (

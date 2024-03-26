@@ -11,13 +11,11 @@ type SignOutButtonProps = Omit<
 >
 
 export const SignOutButton = forwardRef<HTMLButtonElement, SignOutButtonProps>((props, ref) => {
-  const { isPending, mutate: signOut } = useLogoutMutation()
+  const { isPending, mutateAsync: signOut } = useLogoutMutation()
 
   const handleSignOut = () => {
-    signOut(undefined, {
-      onError: error => {
-        handleErrorResponse(error, toast.error)
-      },
+    signOut().catch(error => {
+      handleErrorResponse(error, toast.error)
     })
   }
 
