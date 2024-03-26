@@ -24,6 +24,7 @@
 - [x] axios
 - [x] orval
 - [x] msw (mock server)
+- [x] i18next / react-i18next / i18next-browser-languagedetector / i18next-http-backend
 ---
 
 ### low coupling / high cohesion
