@@ -4,7 +4,8 @@ import { Outlet } from 'react-router-dom'
 
 import { sessionQuery } from '@/entities/session'
 import { SignOutButton } from '@/features/auth'
-import { ThemeSwitcher } from '@/features/theme-switcher'
+import { LangSwitcher } from '@/features/change-language'
+import { ThemeSwitcher } from '@/features/change-theme'
 import { Header, PageSpinner } from '@/shared/ui'
 import { useQuery } from '@tanstack/react-query'
 
@@ -20,20 +21,24 @@ export const RootLayout = () => {
     return <PageSpinner isLoading={isLoading} />
   }
 
-  const renderAuthContentSlot = (
+  const leftContentSlot = isAuthenticated ? <NavLinks /> : <span></span>
+
+  const rightContentSlot = (
     <div className={'flex gap-4 items-center ml-auto'}>
-      <Profile />
-      <SignOutButton />
+      {isAuthenticated && (
+        <>
+          <Profile />
+          <SignOutButton />
+        </>
+      )}
+      <LangSwitcher />
       <ThemeSwitcher />
     </div>
   )
 
   return (
     <div className={'min-h-screen flex flex-col dark:text-white'}>
-      <Header
-        linksContentSlot={isAuthenticated && <NavLinks />}
-        rightContentSlot={isAuthenticated && renderAuthContentSlot}
-      />
+      <Header linksContentSlot={leftContentSlot} rightContentSlot={rightContentSlot} />
       <main className={'grow flex flex-col dark:bg-slate-800'}>
         <Outlet context={{ isAuthenticated } satisfies AuthOutletContext} />
       </main>
