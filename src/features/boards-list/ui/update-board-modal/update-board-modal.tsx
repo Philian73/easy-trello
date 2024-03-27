@@ -3,6 +3,7 @@ import type { BoardPartial } from '@/entities/board'
 
 import type { FC, ReactNode } from 'react'
 import { Controller, useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 
 import { UserMultiSelect, UserSelect } from '@/entities/user'
 import { Dialog, type DialogProps, TextField } from '@/shared/ui'
@@ -27,6 +28,8 @@ export const UpdateBoardModal: FC<UpdateBoardModalProps> = ({
   onClose,
   ...rest
 }) => {
+  const { t } = useTranslation()
+
   const {
     control,
     formState: { errors, isDirty },
@@ -45,15 +48,15 @@ export const UpdateBoardModal: FC<UpdateBoardModalProps> = ({
     <Dialog
       onClose={onClose}
       {...rest}
-      cancelButtonText={'Отмена'}
+      cancelButtonText={t('common.cancel')}
       confirmButtonDisabled={!isDirty || isPending}
-      confirmButtonText={'Обновить'}
-      title={'Редактирование доски'}
+      confirmButtonText={t('common.update')}
+      title={t('pages.boards.update-board.title', { title: board.title })}
     >
       <form className={'flex flex-col gap-4'} noValidate onSubmit={handleSubmit(updateBoard)}>
         <TextField
           errorMessage={errors.title?.message}
-          label={'Название'}
+          label={t('common.name')}
           {...register('title', { required: 'Название доски - обязательное поле' })}
         />
 
@@ -64,7 +67,7 @@ export const UpdateBoardModal: FC<UpdateBoardModalProps> = ({
             <UserSelect
               className={'w-full'}
               errorMessage={errors.ownerId?.message}
-              label={'Администратор'}
+              label={t('common.admin')}
               onChangeUserId={onChange}
               required
               userId={value}
@@ -80,7 +83,7 @@ export const UpdateBoardModal: FC<UpdateBoardModalProps> = ({
             <UserMultiSelect
               className={'w-full'}
               errorMessage={errors.editorIds?.message}
-              label={'Редакторы'}
+              label={t('common.editors')}
               onChangeUserIds={onChange}
               userIds={value ?? []}
             />

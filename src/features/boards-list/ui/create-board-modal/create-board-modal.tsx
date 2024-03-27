@@ -2,6 +2,7 @@ import type { CreateBoardFormData } from '../../model/types'
 
 import type { FC, ReactNode } from 'react'
 import { Controller, useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 
 import { useCreateBoardMutation } from '@/entities/board'
@@ -21,6 +22,8 @@ type CreateBoardModalProps = {
 >
 
 export const CreateBoardModal: FC<CreateBoardModalProps> = ({ children, onClose, ...rest }) => {
+  const { t } = useTranslation()
+
   const {
     control,
     formState: { errors },
@@ -38,7 +41,7 @@ export const CreateBoardModal: FC<CreateBoardModalProps> = ({ children, onClose,
     createBoard(data)
       .then(() => {
         onClose()
-        toast.success('Доска успешно создана.')
+        toast.success(t('pages.boards.add-board.success-info'))
       })
       .catch(error => {
         handleErrorResponse(error, toast.error)
@@ -49,16 +52,18 @@ export const CreateBoardModal: FC<CreateBoardModalProps> = ({ children, onClose,
     <Dialog
       onClose={onClose}
       {...rest}
-      cancelButtonText={'Отмена'}
+      cancelButtonText={t('common.cancel')}
       confirmButtonDisabled={isPending}
-      confirmButtonText={'Создать'}
-      title={'Создание доски'}
+      confirmButtonText={t('common.create')}
+      title={t('pages.boards.add-board.title')}
     >
       <form className={'flex flex-col gap-4'} noValidate onSubmit={onSubmit}>
         <TextField
-          {...register('title', { required: 'Название доски - обязательное поле.' })}
+          {...register('title', {
+            required: t('pages.boards.add-board.name-field.errors.required'),
+          })}
           errorMessage={errors.title?.message}
-          label={'Название'}
+          label={t('pages.boards.add-board.name-field.label')}
         />
 
         <Controller
@@ -68,7 +73,7 @@ export const CreateBoardModal: FC<CreateBoardModalProps> = ({ children, onClose,
             <UserMultiSelect
               className={'w-full'}
               errorMessage={errors.editorIds?.message}
-              label={'Выберите редакторов'}
+              label={t('pages.boards.add-board.editors-select.label')}
               onChangeUserIds={onChange}
               userIds={value}
             />

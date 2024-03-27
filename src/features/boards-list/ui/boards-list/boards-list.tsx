@@ -1,4 +1,5 @@
 import type { ComponentPropsWithoutRef, FC } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 
 import { boardsQuery } from '@/entities/board'
@@ -14,6 +15,8 @@ import { UpdateBoardButton } from '../update-board-button/update-board-button'
 type BoardsListProps = Omit<ComponentPropsWithoutRef<'div'>, 'children'>
 
 export const BoardsList: FC<BoardsListProps> = props => {
+  const { t } = useTranslation()
+
   const { data: usersMap = {} } = useQuery({
     ...usersQuery,
     select: listToRecord,
@@ -34,13 +37,13 @@ export const BoardsList: FC<BoardsListProps> = props => {
 
   return (
     <div {...props}>
-      <h2 className={'text-lg mb-2 font-semibold'}>Все доски</h2>
+      <h2 className={'text-lg mb-2 font-semibold'}>{t('pages.boards.title.all-boards')}</h2>
       <table className={'w-full'}>
         <thead>
           <tr>
-            <th className={'text-start'}>Название:</th>
-            <th className={'text-start'}>Админ:</th>
-            <th className={'text-start'}>Редакторы:</th>
+            <th className={'text-start'}>{t('common.name')}:</th>
+            <th className={'text-start'}>{t('common.admin')}:</th>
+            <th className={'text-start'}>{t('common.editors')}:</th>
             <th className={'w-1'}></th>
           </tr>
         </thead>

@@ -62,6 +62,34 @@
         "confirm": "Are you sure you want to delete the user?",
         "success-info": "User has been successfully deleted."
       }
+    },
+    "boards": {
+      "title": {
+        "boards": "Boards",
+        "all-boards": "All Boards"
+      },
+      "add-board": {
+        "button": "New Board",
+        "title": "Create Board",
+        "name-field": {
+          "label": "Board Name",
+          "errors": {
+            "required": "Board Name is required."
+          }
+        },
+        "editors-select": {
+          "label": "Select editors"
+        },
+        "success-info": "Board has been successfully created."
+      },
+      "update-board": {
+        "title": "Edit Board - {{title}}",
+        "success-info": "Board has been successfully updated."
+      },
+      "remove-board": {
+        "confirm": "Are you sure you want to delete the board?",
+        "success-info": "Board has been successfully deleted."
+      }
     }
   },
   "confirmations": {
@@ -71,6 +99,14 @@
     "title": "Confirm Action"
   },
   "common": {
-    "sign-out-button": "Sign out"
+    "cancel": "Cancel",
+    "create": "Create",
+    "update": "Update",
+    "name": "Name",
+    "admin": "Admin",
+    "user": "User",
+    "editors": "Editors",
+    "sign-out-button": "Sign out",
+    "board-change-owner-confirm": "Are you sure you want to transfer the board to another user?"
   }
 }
