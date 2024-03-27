@@ -46,7 +46,7 @@ export const Board: FC<BoardProps> = ({ className, ...rest }) => {
           <div
             {...rest}
             {...droppableProps}
-            className={clsx('flex bg-gray-100 rounded-xl p-4 px-2', className)}
+            className={clsx('flex bg-gray-100 rounded-xl p-4 px-2 dark:bg-slate-700', className)}
             ref={innerRef}
           >
             {cards.map((card, index) => {

@@ -87,7 +87,7 @@ export const Select = <TTag extends ElementType, TType extends BaseOption, TActu
 
           <Listbox.Options
             className={
-              'absolute top-full mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm z-50'
+              'absolute top-full mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm z-50 dark:bg-slate-700'
             }
           >
             {options?.map((option, i) => (
@@ -95,7 +95,7 @@ export const Select = <TTag extends ElementType, TType extends BaseOption, TActu
                 className={({ active, selected }) =>
                   clsx(
                     'relative flex cursor-default select-none p-4 ',
-                    active ? 'bg-teal-600 text-white' : 'text-slate-900',
+                    active ? 'bg-teal-600 text-white' : 'text-slate-900 dark:text-white',
                     selected && 'bg-teal-500 text-white'
                   )
                 }

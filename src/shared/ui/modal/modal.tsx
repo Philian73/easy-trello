@@ -28,7 +28,7 @@ export const Modal: FC<ModalProps> = ({
         <div className={'flex min-h-full items-center justify-center p-4'}>
           <Dialog.Panel
             className={clsx(
-              'flex flex-col bg-white rounded-lg min-h-[320px] mx-auto relative px-6 pt-6 pb-4',
+              'flex flex-col bg-white rounded-lg min-h-[320px] mx-auto relative px-6 pt-6 pb-4 dark:bg-slate-800 dark:text-white dark:shadow-slate-700/30',
               {
                 full: 'mx-5',
                 md: 'max-w-[640px] w-full',

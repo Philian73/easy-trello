@@ -42,7 +42,8 @@ export const TextField = forwardRef(
           ref={ref}
           {...rest}
           className={clsx(
-            'rounded border border-slate-300 focus:border-teal-600 px-2 h-10 outline-none aria-[invalid=true]:border-rose-600 transition-all duration-200',
+            'rounded border border-slate-300 focus:border-teal-600 px-2 h-10 outline-none aria-[invalid=true]:border-rose-600 transition-[border] duration-200',
+            'dark:border-slate-700 dark:bg-slate-800 dark:focus:border-teal-600',
             className
           )}
         />

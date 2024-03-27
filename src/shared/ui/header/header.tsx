@@ -15,6 +15,7 @@ export const Header = forwardRef<ElementRef<'header'>, HeaderProps>(
         className={clsx(
           'px-4 py-5 border-b border-b-slate-300 flex justify-between items-center bg-white ',
           'grid grid-cols-[1fr_auto_1fr] gap-2',
+          'dark:border-b-slate-700 dark:bg-slate-800',
           className
         )}
         ref={ref}

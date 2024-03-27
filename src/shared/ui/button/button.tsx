@@ -23,7 +23,8 @@ export const Button: ButtonComponent = forwardRef(
         className={clsx(
           'px-4 h-10 rounded flex gap-2 items-center justify-center transition-all duration-300 [&:not(:disabled)]:cursor-pointer disabled:cursor-not-allowed',
           {
-            outlined: 'border border-slate-300 hover:border-slate-500 disabled:opacity-50',
+            outlined:
+              'border border-slate-300 hover:border-slate-500 disabled:opacity-50 transition-[border]',
             primary:
               'text-white bg-teal-500 hover:bg-teal-600 disabled:opacity-50 shadow shadow-teal-500/30',
             secondary:

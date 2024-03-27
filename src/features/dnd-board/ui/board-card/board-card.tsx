@@ -32,7 +32,10 @@ export const BoardCard: FC<BoardCardProps> = ({ card, className, index, ...rest 
         <div
           {...rest}
           {...draggableProps}
-          className={clsx('w-[300px] bg-white rounded-lg py-3 px-2 mx-2 flex flex-col', className)}
+          className={clsx(
+            'w-[300px] bg-white rounded-lg py-3 px-2 mx-2 flex flex-col dark:bg-slate-800',
+            className
+          )}
           ref={innerRef}
         >
           <div className={'flex items-center gap-2 [&_.action]:hover:opacity-100'}>
