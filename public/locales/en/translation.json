@@ -90,6 +90,64 @@
         "confirm": "Are you sure you want to delete the board?",
         "success-info": "Board has been successfully deleted."
       }
+    },
+    "board": {
+      "add-card-button": "Add Card",
+      "search": {
+        "task": "Search Task"
+      },
+      "access": {
+        "empty-editors": "No editors.",
+        "update": {
+          "title": "Access Control",
+          "success-info": "Board permissions have been updated."
+        }
+      },
+      "cards": {
+        "empty": "The list of cards is empty :C",
+        "add": {
+          "title": "Create Card",
+          "name-field": {
+            "label": "Card Name",
+            "errors": {
+              "required": "Card Name is required."
+            }
+          },
+          "success-info": "Card '{{title}}' has been successfully created."
+        },
+        "update": {
+          "title": "Edit Card - '{{title}}'",
+          "name-field": {
+            "errors": {
+              "required": "Card cannot have an empty name."
+            }
+          },
+          "success-info": "Card has been successfully updated."
+        },
+        "remove": {
+          "title": "Delete Card",
+          "confirm": "Are you sure you want to delete this card?",
+          "success-info": "Card has been successfully deleted."
+        }
+      },
+      "tasks": {
+        "add": {
+          "button": "Add +",
+          "placeholder": "New Task",
+          "error": "Task name cannot be empty.",
+          "success-info": "Task '{{title}}' has been successfully created."
+        },
+        "update": {
+          "title": "Edit Task",
+          "error": "Task name cannot be empty.",
+          "success-info": "Task has been successfully updated."
+        },
+        "remove": {
+          "title": "Delete Task",
+          "confirm": "Are you sure you want to delete this task?",
+          "success-info": "Task has been successfully deleted."
+        }
+      }
     }
   },
   "confirmations": {
@@ -102,11 +160,14 @@
     "cancel": "Cancel",
     "create": "Create",
     "update": "Update",
-    "name": "Name",
     "admin": "Admin",
     "user": "User",
+    "name": "Name",
+    "executor": "Executor",
+    "description": "Description",
     "editors": "Editors",
-    "sign-out-button": "Sign out",
+    "no-select": "No selection",
+    "sign-out-button": "Sign Out",
     "board-change-owner-confirm": "Are you sure you want to transfer the board to another user?"
   }
 }

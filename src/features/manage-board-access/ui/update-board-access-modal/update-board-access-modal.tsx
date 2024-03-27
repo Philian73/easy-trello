@@ -2,6 +2,7 @@ import type { UpdateBoardAccessData } from '../../model/types'
 
 import type { FC, ReactNode } from 'react'
 import { Controller, useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 
 import { UserMultiSelect, UserSelect } from '@/entities/user'
 import { Dialog, type DialogProps } from '@/shared/ui'
@@ -25,6 +26,8 @@ export const UpdateBoardAccessModal: FC<UpdateBoardAccessModalProps> = ({
   onClose,
   ...rest
 }) => {
+  const { t } = useTranslation()
+
   const { boardAccessInfo } = useManageBoardAccessDeps()
 
   const {
@@ -44,10 +47,10 @@ export const UpdateBoardAccessModal: FC<UpdateBoardAccessModalProps> = ({
     <Dialog
       onClose={onClose}
       {...rest}
-      cancelButtonText={'Отмена'}
+      cancelButtonText={t('common.cancel')}
       confirmButtonDisabled={!isDirty}
-      confirmButtonText={'Обновить'}
-      title={'Управление доступом'}
+      confirmButtonText={t('common.update')}
+      title={t('pages.board.access.update.title')}
     >
       <form className={'flex flex-col gap-4'} noValidate onSubmit={handleSubmit(updateBoard)}>
         <Controller
@@ -57,14 +60,14 @@ export const UpdateBoardAccessModal: FC<UpdateBoardAccessModalProps> = ({
             <UserSelect
               className={'w-full'}
               errorMessage={errors.ownerId?.message}
-              label={'Администратор'}
+              label={t('common.admin')}
               onChangeUserId={onChange}
               required
               userId={value}
             />
           )}
           rules={{
-            required: 'Администратор доски - обязательное поле.',
+            required: true,
           }}
         />
 
@@ -75,7 +78,7 @@ export const UpdateBoardAccessModal: FC<UpdateBoardAccessModalProps> = ({
             <UserMultiSelect
               className={'w-full'}
               errorMessage={errors.editorIds?.message}
-              label={'Редакторы'}
+              label={t('common.editors')}
               onChangeUserIds={onChange}
               userIds={value ?? []}
             />

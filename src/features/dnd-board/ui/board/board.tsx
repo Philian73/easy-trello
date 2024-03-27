@@ -1,5 +1,6 @@
 import type { ComponentPropsWithoutRef, FC } from 'react'
 import { DragDropContext, type DropResult, Droppable } from 'react-beautiful-dnd'
+import { useTranslation } from 'react-i18next'
 
 import clsx from 'clsx'
 
@@ -10,6 +11,8 @@ import { BoardCard } from '../board-card/board-card'
 type BoardProps = Omit<ComponentPropsWithoutRef<'div'>, 'children'>
 
 export const Board: FC<BoardProps> = ({ className, ...rest }) => {
+  const { t } = useTranslation()
+
   const boardStore = useBoardStore()
   const cards = boardStore.useSelector(state => state.board.cards)
   const moveBoardCard = boardStore.useSelector(state => state.moveBoardCard)
@@ -18,7 +21,7 @@ export const Board: FC<BoardProps> = ({ className, ...rest }) => {
   const { filterTasksWithQuery, query } = useBoardSearch()
 
   if (cards.length === 0) {
-    return <span className={'mt-5 text-xl'}>Список карточек пуст.</span>
+    return <span className={'mt-5 text-xl'}>{t('pages.board.cards.empty')}</span>
   }
 
   const onDragEnd = async (e: DropResult) => {

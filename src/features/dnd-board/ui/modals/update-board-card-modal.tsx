@@ -3,6 +3,7 @@ import type { BoardCard } from '@/entities/board'
 
 import type { FC, ReactNode } from 'react'
 import { useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 
 import { handleErrorResponse } from '@/shared/lib/utils'
@@ -28,6 +29,8 @@ export const UpdateBoardCardModal: FC<UpdateBoardCardModalProps> = ({
   onClose,
   ...rest
 }) => {
+  const { t } = useTranslation()
+
   const {
     control,
     formState: { errors, isDirty },
@@ -45,7 +48,7 @@ export const UpdateBoardCardModal: FC<UpdateBoardCardModalProps> = ({
     updateBoardCard(card.id, data)
       .then(() => {
         onClose()
-        toast.success('Карточка успешно обновлена.')
+        toast.success(t('pages.board.cards.update.success-info', { title: data.title }))
       })
       .catch(error => {
         handleErrorResponse(error, toast.error)
@@ -56,16 +59,18 @@ export const UpdateBoardCardModal: FC<UpdateBoardCardModalProps> = ({
     <Dialog
       onClose={onClose}
       {...rest}
-      cancelButtonText={'Отмена'}
+      cancelButtonText={t('common.cancel')}
       confirmButtonDisabled={!isDirty}
-      confirmButtonText={'Обновить'}
-      title={'Редактирование карточки'}
+      confirmButtonText={t('common.update')}
+      title={t('pages.board.cards.update.title', { title: card.title })}
     >
       <form className={'flex flex-col grow'} noValidate onSubmit={onSubmit}>
         <TextField
           errorMessage={errors.title?.message}
-          label={'Название'}
-          {...register('title', { required: 'Название карточки - обязательное поле.' })}
+          label={t('common.name')}
+          {...register('title', {
+            required: t('pages.board.cards.update.name-field.errors.required'),
+          })}
         />
 
         {children}

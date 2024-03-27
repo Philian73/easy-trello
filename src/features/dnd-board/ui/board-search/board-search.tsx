@@ -1,4 +1,5 @@
 import { type ChangeEvent, type ComponentPropsWithoutRef, forwardRef } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import { TextField } from '@/shared/ui'
 import clsx from 'clsx'
@@ -12,6 +13,8 @@ type BoardSearchProps = Omit<
 
 export const BoardSearch = forwardRef<HTMLInputElement, BoardSearchProps>(
   ({ rootProps, ...rest }, ref) => {
+    const { t } = useTranslation()
+
     const { query, setQuery } = useBoardSearch()
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -24,7 +27,7 @@ export const BoardSearch = forwardRef<HTMLInputElement, BoardSearchProps>(
         rootProps={{ ...rootProps, className: clsx('w-[250px]', rootProps?.className) }}
         {...rest}
         onChange={handleChange}
-        placeholder={'Поиск задачи'}
+        placeholder={t('pages.board.search.task')}
         value={query}
       />
     )

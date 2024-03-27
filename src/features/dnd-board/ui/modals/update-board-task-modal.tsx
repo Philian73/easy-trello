@@ -3,6 +3,7 @@ import type { BoardTask } from '@/entities/board'
 
 import type { FC, ReactNode } from 'react'
 import { Controller, useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 
 import { UserSelect } from '@/entities/user'
 import { Dialog, type DialogProps, TextField } from '@/shared/ui'
@@ -29,6 +30,8 @@ export const UpdateBoardTaskModal: FC<UpdateBoardTaskModalProps> = ({
   task,
   ...rest
 }) => {
+  const { t } = useTranslation()
+
   const {
     control,
     formState: { errors, isDirty },
@@ -47,21 +50,27 @@ export const UpdateBoardTaskModal: FC<UpdateBoardTaskModalProps> = ({
     <Dialog
       onClose={onClose}
       {...rest}
-      cancelButtonText={'Отмена'}
+      cancelButtonText={t('common.cancel')}
       confirmButtonDisabled={!isDirty}
-      confirmButtonText={'Обновить'}
-      title={'Редактирование задачи'}
+      confirmButtonText={t('common.update')}
+      title={t('pages.board.tasks.update.title')}
     >
       <form noValidate onSubmit={handleSubmit(updateBoardTask)}>
         <TextField
           errorMessage={errors.title?.message}
-          label={'Название'}
-          {...register('title', { required: 'Название задачи - обязательно поле.' })}
+          label={t('common.name')}
+          {...register('title', {
+            validate: str => {
+              if (str?.trim().length === 0) {
+                return t('pages.board.tasks.update.error')
+              }
+            },
+          })}
         />
 
         <TextField.TextArea
           errorMessage={errors.description?.message}
-          label={'Описание'}
+          label={t('common.description')}
           rows={4}
           {...register('description')}
         />
@@ -74,7 +83,7 @@ export const UpdateBoardTaskModal: FC<UpdateBoardTaskModalProps> = ({
               className={'w-full'}
               errorMessage={errors.assigneeId?.message}
               filterOptions={canAssigneeUserToTask}
-              label={'Исполнитель'}
+              label={t('common.executor')}
               onChangeUserId={onChange}
               userId={value}
             />

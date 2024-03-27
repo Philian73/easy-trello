@@ -2,6 +2,7 @@ import type { CreateBoardTaskData } from '../../model/types'
 
 import { type FC, useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 
 import { handleErrorResponse } from '@/shared/lib/utils'
@@ -14,6 +15,8 @@ type CreateBoardTaskProps = {
 }
 
 export const CreateBoardTask: FC<CreateBoardTaskProps> = ({ cardId }) => {
+  const { t } = useTranslation()
+
   const [create, setCreate] = useState(false)
 
   const createBoardTask = useBoardStore().useSelector(state => state.createBoardTask)
@@ -36,16 +39,16 @@ export const CreateBoardTask: FC<CreateBoardTaskProps> = ({ cardId }) => {
         onClick={() => setCreate(true)}
         type={'button'}
       >
-        Добавить +
+        {t('pages.board.tasks.add.button')}
       </button>
     )
   }
 
-  const onSubmit = handleSubmit(data => {
-    createBoardTask(cardId, data)
+  const onSubmit = handleSubmit(({ title }) => {
+    createBoardTask(cardId, { title: title.trim() })
       .then(() => {
         reset()
-        toast.success('Задача успешно создана.')
+        toast.success(t('pages.board.tasks.add.success-info', { title }))
       })
       .catch(error => {
         handleErrorResponse(error, toast.error)
@@ -57,10 +60,14 @@ export const CreateBoardTask: FC<CreateBoardTaskProps> = ({ cardId }) => {
       <TextField
         autoFocus
         errorMessage={errors.title?.message}
-        placeholder={'Новая задача'}
+        placeholder={t('pages.board.tasks.add.placeholder')}
         {...register('title', {
           onBlur: () => setCreate(false),
-          required: 'Название задачи - обязательное поле.',
+          validate: str => {
+            if (str.trim().length === 0) {
+              return t('pages.board.tasks.add.error')
+            }
+          },
         })}
       />
     </form>

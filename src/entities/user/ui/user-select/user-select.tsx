@@ -1,6 +1,7 @@
 import type { User } from '../../model/types'
 
 import type { FC } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import { Select } from '@/shared/ui'
 import { useQuery } from '@tanstack/react-query'
@@ -27,6 +28,8 @@ export const UserSelect: FC<UserSelectProps> = ({
   required,
   userId,
 }) => {
+  const { t } = useTranslation()
+
   const { data: users } = useQuery({
     ...usersQuery,
     initialData: [],
@@ -50,13 +53,13 @@ export const UserSelect: FC<UserSelectProps> = ({
       onChange={onChangeUser}
       options={options}
       renderOption={user =>
-        user?.name ? <UserPreview size={'sm'} {...user} /> : <span>Не выбрано</span>
+        user?.name ? <UserPreview size={'sm'} {...user} /> : <span>{t('common.no-select')}</span>
       }
       renderPreview={user =>
         user?.name ? (
           <UserPreview className={'shrink-0 px-1'} size={'sm'} {...user} />
         ) : (
-          <span>Не выбрано</span>
+          <span>{t('common.no-select')}</span>
         )
       }
       value={user ?? options[0]}

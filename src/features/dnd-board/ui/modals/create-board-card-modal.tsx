@@ -2,6 +2,7 @@ import type { CreateBoardCardData } from '../../model/types'
 
 import type { FC, ReactNode } from 'react'
 import { useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 
 import { handleErrorResponse } from '@/shared/lib/utils'
@@ -22,6 +23,8 @@ export const CreateBoardCardModal: FC<CreateBoardCardModalProps> = ({
   onClose,
   ...rest
 }) => {
+  const { t } = useTranslation()
+
   const {
     control,
     formState: { errors },
@@ -38,7 +41,7 @@ export const CreateBoardCardModal: FC<CreateBoardCardModalProps> = ({
     createBoardCard(data)
       .then(() => {
         onClose()
-        toast.success('Карточка успешно создана.')
+        toast.success(t('pages.board.cards.add.success-info', { title: data.title }))
       })
       .catch(error => {
         handleErrorResponse(error, toast.error)
@@ -49,15 +52,17 @@ export const CreateBoardCardModal: FC<CreateBoardCardModalProps> = ({
     <Dialog
       onClose={onClose}
       {...rest}
-      cancelButtonText={'Отмена'}
-      confirmButtonText={'Создать'}
-      title={'Создание карточки'}
+      cancelButtonText={t('common.cancel')}
+      confirmButtonText={t('common.create')}
+      title={t('pages.board.cards.add.title')}
     >
       <form className={'flex flex-col grow'} noValidate onSubmit={onSubmit}>
         <TextField
           errorMessage={errors.title?.message}
-          label={'Название'}
-          {...register('title', { required: 'Название карточки - обязательное поле.' })}
+          label={t('pages.board.cards.add.name-field.label')}
+          {...register('title', {
+            required: t('pages.board.cards.add.name-field.errors.required'),
+          })}
         />
 
         {children}
