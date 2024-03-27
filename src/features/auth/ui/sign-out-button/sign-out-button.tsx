@@ -1,4 +1,5 @@
 import { type ComponentPropsWithoutRef, forwardRef } from 'react'
+import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 
 import { useLogoutMutation } from '@/entities/session'
@@ -11,6 +12,8 @@ type SignOutButtonProps = Omit<
 >
 
 export const SignOutButton = forwardRef<HTMLButtonElement, SignOutButtonProps>((props, ref) => {
+  const { t } = useTranslation()
+
   const { isPending, mutateAsync: signOut } = useLogoutMutation()
 
   const handleSignOut = () => {
@@ -21,7 +24,7 @@ export const SignOutButton = forwardRef<HTMLButtonElement, SignOutButtonProps>((
 
   return (
     <Button ref={ref} variant={'outlined'} {...props} disabled={isPending} onClick={handleSignOut}>
-      Выйти
+      {t('common.sign-out-button')}
     </Button>
   )
 })

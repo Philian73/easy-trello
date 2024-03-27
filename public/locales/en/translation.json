@@ -69,5 +69,8 @@
     "confirm_button": "Confirm",
     "description": "You sure you want to proceed?",
     "title": "Confirm Action"
+  },
+  "common": {
+    "sign-out-button": "Sign out"
   }
 }
