@@ -1,72 +1,72 @@
 {
   "pages": {
-    "sign_in": {
+    "sign-in": {
       "title": "Авторизация",
-      "email_field": {
+      "email-field": {
         "label": "Email",
         "errors": {
           "required": "Email - обязательное поле."
         }
       },
-      "password_field": {
+      "password-field": {
         "label": "Пароль",
         "errors": {
           "required": "Пароль - обязательное поле."
         }
       },
-      "submit_button": "Войти",
-      "success_info": "Авторизация прошла успешно."
+      "submit-button": "Войти",
+      "success-info": "Авторизация прошла успешно."
     },
     "users": {
       "title": {
         "users": "Пользователи",
-        "add_user": "Добавить пользователя",
-        "all_users": "Все пользователи"
+        "add-user": "Добавить пользователя",
+        "all-users": "Все пользователи"
       },
-      "add_user_form": {
-        "email_field": {
+      "add-user-form": {
+        "email-field": {
           "label": "Email",
           "errors": {
             "required": "Email пользователя - обязательное поле."
           }
         },
-        "password_field": {
+        "password-field": {
           "label": "Пароль",
           "errors": {
             "required": "Пароль пользователя - обязательное поле."
           }
         },
-        "name_field": {
+        "name-field": {
           "label": "Имя нового пользователя",
           "errors": {
             "required": "Имя пользователя - обязательное поле."
           }
         },
-        "role_select": {
+        "role-select": {
           "label": "Роль пользователя",
           "options": {
             "admin": "Администратор",
             "user": "Пользователь"
           }
         },
-        "avatar_select": {
+        "avatar-select": {
           "label": "Выберите аватар пользователя",
           "errors": {
             "required": "Аватар пользователя обязателен."
           }
         },
-        "submit_button": "Создать",
-        "success_info": "Пользователь {{name}} успешно создан."
+        "submit-button": "Создать",
+        "success-info": "Пользователь {{name}} успешно создан."
       },
-      "remove_user": {
+      "remove-user": {
         "confirm": "Вы действительно хотите удалить пользователя?",
-        "success_info": "Пользователь успешно удалён."
+        "success-info": "Пользователь успешно удалён."
       }
     }
   },
   "confirmations": {
-    "cancel_button": "Отмена",
-    "confirm_button": "Подтвердить",
+    "cancel-button": "Отмена",
+    "confirm-button": "Подтвердить",
     "description": "Вы уверены, что хотите продолжить?",
     "title": "Подтвердите действие"
   },

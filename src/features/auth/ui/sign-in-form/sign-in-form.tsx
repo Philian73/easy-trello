@@ -32,7 +32,7 @@ export const SignInForm: FC<SignInForm> = ({ className, ...rest }) => {
   const onSubmit = handleSubmit(data => {
     signIn(data)
       .then(() => {
-        toast.success(t('pages.sign_in.success_info'))
+        toast.success(t('pages.sign-in.success-info'))
       })
       .catch(error => {
         handleErrorResponse(error, toast.error)
@@ -48,22 +48,22 @@ export const SignInForm: FC<SignInForm> = ({ className, ...rest }) => {
     >
       <TextField
         errorMessage={errors.email?.message}
-        label={t('pages.sign_in.email_field.label')}
+        label={t('pages.sign-in.email-field.label')}
         placeholder={'example@ex.com'}
         type={'email'}
-        {...register('email', { required: t('pages.sign_in.email_field.errors.required') })}
+        {...register('email', { required: t('pages.sign-in.email-field.errors.required') })}
       />
 
       <TextField
         errorMessage={errors.password?.message}
-        label={t('pages.sign_in.password_field.label')}
+        label={t('pages.sign-in.password-field.label')}
         placeholder={'*****'}
         type={'password'}
-        {...register('password', { required: t('pages.sign_in.password_field.errors.required') })}
+        {...register('password', { required: t('pages.sign-in.password-field.errors.required') })}
       />
 
       <Button disabled={isPending} type={'submit'}>
-        {t('pages.sign_in.submit_button')}
+        {t('pages.sign-in.submit-button')}
       </Button>
 
       {import.meta.env.DEV && <DevTool control={control} />}

@@ -23,8 +23,8 @@ export const RoleSelect: FC<RoleSelectProps> = ({ onChangeRole, role, ...rest })
 
   const { options, value } = useMemo(() => {
     const options: Option[] = [
-      { id: 'user', label: t('pages.users.add_user_form.role_select.options.user') },
-      { id: 'admin', label: t('pages.users.add_user_form.role_select.options.admin') },
+      { id: 'user', label: t('pages.users.add-user-form.role-select.options.user') },
+      { id: 'admin', label: t('pages.users.add-user-form.role-select.options.admin') },
     ]
     const value = role ? options.find(option => option.id === role) : undefined
 

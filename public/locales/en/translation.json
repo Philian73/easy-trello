@@ -1,72 +1,72 @@
 {
   "pages": {
-    "sign_in": {
+    "sign-in": {
       "title": "Sign In",
-      "email_field": {
+      "email-field": {
         "label": "Email",
         "errors": {
           "required": "Email is a required field."
         }
       },
-      "password_field": {
+      "password-field": {
         "label": "Password",
         "errors": {
           "required": "Password is a required field."
         }
       },
-      "submit_button": "Sign in",
-      "success_info": "Authorization was successful."
+      "submit-button": "Sign in",
+      "success-info": "Authorization was successful."
     },
     "users": {
       "title": {
         "users": "Users",
-        "add_user": "Add User",
-        "all_users": "All Users"
+        "add-user": "Add User",
+        "all-users": "All Users"
       },
-      "add_user_form": {
-        "email_field": {
+      "add-user-form": {
+        "email-field": {
           "label": "Email",
           "errors": {
             "required": "User email is required."
           }
         },
-        "password_field": {
+        "password-field": {
           "label": "Password",
           "errors": {
             "required": "User password is required."
           }
         },
-        "name_field": {
+        "name-field": {
           "label": "New User's Name",
           "errors": {
             "required": "User name is required."
           }
         },
-        "role_select": {
+        "role-select": {
           "label": "User Role",
           "options": {
             "admin": "Admin",
             "user": "User"
           }
         },
-        "avatar_select": {
+        "avatar-select": {
           "label": "Select User Avatar",
           "errors": {
             "required": "User avatar is required."
           }
         },
-        "submit_button": "Create",
-        "success_info": "User {{name}} has been successfully created."
+        "submit-button": "Create",
+        "success-info": "User {{name}} has been successfully created."
       },
-      "remove_user": {
+      "remove-user": {
         "confirm": "Are you sure you want to delete the user?",
-        "success_info": "User has been successfully deleted."
+        "success-info": "User has been successfully deleted."
       }
     }
   },
   "confirmations": {
-    "cancel_button": "Cancel",
-    "confirm_button": "Confirm",
+    "cancel-button": "Cancel",
+    "confirm-button": "Confirm",
     "description": "You sure you want to proceed?",
     "title": "Confirm Action"
   },

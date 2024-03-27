@@ -13,7 +13,7 @@ export const useRemoveUser = (userId: string) => {
 
   const removeUser = async () => {
     const confirmation = await getConfirmation({
-      description: t('pages.users.remove_user.confirm'),
+      description: t('pages.users.remove-user.confirm'),
     })
 
     if (!confirmation) {
@@ -22,7 +22,7 @@ export const useRemoveUser = (userId: string) => {
 
     removeUserRaw(userId)
       .then(() => {
-        toast.success(t('pages.users.remove_user.success_info'))
+        toast.success(t('pages.users.remove-user.success-info'))
       })
       .catch(error => {
         handleErrorResponse(error, toast.error)

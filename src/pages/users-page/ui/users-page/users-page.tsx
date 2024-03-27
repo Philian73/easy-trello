@@ -16,12 +16,12 @@ export const UsersPage = () => {
 
       {canCreateUser && (
         <div className={'mt-10'}>
-          <h2 className={'text-lg mb-2 font-semibold'}>{t('pages.users.title.add_user')}</h2>
+          <h2 className={'text-lg mb-2 font-semibold'}>{t('pages.users.title.add-user')}</h2>
           <CreateUserForm />
         </div>
       )}
 
-      <h2 className={'text-lg mb-2 font-semibold mt-10'}>{t('pages.users.title.all_users')}</h2>
+      <h2 className={'text-lg mb-2 font-semibold mt-10'}>{t('pages.users.title.all-users')}</h2>
 
       <UsersList />
     </CenterContentLayout>

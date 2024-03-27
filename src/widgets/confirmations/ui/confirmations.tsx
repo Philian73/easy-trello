@@ -19,8 +19,8 @@ export function Confirmations({ children }: { children?: ReactNode }) {
   const getConfirmation = (params: ConfirmationParams) => {
     return new Promise<boolean>(res => {
       setModalParams({
-        cancelText: t('confirmations.cancel_button'),
-        confirmText: t('confirmations.confirm_button'),
+        cancelText: t('confirmations.cancel-button'),
+        confirmText: t('confirmations.confirm-button'),
         description: t('confirmations.description'),
         title: t('confirmations.title'),
         ...params,

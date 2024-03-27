@@ -40,7 +40,7 @@ export const CreateUserForm: FC<CreateUserFormProps> = ({ className, ...rest }) 
     createUser(data)
       .then(() => {
         reset()
-        toast.success(t('pages.users.add_user_form.success_info', { name: data.name }))
+        toast.success(t('pages.users.add-user-form.success-info', { name: data.name }))
       })
       .catch(error => {
         handleErrorResponse(error, toast.error)
@@ -57,29 +57,29 @@ export const CreateUserForm: FC<CreateUserFormProps> = ({ className, ...rest }) 
       <div className={'grid gap-2 grid-cols-2'}>
         <TextField
           errorMessage={errors.email?.message}
-          label={t('pages.users.add_user_form.email_field.label')}
+          label={t('pages.users.add-user-form.email-field.label')}
           placeholder={'example@ex.com'}
           type={'email'}
           {...register('email', {
-            required: t('pages.users.add_user_form.email_field.errors.required'),
+            required: t('pages.users.add-user-form.email-field.errors.required'),
           })}
         />
 
         <TextField
           errorMessage={errors.password?.message}
-          label={t('pages.users.add_user_form.password_field.label')}
+          label={t('pages.users.add-user-form.password-field.label')}
           placeholder={'*****'}
           type={'password'}
           {...register('password', {
-            required: t('pages.users.add_user_form.password_field.errors.required'),
+            required: t('pages.users.add-user-form.password-field.errors.required'),
           })}
         />
 
         <TextField
           errorMessage={errors.name?.message}
-          label={t('pages.users.add_user_form.name_field.label')}
+          label={t('pages.users.add-user-form.name-field.label')}
           {...register('name', {
-            required: t('pages.users.add_user_form.name_field.errors.required'),
+            required: t('pages.users.add-user-form.name-field.errors.required'),
           })}
         />
 
@@ -89,7 +89,7 @@ export const CreateUserForm: FC<CreateUserFormProps> = ({ className, ...rest }) 
           render={({ field: { onChange, value } }) => (
             <RoleSelect
               errorMessage={errors.role?.message}
-              label={t('pages.users.add_user_form.role_select.label')}
+              label={t('pages.users.add-user-form.role-select.label')}
               onChangeRole={onChange}
               role={value}
             />
@@ -106,16 +106,16 @@ export const CreateUserForm: FC<CreateUserFormProps> = ({ className, ...rest }) 
             errorMessage={errors.avatarId?.message}
             getSrc={getAvatarUrl}
             images={Array.from({ length: 8 }, (_, i) => i + 1)}
-            label={t('pages.users.add_user_form.avatar_select.label')}
+            label={t('pages.users.add-user-form.avatar-select.label')}
             onChange={onChange}
             value={value}
           />
         )}
-        rules={{ required: t('pages.users.add_user_form.avatar_select.errors.required') }}
+        rules={{ required: t('pages.users.add-user-form.avatar-select.errors.required') }}
       />
 
       <Button disabled={isPending} type={'submit'}>
-        {t('pages.users.add_user_form.submit_button')}
+        {t('pages.users.add-user-form.submit-button')}
       </Button>
 
       {import.meta.env.DEV && <DevTool control={control} />}
