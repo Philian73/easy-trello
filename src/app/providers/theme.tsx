@@ -25,7 +25,7 @@ export const ThemeProvider: FC<PropsWithChildren> = ({ children }) => {
     if (typeof window !== 'undefined') {
       document.body.setAttribute('data-theme', theme)
     }
-  }, [theme])
+  }, [theme, setTheme])
 
   return (
     <themeContext.Provider
