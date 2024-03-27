@@ -16,6 +16,58 @@
       },
       "submit_button": "Sign in",
       "success_info": "Authorization was successful."
+    },
+    "users": {
+      "title": {
+        "users": "Users",
+        "add_user": "Add User",
+        "all_users": "All Users"
+      },
+      "add_user_form": {
+        "email_field": {
+          "label": "Email",
+          "errors": {
+            "required": "User email is required."
+          }
+        },
+        "password_field": {
+          "label": "Password",
+          "errors": {
+            "required": "User password is required."
+          }
+        },
+        "name_field": {
+          "label": "New User's Name",
+          "errors": {
+            "required": "User name is required."
+          }
+        },
+        "role_select": {
+          "label": "User Role",
+          "options": {
+            "admin": "Admin",
+            "user": "User"
+          }
+        },
+        "avatar_select": {
+          "label": "Select User Avatar",
+          "errors": {
+            "required": "User avatar is required."
+          }
+        },
+        "submit_button": "Create",
+        "success_info": "User {{name}} has been successfully created."
+      },
+      "remove_user": {
+        "confirm": "Are you sure you want to delete the user?",
+        "success_info": "User has been successfully deleted."
+      }
     }
+  },
+  "confirmations": {
+    "cancel_button": "Cancel",
+    "confirm_button": "Confirm",
+    "description": "You sure you want to proceed?",
+    "title": "Confirm Action"
   }
 }

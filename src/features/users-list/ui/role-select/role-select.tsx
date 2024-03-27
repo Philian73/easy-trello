@@ -1,6 +1,7 @@
 import type { UserRole } from '@/entities/user'
 
 import { type FC, useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import { Select } from '@/shared/ui'
 
@@ -17,15 +18,18 @@ type RoleSelectProps = {
   role?: UserRole
 }
 
-const options: Option[] = [
-  { id: 'user', label: 'Пользователь' },
-  { id: 'admin', label: 'Администратор' },
-]
-
 export const RoleSelect: FC<RoleSelectProps> = ({ onChangeRole, role, ...rest }) => {
-  const value = useMemo(() => {
-    return role ? options.find(option => option.id === role) : undefined
-  }, [role])
+  const { t } = useTranslation()
+
+  const { options, value } = useMemo(() => {
+    const options: Option[] = [
+      { id: 'user', label: t('pages.users.add_user_form.role_select.options.user') },
+      { id: 'admin', label: t('pages.users.add_user_form.role_select.options.admin') },
+    ]
+    const value = role ? options.find(option => option.id === role) : undefined
+
+    return { options, value }
+  }, [t, role])
 
   const onChange = (option: Option) => {
     onChangeRole(option.id)

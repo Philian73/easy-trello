@@ -2,6 +2,7 @@ import type { CreateUserFormData } from '../../model/types'
 
 import type { ComponentPropsWithoutRef, FC } from 'react'
 import { Controller, useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 
 import { getAvatarUrl, useCreateUserMutation } from '@/entities/user'
@@ -15,6 +16,8 @@ import { RoleSelect } from '../role-select/role-select'
 type CreateUserFormProps = Omit<ComponentPropsWithoutRef<'form'>, 'onSubmit'>
 
 export const CreateUserForm: FC<CreateUserFormProps> = ({ className, ...rest }) => {
+  const { t } = useTranslation()
+
   const { isPending, mutateAsync: createUser } = useCreateUserMutation()
 
   const {
@@ -37,7 +40,7 @@ export const CreateUserForm: FC<CreateUserFormProps> = ({ className, ...rest }) 
     createUser(data)
       .then(() => {
         reset()
-        toast.success('Пользователь успешно создан.')
+        toast.success(t('pages.users.add_user_form.success_info', { name: data.name }))
       })
       .catch(error => {
         handleErrorResponse(error, toast.error)
@@ -54,24 +57,30 @@ export const CreateUserForm: FC<CreateUserFormProps> = ({ className, ...rest }) 
       <div className={'grid gap-2 grid-cols-2'}>
         <TextField
           errorMessage={errors.email?.message}
-          label={'Email'}
+          label={t('pages.users.add_user_form.email_field.label')}
           placeholder={'example@ex.com'}
           type={'email'}
-          {...register('email', { required: 'Email пользователя - обязательное поле.' })}
+          {...register('email', {
+            required: t('pages.users.add_user_form.email_field.errors.required'),
+          })}
         />
 
         <TextField
           errorMessage={errors.password?.message}
-          label={'Пароль'}
+          label={t('pages.users.add_user_form.password_field.label')}
           placeholder={'*****'}
           type={'password'}
-          {...register('password', { required: 'Пароль пользователя - обязательное поле.' })}
+          {...register('password', {
+            required: t('pages.users.add_user_form.password_field.errors.required'),
+          })}
         />
 
         <TextField
           errorMessage={errors.name?.message}
-          label={'Имя нового пользователя'}
-          {...register('name', { required: 'Имя пользователя - обязательное поле.' })}
+          label={t('pages.users.add_user_form.name_field.label')}
+          {...register('name', {
+            required: t('pages.users.add_user_form.name_field.errors.required'),
+          })}
         />
 
         <Controller
@@ -80,7 +89,7 @@ export const CreateUserForm: FC<CreateUserFormProps> = ({ className, ...rest }) 
           render={({ field: { onChange, value } }) => (
             <RoleSelect
               errorMessage={errors.role?.message}
-              label={'Роль пользователя'}
+              label={t('pages.users.add_user_form.role_select.label')}
               onChangeRole={onChange}
               role={value}
             />
@@ -97,16 +106,16 @@ export const CreateUserForm: FC<CreateUserFormProps> = ({ className, ...rest }) 
             errorMessage={errors.avatarId?.message}
             getSrc={getAvatarUrl}
             images={Array.from({ length: 8 }, (_, i) => i + 1)}
-            label={'Выберите аватар пользователя'}
+            label={t('pages.users.add_user_form.avatar_select.label')}
             onChange={onChange}
             value={value}
           />
         )}
-        rules={{ required: 'Аватар - обязательное поле' }}
+        rules={{ required: t('pages.users.add_user_form.avatar_select.errors.required') }}
       />
 
       <Button disabled={isPending} type={'submit'}>
-        Создать
+        {t('pages.users.add_user_form.submit_button')}
       </Button>
 
       {import.meta.env.DEV && <DevTool control={control} />}

@@ -16,6 +16,58 @@
       },
       "submit_button": "Войти",
       "success_info": "Авторизация прошла успешно."
+    },
+    "users": {
+      "title": {
+        "users": "Пользователи",
+        "add_user": "Добавить пользователя",
+        "all_users": "Все пользователи"
+      },
+      "add_user_form": {
+        "email_field": {
+          "label": "Email",
+          "errors": {
+            "required": "Email пользователя - обязательное поле."
+          }
+        },
+        "password_field": {
+          "label": "Пароль",
+          "errors": {
+            "required": "Пароль пользователя - обязательное поле."
+          }
+        },
+        "name_field": {
+          "label": "Имя нового пользователя",
+          "errors": {
+            "required": "Имя пользователя - обязательное поле."
+          }
+        },
+        "role_select": {
+          "label": "Роль пользователя",
+          "options": {
+            "admin": "Администратор",
+            "user": "Пользователь"
+          }
+        },
+        "avatar_select": {
+          "label": "Выберите аватар пользователя",
+          "errors": {
+            "required": "Аватар пользователя обязателен."
+          }
+        },
+        "submit_button": "Создать",
+        "success_info": "Пользователь {{name}} успешно создан."
+      },
+      "remove_user": {
+        "confirm": "Вы действительно хотите удалить пользователя?",
+        "success_info": "Пользователь успешно удалён."
+      }
     }
+  },
+  "confirmations": {
+    "cancel_button": "Отмена",
+    "confirm_button": "Подтвердить",
+    "description": "Вы уверены, что хотите продолжить?",
+    "title": "Подтвердите действие"
   }
 }

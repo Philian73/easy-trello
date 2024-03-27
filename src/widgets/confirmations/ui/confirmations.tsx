@@ -1,12 +1,15 @@
-import { ReactNode, useState } from 'react'
+import type { ConfirmModalParams } from '../model/types'
 
-import { ConfirmationParams, confirmationContext } from '@/shared/lib/confirmation'
+import { type ReactNode, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
-import { defaultConfirmationParams } from '../model/constants'
-import { ConfirmModalParams } from '../model/types'
+import { type ConfirmationParams, confirmationContext } from '@/shared/lib/confirmation'
+
 import { ConfirmationModal } from './confirmation-modal'
 
 export function Confirmations({ children }: { children?: ReactNode }) {
+  const { t } = useTranslation()
+
   const [modalParams, setModalParams] = useState<ConfirmModalParams>()
 
   const closeConfirmation = () => {
@@ -16,7 +19,10 @@ export function Confirmations({ children }: { children?: ReactNode }) {
   const getConfirmation = (params: ConfirmationParams) => {
     return new Promise<boolean>(res => {
       setModalParams({
-        ...defaultConfirmationParams,
+        cancelText: t('confirmations.cancel_button'),
+        confirmText: t('confirmations.confirm_button'),
+        description: t('confirmations.description'),
+        title: t('confirmations.title'),
         ...params,
         onClose: () => {
           closeConfirmation()
