@@ -9,6 +9,7 @@ import { handleErrorResponse } from '@/shared/lib/utils'
 import { Dialog, type DialogProps, TextField } from '@/shared/ui'
 import { DevTool } from '@hookform/devtools'
 
+import { useBoardSearch } from '../../model/use-board-search'
 import { useBoardStore } from '../../model/use-board-store'
 
 type CreateBoardCardModalProps = {
@@ -23,6 +24,7 @@ export const CreateBoardCardModal: FC<CreateBoardCardModalProps> = ({
   onClose,
   ...rest
 }) => {
+  const { setQuery } = useBoardSearch()
   const { t } = useTranslation()
 
   const {
@@ -41,6 +43,7 @@ export const CreateBoardCardModal: FC<CreateBoardCardModalProps> = ({
     createBoardCard(data)
       .then(() => {
         onClose()
+        setQuery('')
         toast.success(t('pages.board.cards.add.success-info', { title: data.title }))
       })
       .catch(error => {
