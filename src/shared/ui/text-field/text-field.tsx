@@ -97,6 +97,7 @@ const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
           aria-invalid={showError}
           className={clsx(
             'rounded border border-slate-300 focus:border-teal-600 px-2 outline-none aria-[invalid=true]:border-rose-600 transition-all duration-200',
+            'dark:border-slate-700 dark:bg-slate-800 dark:focus:border-teal-600',
             className
           )}
           id={textAreaId}

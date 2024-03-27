@@ -34,7 +34,7 @@ export const BoardTask: FC<BoardTaskProps> = ({ cardId, className, index, task, 
           className={clsx('py-1 relative', className)}
           ref={innerRef}
         >
-          <div className={'p-2 rounded shadow bg-white'}>
+          <div className={'p-2 rounded shadow bg-teal-100 dark:bg-slate-700'}>
             <div className={'flex items-center gap-2 [&_.action]:hover:opacity-100'}>
               <div
                 {...dragHandleProps}
