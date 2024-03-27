@@ -3,4 +3,8 @@ import { setupWorker } from 'msw/browser'
 
 import { getHandlers } from './handlers'
 
-export const worker = setupWorker(...(await getHandlers()))
+export async function initializeWorker() {
+  const handlers = await getHandlers()
+
+  return setupWorker(...handlers)
+}
