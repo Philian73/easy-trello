@@ -3,7 +3,7 @@ import { Bounce, ToastContainer } from 'react-toastify'
 
 import { useTheme } from '@/shared/lib/theme'
 
-export const Toast: FC<PropsWithChildren> = ({ children }) => {
+export const ToastProvider: FC<PropsWithChildren> = ({ children }) => {
   const { theme } = useTheme()
 
   return (
