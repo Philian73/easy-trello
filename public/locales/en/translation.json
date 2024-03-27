@@ -1,5 +1,21 @@
 {
-  "auth": {
-    "sign-out": "Sign out"
+  "pages": {
+    "sign_in": {
+      "title": "Sign In",
+      "email_field": {
+        "label": "Email",
+        "errors": {
+          "required": "Email is a required field."
+        }
+      },
+      "password_field": {
+        "label": "Password",
+        "errors": {
+          "required": "Password is a required field."
+        }
+      },
+      "submit_button": "Sign in",
+      "success_info": "Authorization was successful."
+    }
   }
 }

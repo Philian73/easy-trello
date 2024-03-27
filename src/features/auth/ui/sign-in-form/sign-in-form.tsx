@@ -2,6 +2,7 @@ import type { SignInFormData } from '../../model/types'
 
 import type { ComponentPropsWithoutRef, FC } from 'react'
 import { useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 
 import { useLoginMutation } from '@/entities/session'
@@ -13,6 +14,8 @@ import clsx from 'clsx'
 type SignInForm = Omit<ComponentPropsWithoutRef<'form'>, 'children' | 'onSubmit'>
 
 export const SignInForm: FC<SignInForm> = ({ className, ...rest }) => {
+  const { t } = useTranslation()
+
   const {
     control,
     formState: { errors },
@@ -29,7 +32,7 @@ export const SignInForm: FC<SignInForm> = ({ className, ...rest }) => {
   const onSubmit = handleSubmit(data => {
     signIn(data)
       .then(() => {
-        toast.success('Авторизация прошла успешно.')
+        toast.success(t('pages.sign_in.success_info'))
       })
       .catch(error => {
         handleErrorResponse(error, toast.error)
@@ -45,22 +48,22 @@ export const SignInForm: FC<SignInForm> = ({ className, ...rest }) => {
     >
       <TextField
         errorMessage={errors.email?.message}
-        label={'Email'}
+        label={t('pages.sign_in.email_field.label')}
         placeholder={'example@ex.com'}
         type={'email'}
-        {...register('email', { required: 'Email - обязательное поле.' })}
+        {...register('email', { required: t('pages.sign_in.email_field.errors.required') })}
       />
 
       <TextField
         errorMessage={errors.password?.message}
-        label={'Пароль'}
+        label={t('pages.sign_in.password_field.label')}
         placeholder={'*****'}
         type={'password'}
-        {...register('password', { required: 'Пароль - обязательное поле.' })}
+        {...register('password', { required: t('pages.sign_in.password_field.errors.required') })}
       />
 
       <Button disabled={isPending} type={'submit'}>
-        Войти
+        {t('pages.sign_in.submit_button')}
       </Button>
 
       {import.meta.env.DEV && <DevTool control={control} />}

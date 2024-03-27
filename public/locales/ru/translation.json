@@ -1,5 +1,21 @@
 {
-  "auth": {
-    "sign-out": "Выйти"
+  "pages": {
+    "sign_in": {
+      "title": "Авторизация",
+      "email_field": {
+        "label": "Email",
+        "errors": {
+          "required": "Email - обязательное поле."
+        }
+      },
+      "password_field": {
+        "label": "Пароль",
+        "errors": {
+          "required": "Пароль - обязательное поле."
+        }
+      },
+      "submit_button": "Войти",
+      "success_info": "Авторизация прошла успешно."
+    }
   }
 }
