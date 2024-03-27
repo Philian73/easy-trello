@@ -88,7 +88,7 @@ export const Combobox = <
       <ComboboxPrimitive multiple={multiple as false} value={value} {...rest}>
         <div
           className={
-            'relative rounded border border-slate-300 focus-within:border-teal-600 h-10 outline-none flex items-center '
+            'relative rounded border border-slate-300 focus-within:border-teal-600 h-10 outline-none flex items-center dark:border-slate-700'
           }
         >
           {renderPreview?.(value as (TType & TType[]) | undefined) ?? valueMap}

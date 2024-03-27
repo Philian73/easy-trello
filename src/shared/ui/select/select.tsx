@@ -70,7 +70,7 @@ export const Select = <TTag extends ElementType, TType extends BaseOption, TActu
       <Listbox value={value} {...rest}>
         <div
           className={
-            'relative rounded border border-slate-300 focus-within:border-teal-600 h-10 outline-none data-[headlessui-state="open"]:z-10'
+            'relative rounded border border-slate-300 focus-within:border-teal-600 h-10 outline-none data-[headlessui-state="open"]:z-10 dark:border-slate-700'
           }
         >
           <Listbox.Button
