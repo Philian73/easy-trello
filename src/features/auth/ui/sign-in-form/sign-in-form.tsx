@@ -21,6 +21,7 @@ export const SignInForm: FC<SignInForm> = ({ className, ...rest }) => {
     formState: { errors },
     handleSubmit,
     register,
+    setValue,
   } = useForm<SignInFormData>({
     defaultValues: {
       email: '',
@@ -46,6 +47,28 @@ export const SignInForm: FC<SignInForm> = ({ className, ...rest }) => {
       {...rest}
       onSubmit={onSubmit}
     >
+      <div className={'flex flex-col items-start'}>
+        <span>{t('pages.sign-in.testing-data.text')}:</span>
+        <div>
+          <span>{t('pages.sign-in.email-field.label')}: </span>
+          <span>admin@gmail.com</span>
+        </div>
+        <div>
+          <span>{t('pages.sign-in.password-field.label')}: </span>
+          <span>admin</span>
+        </div>
+        <button
+          className={'font-medium text-blue-600 dark:text-blue-500 hover:underline'}
+          onClick={() => {
+            setValue('email', 'admin@gmail.com')
+            setValue('password', 'admin')
+          }}
+          type={'button'}
+        >
+          {t('pages.sign-in.testing-data.button')}
+        </button>
+      </div>
+
       <TextField
         errorMessage={errors.email?.message}
         label={t('pages.sign-in.email-field.label')}

@@ -2,6 +2,10 @@
   "pages": {
     "sign-in": {
       "title": "Sign In",
+      "testing-data": {
+        "text": "Common test account credentials",
+        "button": "Insert test data"
+      },
       "email-field": {
         "label": "Email",
         "errors": {

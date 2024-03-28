@@ -2,6 +2,10 @@
   "pages": {
     "sign-in": {
       "title": "Авторизация",
+      "testing-data": {
+        "text": "Тестовые данные",
+        "button": "Вставить тестовые данные"
+      },
       "email-field": {
         "label": "Email",
         "errors": {
