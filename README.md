@@ -29,9 +29,9 @@
 2. "Features" - is more than just a use-case-features from standard FSD
 
 ```mermaid
-Easy Trello
+flowchart TB
     subgraph fsd [FSD]
-    App --> Pages --> Widgets --> Features --> Entities --> shared
+    App --> Pages --> Widgets --> Features --> Entities <--> Entities --> Shared
     end
 ```
 
