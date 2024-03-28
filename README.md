@@ -31,7 +31,7 @@
 ```mermaid
 flowchart TB
     subgraph fsd [FSD]
-    App --> Pages --> Widgets --> Features --> Entities <--> Entities --> Shared
+    App --> Pages --> Widgets --> Features --> Entities <-. @x .-> Entities --> Shared
     end
 ```
 
