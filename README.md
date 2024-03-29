@@ -38,7 +38,7 @@
 2. "Features" - is more than just a use-case-features from standard FSD
 
 ```mermaid
-flowchart TB
+flowchart LR
     subgraph fsd [FSD]
     App --> Pages --> Widgets --> Features --> Entities <-. @x .-> Entities --> Shared
     end
